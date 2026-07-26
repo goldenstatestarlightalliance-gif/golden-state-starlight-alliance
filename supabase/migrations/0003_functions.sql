@@ -193,20 +193,9 @@ begin
 end;
 $$;
 
--- Schedule it. pg_cron is available on Supabase but must be enabled first;
--- if this extension call fails, enable pg_cron under Database > Extensions in
--- the dashboard and re-run just this block.
-create extension if not exists pg_cron with schema extensions;
-
--- Daily at 03:15 UTC. Unschedule first so re-running this migration is safe.
-select cron.unschedule('purge-expired-messages')
-  where exists (select 1 from cron.job where jobname = 'purge-expired-messages');
-
-select cron.schedule(
-  'purge-expired-messages',
-  '15 3 * * *',
-  $cron$ select public.purge_expired_messages(); $cron$
-);
+-- The recurring schedule for this lives in 0004_cron.sql, which runs OUTSIDE
+-- the main transaction: it depends on the pg_cron extension being enabled, and
+-- a failure there must not roll back the schema.
 
 -- ---------------------------------------------------------------------------
 -- Realtime (spec §5)

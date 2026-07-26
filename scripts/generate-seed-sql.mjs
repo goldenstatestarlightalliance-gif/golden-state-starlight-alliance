@@ -50,8 +50,9 @@ w('--');
 w('-- Idempotent: safe to re-run. Counties/cities upsert on their natural keys,');
 w('-- and every county starts at not_started (spec §4) — real progress is');
 w('-- recorded through the app so it lands in the audit log.');
-w();
-w('begin;');
+w('--');
+w('-- No begin/commit here: apply-all.sql wraps schema + RLS + functions + seed');
+w('-- in one outer transaction, and a nested begin would silently commit it.');
 w();
 
 // --- Priority tiers, keyed by county ---------------------------------------
@@ -219,8 +220,6 @@ w("select 'county', id, name || ' County', slug from counties");
 w('on conflict (slug) do nothing;');
 w();
 
-w('commit;');
-w();
 
 const sql = out.join('\n');
 writeFileSync(join(root, 'supabase/seed.sql'), sql);

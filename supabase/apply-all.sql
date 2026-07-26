@@ -1,11 +1,19 @@
 -- ===========================================================================
 -- Golden State Starlight Alliance — full database setup
--- GENERATED: concatenation of supabase/migrations/*.sql + supabase/seed.sql
+-- GENERATED: supabase/migrations/0001-0003 + supabase/seed.sql
 -- Regenerate with: bash scripts/build-apply-all.sh
 --
--- Paste this whole file into the Supabase SQL editor and Run.
--- Order matters: schema -> RLS -> functions -> seed.
+-- HOW TO RUN: paste this entire file into the Supabase SQL editor and Run.
+--
+-- Everything below is inside a single transaction. If any statement fails,
+-- the whole apply rolls back and the database is left untouched — so a failed
+-- run is safe to diagnose and retry without cleanup.
+--
+-- AFTERWARDS, run supabase/migrations/0004_cron.sql separately. It schedules
+-- the 1-year chat retention job and needs the pg_cron extension enabled.
 -- ===========================================================================
+
+begin;
 
 
 -- ===========================================================================
@@ -926,20 +934,9 @@ begin
 end;
 $$;
 
--- Schedule it. pg_cron is available on Supabase but must be enabled first;
--- if this extension call fails, enable pg_cron under Database > Extensions in
--- the dashboard and re-run just this block.
-create extension if not exists pg_cron with schema extensions;
-
--- Daily at 03:15 UTC. Unschedule first so re-running this migration is safe.
-select cron.unschedule('purge-expired-messages')
-  where exists (select 1 from cron.job where jobname = 'purge-expired-messages');
-
-select cron.schedule(
-  'purge-expired-messages',
-  '15 3 * * *',
-  $cron$ select public.purge_expired_messages(); $cron$
-);
+-- The recurring schedule for this lives in 0004_cron.sql, which runs OUTSIDE
+-- the main transaction: it depends on the pg_cron extension being enabled, and
+-- a failure there must not roll back the schema.
 
 -- ---------------------------------------------------------------------------
 -- Realtime (spec §5)
@@ -962,8 +959,9 @@ alter publication supabase_realtime add table events;
 -- Idempotent: safe to re-run. Counties/cities upsert on their natural keys,
 -- and every county starts at not_started (spec §4) — real progress is
 -- recorded through the app so it lands in the audit log.
-
-begin;
+--
+-- No begin/commit here: apply-all.sql wraps schema + RLS + functions + seed
+-- in one outer transaction, and a nested begin would silently commit it.
 
 -- 58 California counties
 insert into counties (fips, name, slug, region, priority, priority_reason, rationale, hook, confidence, geo_level) values
@@ -2817,5 +2815,14 @@ insert into channels (kind, county_id, name, slug)
 select 'county', id, name || ' County', slug from counties
 on conflict (slug) do nothing;
 
+
 commit;
 
+-- Sanity check — expected: 58 counties, 63 cities, 59 channels, 58 templates.
+select
+  (select count(*) from counties)        as counties,
+  (select count(*) from cities)          as cities,
+  (select count(*) from organizations)   as organizations,
+  (select count(*) from channels)        as channels,
+  (select count(*) from email_templates) as email_templates,
+  (select count(*) from county_outreach) as outreach_plans;

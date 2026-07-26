@@ -5,8 +5,9 @@
 -- Idempotent: safe to re-run. Counties/cities upsert on their natural keys,
 -- and every county starts at not_started (spec §4) — real progress is
 -- recorded through the app so it lands in the audit log.
-
-begin;
+--
+-- No begin/commit here: apply-all.sql wraps schema + RLS + functions + seed
+-- in one outer transaction, and a nested begin would silently commit it.
 
 -- 58 California counties
 insert into counties (fips, name, slug, region, priority, priority_reason, rationale, hook, confidence, geo_level) values
@@ -1859,5 +1860,3 @@ on conflict (slug) do nothing;
 insert into channels (kind, county_id, name, slug)
 select 'county', id, name || ' County', slug from counties
 on conflict (slug) do nothing;
-
-commit;

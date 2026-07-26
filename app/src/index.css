@@ -1,111 +1,220 @@
+/* Golden State Starlight Alliance — base styles.
+   Night-sky palette for the chrome, white map canvas so the status colours
+   carry all the meaning. */
+
 :root {
-  --text: #6b6375;
-  --text-h: #08060d;
-  --bg: #fff;
-  --border: #e5e4e7;
-  --code-bg: #f4f3ec;
-  --accent: #aa3bff;
-  --accent-bg: rgba(170, 59, 255, 0.1);
-  --accent-border: rgba(170, 59, 255, 0.5);
-  --social-bg: rgba(244, 243, 236, 0.5);
-  --shadow:
-    rgba(0, 0, 0, 0.1) 0 10px 15px -3px, rgba(0, 0, 0, 0.05) 0 4px 6px -2px;
+  --ink: #0f172a;
+  --ink-soft: #475569;
+  --line: #e2e8f0;
+  --night: #131a3a;
+  --star: #fbbf24;
+  --bg: #ffffff;
 
-  --sans: system-ui, 'Segoe UI', Roboto, sans-serif;
-  --heading: system-ui, 'Segoe UI', Roboto, sans-serif;
-  --mono: ui-monospace, Consolas, monospace;
-
-  font: 18px/145% var(--sans);
-  letter-spacing: 0.18px;
-  color-scheme: light dark;
-  color: var(--text);
+  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  color: var(--ink);
   background: var(--bg);
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-
-  @media (max-width: 1024px) {
-    font-size: 16px;
-  }
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --text: #9ca3af;
-    --text-h: #f3f4f6;
-    --bg: #16171d;
-    --border: #2e303a;
-    --code-bg: #1f2028;
-    --accent: #c084fc;
-    --accent-bg: rgba(192, 132, 252, 0.15);
-    --accent-border: rgba(192, 132, 252, 0.5);
-    --social-bg: rgba(47, 48, 58, 0.5);
-    --shadow:
-      rgba(0, 0, 0, 0.4) 0 10px 15px -3px, rgba(0, 0, 0, 0.25) 0 4px 6px -2px;
-  }
+* { box-sizing: border-box; }
 
-  #social .button-icon {
-    filter: invert(1) brightness(2);
-  }
-}
+body { margin: 0; line-height: 1.55; }
 
-body {
-  margin: 0;
-}
+a { color: #1d4ed8; }
+h1, h2, h3, h4 { line-height: 1.25; margin: 0 0 .5rem; }
+h1 { font-size: 1.85rem; }
+h2 { font-size: 1.2rem; margin-top: 1.75rem; }
+h3 { font-size: 1rem; }
 
-#root {
-  width: 1126px;
-  max-width: 100%;
-  margin: 0 auto;
-  text-align: center;
-  border-inline: 1px solid var(--border);
-  min-height: 100svh;
+/* ---------- chrome ---------- */
+
+.topbar {
   display: flex;
-  flex-direction: column;
-  box-sizing: border-box;
+  align-items: baseline;
+  gap: 1rem;
+  flex-wrap: wrap;
+  padding: .9rem 1.5rem;
+  background: var(--night);
+  color: #fff;
 }
 
-h1,
-h2 {
-  font-family: var(--heading);
-  font-weight: 500;
-  color: var(--text-h);
-}
-
-h1 {
-  font-size: 56px;
-  letter-spacing: -1.68px;
-  margin: 32px 0;
-  @media (max-width: 1024px) {
-    font-size: 36px;
-    margin: 20px 0;
-  }
-}
-h2 {
-  font-size: 24px;
-  line-height: 118%;
-  letter-spacing: -0.24px;
-  margin: 0 0 8px;
-  @media (max-width: 1024px) {
-    font-size: 20px;
-  }
-}
-p {
-  margin: 0;
-}
-
-code,
-.counter {
-  font-family: var(--mono);
+.brand {
+  color: #fff;
+  text-decoration: none;
+  font-weight: 650;
+  font-size: 1.05rem;
   display: inline-flex;
-  border-radius: 4px;
-  color: var(--text-h);
+  align-items: center;
+  gap: .5rem;
 }
 
-code {
-  font-size: 15px;
-  line-height: 135%;
-  padding: 4px 8px;
-  background: var(--code-bg);
+.brand-mark { color: var(--star); }
+
+.tagline { color: #a5b4fc; font-size: .85rem; }
+
+.footer {
+  border-top: 1px solid var(--line);
+  margin-top: 3rem;
+  padding: 1.25rem 1.5rem;
+  color: var(--ink-soft);
+  font-size: .85rem;
+}
+
+.page { max-width: 1200px; margin: 0 auto; padding: 1.5rem; }
+.page-head { margin-bottom: 1.25rem; }
+.lede { color: var(--ink-soft); max-width: 60ch; }
+.crumb { font-size: .875rem; margin: 0 0 .75rem; }
+.muted { color: var(--ink-soft); }
+
+.error {
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  color: #991b1b;
+  padding: .75rem 1rem;
+  border-radius: 8px;
+}
+
+/* Expected setup states (no .env yet), not failures. */
+.notice {
+  background: #eff6ff;
+  border: 1px solid #bfdbfe;
+  color: #1e40af;
+  padding: .75rem 1rem;
+  border-radius: 8px;
+  font-size: .875rem;
+}
+
+/* ---------- map ---------- */
+
+.map-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 300px;
+  gap: 1.5rem;
+  align-items: start;
+}
+
+.map-wrap {
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  overflow: hidden;
+  background: #fff;
+}
+
+/* Leaflet paints its own grey canvas by default; the tracker wants white so
+   "Not Started" reads as genuinely blank. */
+.leaflet-container { background: #fff !important; }
+
+.map-side h2 { margin-top: 0; }
+
+.legend { list-style: none; margin: 0 0 1rem; padding: 0; }
+.legend li {
+  display: flex;
+  align-items: center;
+  gap: .55rem;
+  padding: .18rem 0;
+  font-size: .875rem;
+}
+.legend-swatch {
+  width: 15px; height: 15px;
+  border-radius: 3px;
+  border: 1px solid rgba(0,0,0,.15);
+  flex: none;
+}
+.legend-label { flex: 1; }
+.legend-count { color: var(--ink-soft); font-variant-numeric: tabular-nums; }
+
+.hover-card {
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 1rem;
+  min-height: 190px;
+}
+.hover-card h3 { margin-top: 0; }
+.hover-card h4 {
+  font-size: .8rem;
+  text-transform: uppercase;
+  letter-spacing: .04em;
+  color: var(--ink-soft);
+  margin-top: .75rem;
+}
+
+.pill {
+  display: inline-block;
+  padding: .18rem .6rem;
+  border-radius: 999px;
+  font-size: .8rem;
+  font-weight: 600;
+  border: 1px solid rgba(0,0,0,.12);
+}
+
+.tier { margin-left: .6rem; font-size: .8rem; color: var(--ink-soft); }
+
+button {
+  margin-top: .85rem;
+  padding: .5rem .9rem;
+  border: 1px solid var(--night);
+  background: var(--night);
+  color: #fff;
+  border-radius: 8px;
+  cursor: pointer;
+  font: inherit;
+  font-size: .875rem;
+}
+button:hover { background: #1e2a5a; }
+
+.source-note { margin-top: 1rem; font-size: .8rem; color: var(--ink-soft); }
+
+/* ---------- county page ---------- */
+
+.county-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr);
+  gap: 2rem;
+  align-items: start;
+}
+
+.org-list { list-style: none; margin: 0; padding: 0; }
+.org-list li { padding: .18rem 0; font-size: .9rem; }
+
+.pipeline-table { width: 100%; border-collapse: collapse; font-size: .875rem; }
+.pipeline-table th, .pipeline-table td {
+  text-align: left;
+  padding: .45rem .5rem;
+  border-bottom: 1px solid var(--line);
+}
+.pipeline-table th { color: var(--ink-soft); font-weight: 600; }
+
+.star { color: var(--star); margin-left: .3rem; }
+
+.bar { display: flex; gap: 2px; width: 130px; }
+.bar-seg {
+  height: 9px;
+  flex: 1;
+  border-radius: 2px;
+  border: 1px solid rgba(0,0,0,.08);
+}
+
+.ordinance {
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: .85rem 1rem;
+  margin-bottom: .75rem;
+}
+.ordinance h3 { margin-top: 0; }
+
+.timeline { list-style: none; margin: 0; padding: 0; }
+.timeline li {
+  display: flex;
+  gap: .75rem;
+  padding: .4rem 0;
+  border-bottom: 1px solid var(--line);
+  font-size: .875rem;
+}
+.timeline time {
+  color: var(--ink-soft);
+  flex: none;
+  font-variant-numeric: tabular-nums;
+}
+
+@media (max-width: 900px) {
+  .map-layout, .county-grid { grid-template-columns: minmax(0, 1fr); }
 }

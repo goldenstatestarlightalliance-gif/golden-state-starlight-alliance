@@ -1,0 +1,26 @@
+# Dependencies
+node_modules/
+
+# Secrets — never commit. The Supabase publishable key is safe client-side,
+# but a service_role / sb_secret_ key must never reach this repo or the bundle.
+.env
+.env.*
+!.env.example
+
+# Build output
+dist/
+build/
+.netlify/
+
+# Editor / OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+npm-debug.log*
+
+# Large downloaded geo source files (we commit only the simplified GeoJSON)
+data/tiger/

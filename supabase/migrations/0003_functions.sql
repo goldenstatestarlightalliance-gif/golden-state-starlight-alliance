@@ -203,5 +203,29 @@ $$;
 
 -- Publish messages so Supabase Realtime streams inserts/updates to subscribed
 -- clients. RLS still applies to what each client actually receives.
-alter publication supabase_realtime add table messages;
-alter publication supabase_realtime add table events;
+--
+-- Guarded rather than a bare ALTER: adding a table that is already a member of
+-- the publication is an error, which would abort the whole transaction on a
+-- re-run. The publication normally already exists on Supabase, but a
+-- self-hosted or freshly-reset project may not have it.
+do $$
+begin
+  if not exists (select 1 from pg_publication where pubname = 'supabase_realtime') then
+    create publication supabase_realtime;
+  end if;
+
+  if not exists (
+    select 1 from pg_publication_tables
+    where pubname = 'supabase_realtime' and schemaname = 'public' and tablename = 'messages'
+  ) then
+    alter publication supabase_realtime add table public.messages;
+  end if;
+
+  if not exists (
+    select 1 from pg_publication_tables
+    where pubname = 'supabase_realtime' and schemaname = 'public' and tablename = 'events'
+  ) then
+    alter publication supabase_realtime add table public.events;
+  end if;
+end
+$$;

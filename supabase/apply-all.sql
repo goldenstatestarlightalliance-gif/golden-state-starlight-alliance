@@ -944,8 +944,32 @@ $$;
 
 -- Publish messages so Supabase Realtime streams inserts/updates to subscribed
 -- clients. RLS still applies to what each client actually receives.
-alter publication supabase_realtime add table messages;
-alter publication supabase_realtime add table events;
+--
+-- Guarded rather than a bare ALTER: adding a table that is already a member of
+-- the publication is an error, which would abort the whole transaction on a
+-- re-run. The publication normally already exists on Supabase, but a
+-- self-hosted or freshly-reset project may not have it.
+do $$
+begin
+  if not exists (select 1 from pg_publication where pubname = 'supabase_realtime') then
+    create publication supabase_realtime;
+  end if;
+
+  if not exists (
+    select 1 from pg_publication_tables
+    where pubname = 'supabase_realtime' and schemaname = 'public' and tablename = 'messages'
+  ) then
+    alter publication supabase_realtime add table public.messages;
+  end if;
+
+  if not exists (
+    select 1 from pg_publication_tables
+    where pubname = 'supabase_realtime' and schemaname = 'public' and tablename = 'events'
+  ) then
+    alter publication supabase_realtime add table public.events;
+  end if;
+end
+$$;
 
 
 -- ===========================================================================
@@ -1034,24 +1058,40 @@ create policy county_documents_write on county_documents
   with check (can_edit_county(county_id));
 
 -- Log document changes to the county timeline, like status changes are.
+--
+-- NOTE: deliberately branches on TG_OP instead of `coalesce(new, old)`.
+-- NEW and OLD are not ordinary values — coalesce() over them does not reliably
+-- resolve a row type in PL/pgSQL, and on DELETE, NEW is unset rather than a
+-- typed null. Explicit branching is the portable form.
 create or replace function log_document_change()
 returns trigger language plpgsql security definer set search_path = public as $$
 declare
-  target record := coalesce(new, old);
-  verb text := case tg_op
-                 when 'INSERT' then 'added'
-                 when 'UPDATE' then 'updated'
-                 else 'removed'
-               end;
+  county   bigint;
+  doc_id   bigint;
+  doc_kind document_kind;
+  doc_label text;
+  verb     text;
 begin
+  if tg_op = 'DELETE' then
+    county := old.county_id; doc_id := old.id;
+    doc_kind := old.kind;    doc_label := old.label;
+    verb := 'removed';
+  else
+    county := new.county_id; doc_id := new.id;
+    doc_kind := new.kind;    doc_label := new.label;
+    verb := case tg_op when 'INSERT' then 'added' else 'updated' end;
+  end if;
+
   insert into public.events (
     actor_id, county_id, entity_type, entity_id, action, description, is_public
   ) values (
-    auth.uid(), target.county_id, 'document', target.id, 'document_' || verb,
-    coalesce(target.label, replace(target.kind::text, '_', ' ')) || ' ' || verb,
+    auth.uid(), county, 'document', doc_id, 'document_' || verb,
+    coalesce(doc_label, initcap(replace(doc_kind::text, '_', ' '))) || ' ' || verb,
     true
   );
-  return target;
+
+  -- AFTER triggers ignore the return value, but it must still be a row.
+  if tg_op = 'DELETE' then return old; else return new; end if;
 end;
 $$;
 

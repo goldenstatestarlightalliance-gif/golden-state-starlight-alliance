@@ -149,6 +149,65 @@ if (councilRows.length) {
 // region_orgs lists partner orgs per region. Flatten to a unique org list, then
 // link each org to every county in its region via county_org_participation.
 const KIND = { sierra: 'sierra_club', darksky: 'darksky', audubon: 'audubon', astro: 'astronomy', student: 'student' };
+
+// The contact strings are free text a researcher wrote, e.g.
+//   "sierraclub.org/sfbay | contact form on site (no single public email found)"
+//   "AS Sustainability, CSU Chico | as_sustainability@csuchico.edu | (530) 898-6677"
+// Spec §4 wants every org hyperlinked, so pull a website and an email out of
+// whatever shape each one takes. Anything unparseable simply yields null and
+// the org renders as plain text rather than a broken link.
+const EMAIL_RE = /[\w.+-]+@[\w-]+\.[\w.-]+/;
+const DOMAIN_RE = /\b(?:https?:\/\/)?(?:www\.)?(?:[a-z0-9-]+\.)+(?:org|com|edu|net|gov)(?:\/[\w./#?=&-]*)?/i;
+
+function extractContact(text) {
+  if (!text) return { website: null, email: null };
+
+  const email = text.match(EMAIL_RE)?.[0] ?? null;
+
+  // Strip the email first — otherwise its domain is what the domain regex
+  // finds, and every org with an email would link to a bare mail domain.
+  const withoutEmail = email ? text.replace(email, ' ') : text;
+  let website = withoutEmail.match(DOMAIN_RE)?.[0] ?? null;
+
+  // Trim trailing punctuation the sentence left behind.
+  if (website) website = website.replace(/[.,;:)]+$/, '');
+
+  return { website, email };
+}
+
+// org name -> contact string, from both the professional and student columns.
+//
+// Only ~26 distinct orgs appear in the master list against 67 in region_orgs,
+// so most orgs will have no contact at all — that is a gap in the source
+// research, not something matching can fix. What matching DOES fix is the
+// near-misses, where the same org is worded differently in the two lists:
+//   "DarkSky Santa Cruz (chapter of DarkSky International)"   [region_orgs]
+//   "DarkSky Santa Cruz (DarkSky International chapter)"      [master list]
+// So we index each contact under both its exact name and a loose key with
+// parentheticals and punctuation removed.
+const looseKey = (s) =>
+  s.toLowerCase()
+    .replace(/\([^)]*\)/g, ' ')   // drop parenthetical qualifiers
+    .replace(/[^a-z0-9]+/g, ' ')
+    .trim();
+
+const contactByOrg = new Map();
+const contactByLoose = new Map();
+
+for (const row of seed.priority_master_list ?? []) {
+  for (const [nameKey, contactKey] of [['prof_org', 'prof_contact'], ['student_org', 'student_contact']]) {
+    const name = row[nameKey];
+    if (!name) continue;
+    if (!contactByOrg.has(name)) contactByOrg.set(name, row[contactKey]);
+    const lk = looseKey(name);
+    if (lk && !contactByLoose.has(lk)) contactByLoose.set(lk, row[contactKey]);
+  }
+}
+
+// Exact match wins; loose match is the fallback.
+const contactFor = (name) =>
+  contactByOrg.get(name) ?? contactByLoose.get(looseKey(name)) ?? null;
+
 const orgs = new Map(); // name -> { kind, regions:Set }
 
 for (const [region, set] of Object.entries(seed.region_orgs ?? {})) {
@@ -164,16 +223,27 @@ for (const [region, set] of Object.entries(seed.region_orgs ?? {})) {
 
 w('-- Partner organizations, plus the "general public" umbrella org.');
 w('-- The umbrella org is a normal row with no special casing (spec §3).');
-w('insert into organizations (name, slug, kind, region, is_umbrella, approved) values');
+w('insert into organizations (name, slug, kind, region, website, email, is_umbrella, approved) values');
 const orgRows = [
-  `  ('California Starlight Volunteers', 'california-starlight-volunteers', 'general_public', null, true, true)`,
+  `  ('California Starlight Volunteers', 'california-starlight-volunteers', 'general_public', null, null, null, true, true)`,
 ];
+let linked = 0;
 for (const [name, meta] of orgs) {
   const region = meta.regions.size === 1 ? [...meta.regions][0] : null;
-  orgRows.push(`  (${q(name)}, ${q(slug(name))}, ${q(meta.kind)}::org_kind, ${q(region)}, false, true)`);
+  const { website, email } = extractContact(contactFor(name));
+  if (website || email) linked++;
+  orgRows.push(
+    `  (${q(name)}, ${q(slug(name))}, ${q(meta.kind)}::org_kind, ${q(region)}, ` +
+    `${q(website)}, ${q(email)}, false, true)`
+  );
 }
 w(orgRows.join(',\n'));
-w('on conflict (name) do nothing;');
+// Update contacts on conflict rather than skipping: re-running the seed after
+// improving the extraction should fix existing rows, not silently no-op.
+w('on conflict (name) do update set');
+w('  website = coalesce(excluded.website, organizations.website),');
+w('  email   = coalesce(excluded.email,   organizations.email),');
+w('  kind    = excluded.kind;');
 w();
 
 // Link orgs to the counties in their region.
@@ -224,11 +294,44 @@ w();
 const sql = out.join('\n');
 writeFileSync(join(root, 'supabase/seed.sql'), sql);
 
+// ---------------------------------------------------------------------------
+// Standalone contact patch.
+//
+// apply-all.sql cannot be re-run against a built database — its CREATE TABLEs
+// would fail — so improving org contacts after the first seed needs its own
+// file. Pure UPDATEs, safe to run repeatedly.
+// ---------------------------------------------------------------------------
+const patch = ['-- GENERATED — regenerate with: node scripts/generate-seed-sql.mjs',
+  '-- Backfills organization website/email onto an already-seeded database.',
+  '-- Idempotent: pure UPDATEs, safe to run more than once.',
+  '',
+  'begin;',
+  ''];
+
+let patched = 0;
+for (const [name, meta] of orgs) {
+  const { website, email } = extractContact(contactFor(name));
+  if (!website && !email) continue;
+  patched++;
+  patch.push(
+    `update organizations set website = ${q(website)}, email = ${q(email)} ` +
+    `where name = ${q(name)};`
+  );
+}
+
+patch.push('', 'commit;', '');
+patch.push('-- How many organizations now have a link (expected: ' + patched + ' of ' + (orgs.size + 1) + ')');
+patch.push('select count(*) filter (where website is not null or email is not null) as linked,');
+patch.push('       count(*) as total from organizations;');
+patch.push('');
+
+writeFileSync(join(root, 'supabase/patch-org-contacts.sql'), patch.join('\n'));
+
 console.log('Wrote supabase/seed.sql');
 console.log(`  counties:      ${countyRows.length}`);
 console.log(`  cities:        ${cityRows.length}  (priority targets only)`);
 console.log(`  outreach plans:${outreachRows.length}`);
 console.log(`  council:       ${councilRows.length}  (only 2 counties have named champions in the research)`);
-console.log(`  organizations: ${orgRows.length}`);
+console.log(`  organizations: ${orgRows.length}  (${linked} with a website or email)`);
 console.log(`  participation: ${participationRows.length}`);
 console.log(`  email drafts:  ${tmplRows.length}`);

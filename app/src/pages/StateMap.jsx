@@ -1,22 +1,63 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { MapContainer, GeoJSON } from 'react-leaflet';
+import { useNavigate, Link } from 'react-router-dom';
+import { MapContainer, GeoJSON, Popup } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 
 import { useCounties, activeOrgs, NOT_CONFIGURED } from '../lib/queries';
 import { stageColor, stageLabel } from '../lib/pipeline';
 import Legend from '../components/Legend';
 import AutoFit from '../components/AutoFit';
+import OrgList from '../components/OrgList';
 
 // Roughly the bounding box of California.
 const CA_BOUNDS = [[32.3, -124.6], [42.1, -113.9]];
+
+// Mirrors the slug rule in scripts/generate-seed-sql.mjs, so a link built from
+// a boundary feature lands on the same URL as one built from a database row.
+const slugify = (s) =>
+  s.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
 
 export default function StateMap() {
   const { data: counties, error, loading } = useCounties();
   const [geo, setGeo] = useState(null);
   const [geoError, setGeoError] = useState(null);
   const [hovered, setHovered] = useState(null);
+  const [popupAt, setPopupAt] = useState(null);
   const navigate = useNavigate();
+
+  // The popup has to survive the pointer leaving the county polygon, otherwise
+  // its links are unreachable — the moment you move toward them, mouseout
+  // fires and the popup closes. A short close delay bridges that gap, and
+  // hovering the popup itself cancels the pending close.
+  const closeTimer = useRef(null);
+
+  const cancelClose = () => {
+    if (closeTimer.current) {
+      clearTimeout(closeTimer.current);
+      closeTimer.current = null;
+    }
+  };
+
+  // Carries the Census feature's own name so the popup still works for a county
+  // that has no database row yet — before seeding, or if a row is ever missing.
+  // The map is the public face of the project; it should degrade to "we know
+  // this county exists and nothing has happened here", never to nothing at all.
+  const openPopup = (fips, name, latlng) => {
+    cancelClose();
+    setHovered({ fips, name });
+    setPopupAt(latlng);
+  };
+
+  const scheduleClose = () => {
+    cancelClose();
+    closeTimer.current = setTimeout(() => {
+      setHovered(null);
+      setPopupAt(null);
+    }, 300);
+  };
+
+  // Don't leave a timer running against an unmounted component.
+  useEffect(() => cancelClose, []);
 
   useEffect(() => {
     fetch(`${import.meta.env.BASE_URL}geo/ca-counties.geojson`)
@@ -63,11 +104,13 @@ export default function StateMap() {
       mouseover: (e) => {
         e.target.setStyle({ weight: 2.5, color: '#111827' });
         e.target.bringToFront();
-        setHovered(fips);
+        openPopup(fips, feature.properties.BASENAME, e.target.getBounds().getCenter());
       },
       mouseout: (e) => {
         e.target.setStyle({ weight: 1, color: '#ffffff' });
-        setHovered(null);
+        // Delayed, so the pointer can travel from the county into the popup
+        // without it vanishing en route.
+        scheduleClose();
       },
       click: () => county && navigate(`/county/${county.slug}`),
       keydown: (e) => {
@@ -75,18 +118,26 @@ export default function StateMap() {
       },
     });
 
-    const name = feature.properties.BASENAME;
-    layer.bindTooltip(
-      `${name} County — ${stageLabel(county?.status ?? 'not_started')}`,
-      { sticky: true }
-    );
+    // No bindTooltip here: a Leaflet tooltip cannot hold a link, and showing
+    // one alongside the popup would just duplicate the same text. The popup
+    // below carries the name, status, orgs and the through-link.
   };
 
   // Leaflet caches the style closure per layer, so the GeoJSON layer has to be
   // remounted when county statuses arrive. The key does that.
   const geoKey = counties ? `loaded-${counties.length}` : 'pending';
 
-  const hoveredCounty = hovered ? byFips.get(hovered) : null;
+  // Prefer the database row; fall back to the boundary feature so the popup
+  // never blanks out just because a county has not been seeded.
+  const row = hovered ? byFips.get(hovered.fips) : null;
+  const hoveredCounty = hovered
+    ? {
+        name: row?.name ?? hovered.name,
+        status: row?.status ?? 'not_started',
+        slug: row?.slug ?? slugify(hovered.name),
+        orgs: row ? activeOrgs(row) : [],
+      }
+    : null;
 
   return (
     <div className="page">
@@ -131,6 +182,42 @@ export default function StateMap() {
                 style={styleFor}
                 onEachFeature={onEachFeature}
               />
+
+              {hoveredCounty && popupAt && (
+                <Popup
+                  position={popupAt}
+                  closeButton={false}
+                  autoPan={false}
+                  className="county-popup"
+                >
+                  {/* Handlers go on the content, not on <Popup eventHandlers>:
+                      that binds Leaflet *layer* events (add/remove/open/close),
+                      which never fire for a pointer entering the popup box. The
+                      popup would close out from under the links. */}
+                  <div
+                    onMouseEnter={cancelClose}
+                    onMouseLeave={scheduleClose}
+                  >
+                    <h3>{hoveredCounty.name} County</h3>
+
+                    <p className="popup-status">
+                      <span
+                        className="pill"
+                        style={{ background: stageColor(hoveredCounty.status) }}
+                      >
+                        {stageLabel(hoveredCounty.status)}
+                      </span>
+                    </p>
+
+                    <h4>Participating organizations</h4>
+                    <OrgList orgs={hoveredCounty.orgs} empty="None yet." />
+
+                    <Link className="popup-link" to={`/county/${hoveredCounty.slug}`}>
+                      Open {hoveredCounty.name} County →
+                    </Link>
+                  </div>
+                </Popup>
+              )}
             </MapContainer>
           )}
         </div>
@@ -157,12 +244,10 @@ export default function StateMap() {
                 </p>
                 <h4>Participating organizations</h4>
                 <ul className="org-list">
-                  {activeOrgs(hoveredCounty).slice(0, 5).map((o) => (
+                  {hoveredCounty.orgs.slice(0, 5).map((o) => (
                     <li key={o.id}>{o.name}</li>
                   ))}
-                  {!activeOrgs(hoveredCounty).length && (
-                    <li className="muted">None yet</li>
-                  )}
+                  {!hoveredCounty.orgs.length && <li className="muted">None yet</li>}
                 </ul>
                 <button onClick={() => navigate(`/county/${hoveredCounty.slug}`)}>
                   Open {hoveredCounty.name} County →

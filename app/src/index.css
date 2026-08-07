@@ -163,6 +163,43 @@ button:hover { background: #1e2a5a; }
 
 .source-note { margin-top: 1rem; font-size: .8rem; color: var(--ink-soft); }
 
+/* ---------- hover popup on the statewide map ---------- */
+
+.county-popup .leaflet-popup-content-wrapper {
+  border-radius: 10px;
+  box-shadow: 0 6px 20px rgba(15, 23, 42, .18);
+}
+
+.county-popup .leaflet-popup-content {
+  margin: .8rem .95rem;
+  min-width: 200px;
+  line-height: 1.45;
+}
+
+.county-popup h3 { margin: 0 0 .4rem; font-size: 1rem; }
+
+.county-popup h4 {
+  font-size: .7rem;
+  text-transform: uppercase;
+  letter-spacing: .05em;
+  color: var(--ink-soft);
+  margin: .6rem 0 .25rem;
+}
+
+/* Leaflet's stylesheet sets a wide default margin on popup paragraphs. */
+.county-popup .popup-status { margin: 0 0 .2rem; }
+
+.county-popup .org-list li { font-size: .82rem; padding: .1rem 0; }
+
+.popup-link {
+  display: inline-block;
+  margin-top: .65rem;
+  font-weight: 600;
+  font-size: .85rem;
+  text-decoration: none;
+}
+.popup-link:hover { text-decoration: underline; }
+
 /* ---------- county page ---------- */
 
 .county-grid {

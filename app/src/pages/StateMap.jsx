@@ -84,12 +84,18 @@ export default function StateMap() {
 
   const styleFor = (feature) => {
     const county = byFips.get(feature.properties.COUNTY);
+    const status = county?.status ?? 'not_started';
     return {
       // Counties render neutral until a status says otherwise — colour is
       // applied by progress, never baked into the base map.
-      fillColor: stageColor(county?.status ?? 'not_started'),
+      fillColor: stageColor(status),
       fillOpacity: 1,
-      color: '#ffffff',
+      // Border colour adapts to the fill. A white border on the near-white
+      // "Not Started" fill is invisible, which is the state the whole map
+      // starts in — so unstarted counties get a grey outline, and coloured
+      // ones keep white, which reads as a cleaner separator against saturated
+      // fills.
+      color: status === 'not_started' ? '#cbd5e1' : '#ffffff',
       weight: 1,
     };
   };
@@ -107,7 +113,10 @@ export default function StateMap() {
         openPopup(fips, feature.properties.BASENAME, e.target.getBounds().getCenter());
       },
       mouseout: (e) => {
-        e.target.setStyle({ weight: 1, color: '#ffffff' });
+        // Recompute rather than hardcoding a colour back: the resting border
+        // depends on the county's status, so a fixed value would leave every
+        // hovered county with the wrong outline for the rest of the session.
+        e.target.setStyle(styleFor(feature));
         // Delayed, so the pointer can travel from the county into the popup
         // without it vanishing en route.
         scheduleClose();

@@ -48,10 +48,13 @@ export default function CountyPage() {
 
   const cityStyle = (feature) => {
     const city = cityByName.get(feature.properties.BASENAME?.toLowerCase());
+    const status = city?.status ?? 'not_started';
     return {
-      fillColor: stageColor(city?.status ?? 'not_started'),
+      fillColor: stageColor(status),
       fillOpacity: 1,
-      color: '#ffffff',
+      // Same reasoning as the statewide map: a white border disappears against
+      // the near-white "Not Started" fill.
+      color: status === 'not_started' ? '#cbd5e1' : '#ffffff',
       weight: 1,
     };
   };

@@ -6,6 +6,22 @@ export const NOT_CONFIGURED =
   'Database not connected yet — showing geography only. ' +
   'Set VITE_SUPABASE_URL and VITE_SUPABASE_PUBLISHABLE_KEY in .env.';
 
+// A failed fetch surfaces as the browser's bare "TypeError: Failed to fetch",
+// which tells nobody anything. It means the request never reached the server at
+// all — offline, DNS failure, or the Supabase project no longer exists — as
+// opposed to a query error, which comes back as structured JSON.
+function describeError(e) {
+  const raw = e?.message ?? String(e);
+  if (/failed to fetch|networkerror|load failed/i.test(raw)) {
+    return (
+      'Could not reach the database. The Supabase project may be paused, ' +
+      'deleted, or unreachable from this network — check that ' +
+      `${import.meta.env.VITE_SUPABASE_URL} still resolves.`
+    );
+  }
+  return raw;
+}
+
 // Small shared shape so every page renders loading/error the same way.
 function useQuery(runner, deps = []) {
   const [state, setState] = useState({ data: null, error: null, loading: true });
@@ -24,10 +40,13 @@ function useQuery(runner, deps = []) {
     runner()
       .then(({ data, error }) => {
         if (cancelled) return;
-        setState({ data, error: error?.message ?? null, loading: false });
+        // supabase-js reports even network failures through `error` rather than
+        // throwing, so this branch — not the catch below — is what usually sees
+        // "TypeError: Failed to fetch".
+        setState({ data, error: error ? describeError(error) : null, loading: false });
       })
       .catch((e) => {
-        if (!cancelled) setState({ data: null, error: e.message, loading: false });
+        if (!cancelled) setState({ data: null, error: describeError(e), loading: false });
       });
 
     // Guards against a slow response for county A landing after the user has

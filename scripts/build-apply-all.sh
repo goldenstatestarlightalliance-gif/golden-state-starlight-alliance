@@ -14,10 +14,14 @@ set -euo pipefail
 
 cd "$(dirname "$0")/.."
 
+# 0005 sits before the seed because it adds columns and a table; the seed does
+# not populate them, but keeping schema changes together ahead of data keeps the
+# ordering obvious. 0004 is absent on purpose — see the note above.
 FILES=(
   supabase/migrations/0001_schema.sql
   supabase/migrations/0002_rls.sql
   supabase/migrations/0003_functions.sql
+  supabase/migrations/0005_slides_and_documents.sql
   supabase/seed.sql
 )
 

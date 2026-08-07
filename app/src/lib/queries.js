@@ -81,10 +81,14 @@ export const useCounty = (slug) =>
         .from('counties')
         .select(`
           id, fips, name, slug, status, region, priority, priority_reason,
-          rationale, hook, confidence,
+          rationale, hook, confidence, slides_url,
           cities ( id, name, slug, status, is_priority, place_fips ),
-          county_org_participation ( active, organizations ( id, name, slug, website, email, kind ) ),
-          ordinances ( id, title, summary, date_passed, date_effective, legal_text_url, city_id )
+          county_org_participation (
+            active,
+            organizations ( id, name, slug, website, email, kind, logo_url )
+          ),
+          ordinances ( id, title, summary, date_passed, date_effective, legal_text_url, city_id ),
+          county_documents ( id, kind, label, url, sort_order )
         `)
         .eq('slug', slug)
         .single(),

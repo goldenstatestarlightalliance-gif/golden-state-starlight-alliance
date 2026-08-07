@@ -8,6 +8,8 @@ import { STAGES, stageColor, stageLabel, stageIndex } from '../lib/pipeline';
 import OrgList from '../components/OrgList';
 import Legend from '../components/Legend';
 import AutoFit from '../components/AutoFit';
+import SlidesEmbed from '../components/SlidesEmbed';
+import DocumentLinks from '../components/DocumentLinks';
 
 export default function CountyPage() {
   const { slug } = useParams();
@@ -141,9 +143,15 @@ export default function CountyPage() {
           ) : (
             <p className="muted">No cities tracked yet for this county.</p>
           )}
+
+          <h2>Outreach presentation</h2>
+          <SlidesEmbed url={county.slides_url} countyName={county.name} />
         </section>
 
         <aside>
+          <h2>Documents</h2>
+          <DocumentLinks documents={county.county_documents} />
+
           <h2>Ordinances</h2>
           {ordinances.length ? (
             ordinances.map((o) => (
@@ -163,7 +171,7 @@ export default function CountyPage() {
           )}
 
           <h2>Credited organizations</h2>
-          <OrgList orgs={orgs} />
+          <OrgList orgs={orgs} withLogos />
 
           <h2>Timeline</h2>
           {timeline?.length ? (

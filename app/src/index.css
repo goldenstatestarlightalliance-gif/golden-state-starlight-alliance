@@ -407,19 +407,11 @@ button:hover { background: #1e2a5a; }
   border: 0;
 }
 
-.slides-actions {
-  display: flex;
-  align-items: center;
-  gap: .85rem;
-  flex-wrap: wrap;
-  margin-top: .8rem;
-}
-.slides-note { font-size: .82rem; max-width: 44ch; }
-.slides-note code {
-  background: #f1f5f9;
-  padding: .05rem .3rem;
-  border-radius: 4px;
-  font-size: .95em;
+.map-caption {
+  font-size: .82rem;
+  padding: .6rem .85rem;
+  border-top: 1px solid var(--line);
+  margin: 0;
 }
 
 /* ---------- document links ---------- */

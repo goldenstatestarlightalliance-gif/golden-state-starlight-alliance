@@ -16,6 +16,7 @@ export default function CountyPage() {
   const { data: county, error, loading } = useCounty(slug);
   const { data: timeline } = useCountyTimeline(county?.id);
   const [places, setPlaces] = useState(null);
+  const [outline, setOutline] = useState(null);
 
   // Only this county's cities are fetched — the boundary build splits places
   // into one file per county so a page never downloads all 483.
@@ -26,6 +27,25 @@ export default function CountyPage() {
       .then((r) => (r.ok ? r.json() : null))
       .then(setPlaces)
       .catch(() => setPlaces(null));
+  }, [county?.fips]);
+
+  // The county's own boundary, drawn underneath the cities.
+  //
+  // Without it, a rural county reads as broken: Lassen has exactly one
+  // incorporated city (Susanville), whose limits are non-contiguous, so the
+  // map showed a handful of disconnected fragments floating in white space
+  // with nothing to locate them against. 13 counties have one city or none.
+  useEffect(() => {
+    if (!county?.fips) return;
+    setOutline(null);
+    fetch(`${import.meta.env.BASE_URL}geo/ca-counties.geojson`)
+      .then((r) => (r.ok ? r.json() : null))
+      .then((fc) => {
+        if (!fc) return;
+        const match = fc.features.find((f) => f.properties.COUNTY === county.fips);
+        if (match) setOutline({ type: 'FeatureCollection', features: [match] });
+      })
+      .catch(() => setOutline(null));
   }, [county?.fips]);
 
   // Match Census place features to our city rows by name. place_fips is the
@@ -83,31 +103,54 @@ export default function CountyPage() {
       <div className="county-grid">
         <section>
           <h2>Cities</h2>
-          {places ? (
+          {/* Frame on the county, not the cities. Fitting to the cities zoomed
+              a one-city county in until its fragments filled the screen. */}
+          {outline ? (
             <div className="map-wrap">
               <MapContainer
                 style={{ height: '45vh', width: '100%', background: '#ffffff' }}
-                bounds={boundsOf(places)}
+                bounds={boundsOf(outline)}
                 scrollWheelZoom={false}
                 attributionControl={false}
                 zoomSnap={0}
                 zoomDelta={0.5}
               >
-                <AutoFit bounds={boundsOf(places)} />
+                <AutoFit bounds={boundsOf(outline)} />
+
+                {/* Drawn first so it sits beneath the cities. */}
                 <GeoJSON
-                  key={`${county.fips}-${cities.length}`}
-                  data={places}
-                  style={cityStyle}
-                  onEachFeature={onEachCity}
+                  key={`outline-${county.fips}`}
+                  data={outline}
+                  interactive={false}
+                  style={{
+                    fillColor: '#f8fafc',
+                    fillOpacity: 1,
+                    color: '#94a3b8',
+                    weight: 1.5,
+                  }}
                 />
+
+                {places && (
+                  <GeoJSON
+                    key={`places-${county.fips}-${cities.length}`}
+                    data={places}
+                    style={cityStyle}
+                    onEachFeature={onEachCity}
+                  />
+                )}
               </MapContainer>
+
+              {!places && (
+                // Alpine, Mariposa and Trinity have no incorporated cities at
+                // all. Saying so beats an unexplained empty county shape.
+                <p className="map-caption muted">
+                  {county.name} County has no incorporated cities — lighting
+                  policy here goes through the county Board of Supervisors.
+                </p>
+              )}
             </div>
           ) : (
-            <p className="muted">
-              {/* Alpine, Mariposa and Trinity genuinely have no incorporated
-                  cities, so an empty sub-map here is correct, not a bug. */}
-              No incorporated cities in this county.
-            </p>
+            <p className="muted">Loading map…</p>
           )}
 
           <Legend />

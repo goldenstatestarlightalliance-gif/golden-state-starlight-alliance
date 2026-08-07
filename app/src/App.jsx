@@ -1,4 +1,5 @@
 import { Link, NavLink, Outlet } from 'react-router-dom';
+import { useAuth } from './lib/auth';
 
 const TABS = [
   { to: '/', label: 'Home', end: true },
@@ -7,6 +8,8 @@ const TABS = [
 ];
 
 export default function App() {
+  const { session, profile, loading } = useAuth();
+
   return (
     <>
       <header className="topbar">
@@ -31,6 +34,17 @@ export default function App() {
               {t.label}
             </NavLink>
           ))}
+
+          {/* Held back until the session is known, so the nav does not flash
+              "Sign in" at someone who is already signed in. */}
+          {!loading && (
+            <NavLink
+              to={session ? '/account' : '/signin'}
+              className={({ isActive }) => (isActive ? 'tab tab-active' : 'tab')}
+            >
+              {session ? (profile?.display_name || 'Account') : 'Sign in'}
+            </NavLink>
+          )}
         </nav>
       </header>
 

@@ -25,6 +25,8 @@ function describeError(e) {
 // Small shared shape so every page renders loading/error the same way.
 function useQuery(runner, deps = []) {
   const [state, setState] = useState({ data: null, error: null, loading: true });
+  // Bumping this re-runs the effect, so a component can refetch after writing.
+  const [nonce, setNonce] = useState(0);
 
   useEffect(() => {
     let cancelled = false;
@@ -53,9 +55,13 @@ function useQuery(runner, deps = []) {
     // already navigated to county B.
     return () => { cancelled = true; };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, deps);
+  }, [...deps, nonce]);
 
-  return state;
+  // Awaitable, so a save button can wait for fresh data before clearing itself.
+  const reload = () =>
+    new Promise((resolve) => { setNonce((n) => n + 1); setTimeout(resolve, 0); });
+
+  return { ...state, reload };
 }
 
 // Every county plus the orgs credited on it. One round trip — PostgREST

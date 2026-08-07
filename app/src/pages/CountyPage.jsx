@@ -10,10 +10,13 @@ import Legend from '../components/Legend';
 import AutoFit from '../components/AutoFit';
 import SlidesEmbed from '../components/SlidesEmbed';
 import DocumentLinks from '../components/DocumentLinks';
+import CountyEditor from '../components/CountyEditor';
+import { useCanEditCounty } from '../lib/auth';
 
 export default function CountyPage() {
   const { slug } = useParams();
-  const { data: county, error, loading } = useCounty(slug);
+  const { data: county, error, loading, reload } = useCounty(slug);
+  const canEdit = useCanEditCounty(county);
   const { data: timeline } = useCountyTimeline(county?.id);
   const [places, setPlaces] = useState(null);
   const [outline, setOutline] = useState(null);
@@ -192,6 +195,8 @@ export default function CountyPage() {
 
           <h2>Outreach presentation</h2>
           <SlidesEmbed url={county.slides_url} countyName={county.name} />
+
+          {canEdit && <CountyEditor county={county} onSaved={reload} />}
         </section>
 
         <aside>

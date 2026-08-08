@@ -462,6 +462,21 @@ h3 { font-size: 1rem; }
    "Not Started" reads as genuinely blank. */
 .leaflet-container { background: #fff !important; }
 
+/* Map shapes are interactive, so clicking one focuses it and the browser draws
+   its default focus ring — a RECTANGLE around the path's bounding box. On a
+   county or city outline that reads as a stray box floating over the map with
+   no relationship to anything.
+   Replaced with an indicator that follows the actual shape: a heavy dark
+   stroke. Accessibility is preserved (arguably improved — it traces the
+   boundary being selected), and the phantom rectangle is gone. */
+.leaflet-container path:focus { outline: none; }
+
+.leaflet-container path.leaflet-interactive:focus-visible {
+  outline: none;
+  stroke: #111827;
+  stroke-width: 3;
+}
+
 .map-side h2 { margin-top: 0; }
 
 .legend { list-style: none; margin: 0 0 1rem; padding: 0; }

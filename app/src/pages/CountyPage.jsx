@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { MapContainer, GeoJSON } from 'react-leaflet';
+import { MapContainer, GeoJSON, CircleMarker, Tooltip } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 
 import { useCounty, useCountyTimeline, activeOrgs } from '../lib/queries';
@@ -59,6 +59,64 @@ export default function CountyPage() {
     return m;
   }, [county]);
 
+  // Cities too small to see at county zoom also get a dot.
+  //
+  // Framing can only do so much: Bishop is a real town but it occupies about
+  // 0.2% of Inyo County, and Susanville is similar in Lassen. Zooming in far
+  // enough to see them throws away the county context that makes the map
+  // legible. A marker sized in screen pixels stays visible at any zoom, so
+  // rural counties stop looking like empty shapes.
+  const smallCityMarkers = useMemo(() => {
+    if (!places?.features?.length || !outline) return [];
+
+    // Only sparse counties. This is about rescuing maps that read as EMPTY —
+    // a county with one small town in a lot of open land. A dense county is
+    // already legible: Los Angeles has 88 cities packed together, and an
+    // area-share rule marked 82 of them "small" purely because LA's bounding
+    // box is enormous (it reaches out to the Channel Islands). Dots there
+    // would bury the map they were meant to clarify.
+    const SPARSE_COUNTY_MAX = 3;
+    if (places.features.length > SPARSE_COUNTY_MAX) return [];
+
+    const area = (bbox) => (bbox[1][0] - bbox[0][0]) * (bbox[1][1] - bbox[0][1]);
+    const countyArea = area(boundsOf(outline));
+    if (!countyArea) return [];
+
+    return places.features
+      .map((f) => {
+        const b = boundsOf({ features: [f] });
+        return {
+          name: f.properties.BASENAME,
+          share: area(b) / countyArea,
+          center: [(b[0][0] + b[1][0]) / 2, (b[0][1] + b[1][1]) / 2],
+        };
+      })
+      // Below ~1% of the county, a polygon is a few pixels at best.
+      .filter((c) => c.share < 0.01);
+  }, [places, outline]);
+
+  // Shape the map frame to the county rather than forcing every county into a
+  // fixed-width box.
+  //
+  // A 45vh-tall frame is roughly 1.5:1, which suits a wide county like San
+  // Diego and wastes two-thirds of the width on a tall one — Los Angeles filled
+  // 94% of the height but only 34% of the width, and the rest was blank. No
+  // amount of zooming fixes that; the frame itself is the wrong shape.
+  const frameAspect = useMemo(() => {
+    if (!outline) return 1.5;
+    const [[s, w], [n, e]] = framingBounds(outline, places);
+
+    // Longitude degrees shrink toward the poles, so compare like with like
+    // before taking a ratio — otherwise every county looks too wide.
+    const midLat = (((s + n) / 2) * Math.PI) / 180;
+    const x = (e - w) * Math.cos(midLat);
+    const y = n - s;
+    if (!y) return 1.5;
+
+    // Clamped so an extreme county cannot produce a letterbox or a tower.
+    return Math.min(2.0, Math.max(0.85, x / y));
+  }, [outline, places]);
+
   if (loading) return <div className="page"><p className="muted">Loading…</p></div>;
   if (error) return <div className="page"><p className="error">Could not load this county: {error}</p></div>;
   if (!county) return <div className="page"><p className="error">County not found.</p></div>;
@@ -111,14 +169,21 @@ export default function CountyPage() {
           {outline ? (
             <div className="map-wrap">
               <MapContainer
-                style={{ height: '45vh', width: '100%', background: '#ffffff' }}
-                bounds={boundsOf(outline)}
+                style={{
+                  width: '100%',
+                  aspectRatio: frameAspect,
+                  // Ceiling so a tall county cannot push the rest of the page
+                  // off-screen; below it, the frame matches the county's shape.
+                  maxHeight: '68vh',
+                  background: '#ffffff',
+                }}
+                bounds={framingBounds(outline, places)}
                 scrollWheelZoom={false}
                 attributionControl={false}
                 zoomSnap={0}
                 zoomDelta={0.5}
               >
-                <AutoFit bounds={boundsOf(outline)} />
+                <AutoFit bounds={framingBounds(outline, places)} />
 
                 {/* Drawn first so it sits beneath the cities. */}
                 <GeoJSON
@@ -141,6 +206,28 @@ export default function CountyPage() {
                     onEachFeature={onEachCity}
                   />
                 )}
+
+                {smallCityMarkers.map((c) => {
+                  const city = cityByName.get(c.name?.toLowerCase());
+                  const status = city?.status ?? 'not_started';
+                  return (
+                    <CircleMarker
+                      key={`dot-${c.name}`}
+                      center={c.center}
+                      radius={5}
+                      pathOptions={{
+                        fillColor: stageColor(status),
+                        fillOpacity: 1,
+                        color: '#334155',
+                        weight: 1.5,
+                      }}
+                    >
+                      <Tooltip sticky>
+                        {c.name} — {stageLabel(status)}
+                      </Tooltip>
+                    </CircleMarker>
+                  );
+                })}
               </MapContainer>
 
               {!places && (
@@ -306,6 +393,62 @@ export default function CountyPage() {
       </div>
     </div>
   );
+}
+
+/**
+ * Frame the city sub-map so cities are legible without losing county context.
+ *
+ * Neither extreme works on its own:
+ *  - Fit the whole county and big counties become unreadable. San Diego's
+ *    cities sit in the western quarter, so the rest renders as empty desert
+ *    and the cities shrink to specks.
+ *  - Fit the cities and small counties break — that was the original Lassen
+ *    bug, where one city's fragments filled the screen with no sense of place.
+ *
+ * So frame the cities with padding, but never tighter than a minimum share of
+ * the county, and never beyond the county's own box.
+ */
+function framingBounds(outline, places) {
+  const county = boundsOf(outline);
+  if (!places?.features?.length) return county;
+
+  const [[countyS, countyW], [countyN, countyE]] = county;
+  const [[s, w], [n, e]] = boundsOf(places);
+
+  const countyH = countyN - countyS;
+  const countyWidth = countyE - countyW;
+
+  const MIN_SHARE = 0.45; // always show at least this much of the county
+  const PAD = 0.35;       // breathing room around the cities themselves
+
+  const height = Math.min(
+    Math.max((n - s) * (1 + PAD * 2), countyH * MIN_SHARE),
+    countyH
+  );
+  const width = Math.min(
+    Math.max((e - w) * (1 + PAD * 2), countyWidth * MIN_SHARE),
+    countyWidth
+  );
+
+  const midLat = (n + s) / 2;
+  const midLng = (e + w) / 2;
+
+  let south = midLat - height / 2;
+  let north = midLat + height / 2;
+  let west = midLng - width / 2;
+  let east = midLng + width / 2;
+
+  // Slide (rather than clip) back inside the county, so the window keeps its
+  // size when the cities hug one edge — which is the usual case.
+  if (south < countyS) { north += countyS - south; south = countyS; }
+  if (north > countyN) { south -= north - countyN; north = countyN; }
+  if (west < countyW) { east += countyW - west; west = countyW; }
+  if (east > countyE) { west -= east - countyE; east = countyE; }
+
+  return [
+    [Math.max(south, countyS), Math.max(west, countyW)],
+    [Math.min(north, countyN), Math.min(east, countyE)],
+  ];
 }
 
 // Bounding box of a FeatureCollection, as Leaflet [[s,w],[n,e]].

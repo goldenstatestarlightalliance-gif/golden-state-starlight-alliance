@@ -200,6 +200,64 @@ export default function CountyPage() {
         </section>
 
         <aside>
+          {/* The county government's own ordinance. Separated from the city
+              list because in California it covers only unincorporated land —
+              conflating the two would overstate coverage. */}
+          {stageIndex(county.status) >= stageIndex('passed') && (
+            <section className="county-ordinance">
+              <h2>County ordinance</h2>
+              <p>
+                <span className="pill" style={{ background: stageColor(county.status) }}>
+                  {stageLabel(county.status)}
+                </span>
+                <span className="muted"> — unincorporated areas only</span>
+              </p>
+              {county.ordinance_title && <h3>{county.ordinance_title}</h3>}
+              {county.ordinance_date_passed && (
+                <p className="muted">Passed {county.ordinance_date_passed}</p>
+              )}
+              {county.ordinance_summary && <p>{county.ordinance_summary}</p>}
+              {county.ordinance_url && (
+                <a href={county.ordinance_url} target="_blank" rel="noreferrer noopener">
+                  Read the county ordinance →
+                </a>
+              )}
+              <p className="muted footnote">
+                A California county ordinance applies only outside city limits.
+                The cities listed here each need their own.
+              </p>
+            </section>
+          )}
+
+          {county.dark_sky_places?.length > 0 && (
+            <>
+              <h2>Certified dark sky places</h2>
+              <ul className="darksky-list">
+                {county.dark_sky_places.map((p) => (
+                  <li key={p.id}>
+                    <span className="darksky-dot" aria-hidden="true">✦</span>
+                    <span>
+                      {p.source_url ? (
+                        <a href={p.source_url} target="_blank" rel="noreferrer noopener">
+                          {p.name}
+                        </a>
+                      ) : p.name}
+                      <br />
+                      <span className="muted">
+                        {p.designation}
+                        {p.designated_year ? ` · ${p.designated_year}` : ''}
+                      </span>
+                    </span>
+                  </li>
+                ))}
+              </ul>
+              <p className="muted footnote">
+                These are unincorporated communities and parks, so they are not
+                counted in the city figures above.
+              </p>
+            </>
+          )}
+
           <h2>Documents</h2>
           <DocumentLinks documents={county.county_documents} />
 

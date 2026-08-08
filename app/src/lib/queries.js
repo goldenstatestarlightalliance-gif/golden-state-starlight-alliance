@@ -71,10 +71,14 @@ export const useCounties = () =>
     supabase
       .from('counties')
       // City statuses come along because the map colours counties by what
-      // fraction of their cities have an ordinance, not by county status.
+      // fraction of their cities have an ordinance. `status` and the ordinance
+      // columns are the COUNTY government's own action, which in California
+      // covers only unincorporated land — tracked and shown separately.
       .select(`
         id, fips, name, slug, status, region, priority, hook,
+        ordinance_title, ordinance_summary, ordinance_date_passed, ordinance_url,
         cities ( id, status ),
+        dark_sky_places ( id, name, designation, designated_year, place_geoid, source_url ),
         county_org_participation (
           active,
           organizations ( id, name, slug, website, email, kind )
@@ -91,6 +95,8 @@ export const useCounty = (slug) =>
         .select(`
           id, fips, name, slug, status, region, priority, priority_reason,
           rationale, hook, confidence, slides_url,
+          ordinance_title, ordinance_summary, ordinance_date_passed, ordinance_url,
+          dark_sky_places ( id, name, designation, designated_year, place_geoid, source_url ),
           cities ( id, name, slug, status, is_priority, place_fips ),
           county_org_participation (
             active,

@@ -5,8 +5,13 @@ import 'leaflet/dist/leaflet.css';
 
 import { useCounties, NOT_CONFIGURED } from '../lib/queries';
 import { coverageFor, coverageColor, COVERAGE_BANDS } from '../lib/coverage';
+import { stageIndex, stageLabel } from '../lib/pipeline';
 import CoverageLegend from '../components/CoverageLegend';
 import AutoFit from '../components/AutoFit';
+import HatchDefs, { COUNTY_HATCH_ID } from '../components/HatchDefs';
+
+// A county government has "acted" once its own ordinance is on the books.
+const countyHasOrdinance = (c) => stageIndex(c?.status) >= stageIndex('passed');
 
 // Roughly the bounding box of California.
 const CA_BOUNDS = [[32.3, -124.6], [42.1, -113.9]];
@@ -21,6 +26,8 @@ export default function StateMap() {
   const [geo, setGeo] = useState(null);
   const [geoError, setGeoError] = useState(null);
   const [hovered, setHovered] = useState(null);
+  const [darkSkyGeo, setDarkSkyGeo] = useState(null);
+  const [showDarkSky, setShowDarkSky] = useState(true);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -31,7 +38,28 @@ export default function StateMap() {
       })
       .then(setGeo)
       .catch((e) => setGeoError(e.message));
+
+    // Certified dark sky communities. Small file (41 KB) and always loaded, so
+    // toggling the layer is instant rather than triggering a fetch each time.
+    fetch(`${import.meta.env.BASE_URL}geo/ca-darksky-places.geojson`)
+      .then((r) => (r.ok ? r.json() : null))
+      .then(setDarkSkyGeo)
+      .catch(() => setDarkSkyGeo(null));
   }, []);
+
+  // Counties whose own government has passed an ordinance — drawn as a hatch
+  // layer on top of the coverage colours.
+  const ordinanceGeo = useMemo(() => {
+    if (!geo || !counties) return null;
+    const acted = new Set(
+      counties.filter(countyHasOrdinance).map((c) => c.fips)
+    );
+    if (!acted.size) return null;
+    return {
+      type: 'FeatureCollection',
+      features: geo.features.filter((f) => acted.has(f.properties.COUNTY)),
+    };
+  }, [geo, counties]);
 
   // FIPS is the join key between the Census boundary features and our rows.
   const byFips = useMemo(() => {
@@ -129,12 +157,55 @@ export default function StateMap() {
               zoomDelta={0.5}
             >
               <AutoFit bounds={CA_BOUNDS} />
+              <HatchDefs />
+
               <GeoJSON
                 key={geoKey}
                 data={geo}
                 style={styleFor}
                 onEachFeature={onEachFeature}
               />
+
+              {/* County-ordinance hatch. Drawn over the coverage colours but
+                  non-interactive, so it annotates without stealing hover from
+                  the counties underneath — city coverage stays the primary
+                  reading of the map. */}
+              {ordinanceGeo && (
+                <GeoJSON
+                  key={`ord-${ordinanceGeo.features.length}`}
+                  data={ordinanceGeo}
+                  interactive={false}
+                  style={{
+                    fillColor: `url(#${COUNTY_HATCH_ID})`,
+                    fillOpacity: 1,
+                    color: '#1e293b',
+                    weight: 1.5,
+                    opacity: 0.55,
+                  }}
+                />
+              )}
+
+              {/* Certified dark sky communities — unincorporated, so they can
+                  never appear in the city layer. */}
+              {showDarkSky && darkSkyGeo && (
+                <GeoJSON
+                  key="darksky"
+                  data={darkSkyGeo}
+                  style={{
+                    fillColor: '#7c3aed',
+                    fillOpacity: 0.55,
+                    color: '#4c1d95',
+                    weight: 1.5,
+                  }}
+                  onEachFeature={(feature, layer) => {
+                    const p = feature.properties;
+                    layer.bindTooltip(
+                      `${p.BASENAME} — ${p.designation} (${p.designated_year})`,
+                      { sticky: true }
+                    );
+                  }}
+                />
+              )}
             </MapContainer>
           )}
 
@@ -170,9 +241,26 @@ export default function StateMap() {
                       />
                     </div>
                     <p className="hover-pct muted">
-                      {hoveredCoverage.percent.toFixed(0)}% covered
+                      {hoveredCoverage.percent.toFixed(0)}% of cities covered
                     </p>
                   </>
+                )}
+
+                {/* The county's own ordinance, kept visually distinct from the
+                    city figure above so the two are never read as one number. */}
+                {hoveredCounty && countyHasOrdinance(hoveredCounty) && (
+                  <p className="county-ord-flag">
+                    <span className="swatch-hatch inline-hatch" />
+                    County ordinance: <strong>{stageLabel(hoveredCounty.status)}</strong>
+                    <span className="muted"> — unincorporated areas</span>
+                  </p>
+                )}
+
+                {hoveredCounty?.dark_sky_places?.length > 0 && (
+                  <p className="darksky-flag">
+                    ✦ {hoveredCounty.dark_sky_places.length} certified dark sky place
+                    {hoveredCounty.dark_sky_places.length > 1 ? 's' : ''}
+                  </p>
                 )}
 
                 <Link className="popup-link" to={`/county/${hovered.slug}`}>
@@ -189,6 +277,37 @@ export default function StateMap() {
 
           <h2>Ordinance coverage</h2>
           {loading ? <p className="muted">Loading…</p> : <CoverageLegend counts={counts} />}
+
+          <h2>Other layers</h2>
+          <ul className="legend">
+            <li>
+              <span className="legend-swatch swatch-hatch" />
+              <span className="legend-label">County ordinance passed</span>
+              <span className="legend-count">
+                {counties ? counties.filter(countyHasOrdinance).length : '—'}
+              </span>
+            </li>
+          </ul>
+          <p className="legend-note muted">
+            A California county ordinance covers only the <strong>unincorporated</strong>{' '}
+            area — it does not apply inside that county’s cities, so it is shown
+            as hatching over the city-coverage colour rather than replacing it.
+          </p>
+
+          <label className="layer-toggle">
+            <input
+              type="checkbox"
+              checked={showDarkSky}
+              onChange={(e) => setShowDarkSky(e.target.checked)}
+              disabled={!darkSkyGeo}
+            />
+            <span className="legend-swatch swatch-darksky" />
+            <span>Certified dark sky communities</span>
+          </label>
+          <p className="legend-note muted">
+            Borrego Springs and Julian — DarkSky International certified. Both
+            are unincorporated, so neither appears in the city figures.
+          </p>
         </aside>
       </div>
 

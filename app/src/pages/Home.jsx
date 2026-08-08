@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import { useCounties } from '../lib/queries';
 import { STAGES, stageIndex } from '../lib/pipeline';
+import { hasOrdinance } from '../lib/coverage';
 
 // Why this work matters. Kept here rather than in the database because it is
 // editorial copy, not tracked data.
@@ -30,11 +31,27 @@ const REASONS = [
 export default function Home() {
   const { data: counties } = useCounties();
 
-  // Any county past "not started" counts as underway.
-  const started = (counties ?? []).filter((c) => stageIndex(c.status) > 0).length;
-  const passed = (counties ?? []).filter(
-    (c) => stageIndex(c.status) >= stageIndex('passed')
+  // Three distinct facts, deliberately not overlapping.
+  //
+  // An earlier version showed "counties underway" and "ordinances passed" as
+  // separate figures while computing both from county status alone — so they
+  // were the same set counted twice, and city ordinances went uncounted.
+  const all = counties ?? [];
+
+  // The coalition's actual goal (spec §1): an ordinance from at least one city
+  // OR county government in every county. A county qualifies either way.
+  const countiesWithAnyOrdinance = all.filter(
+    (c) =>
+      stageIndex(c.status) >= stageIndex('passed') ||
+      (c.cities ?? []).some(hasOrdinance)
   ).length;
+
+  // City ordinances statewide — the measure of how many people actually live
+  // under one, since a county ordinance covers only unincorporated land.
+  const citiesWithOrdinance = all.reduce(
+    (n, c) => n + (c.cities ?? []).filter(hasOrdinance).length,
+    0
+  );
 
   return (
     <div className="page">
@@ -70,12 +87,12 @@ export default function Home() {
         <div className="stat">
           {/* Falls back to an em dash rather than a misleading 0 when the
               database has not loaded — an unknown count is not zero. */}
-          <span className="stat-num">{counties ? started : '—'}</span>
-          <span className="stat-label">counties underway</span>
+          <span className="stat-num">{counties ? countiesWithAnyOrdinance : '—'}</span>
+          <span className="stat-label">counties with an ordinance</span>
         </div>
         <div className="stat">
-          <span className="stat-num">{counties ? passed : '—'}</span>
-          <span className="stat-label">ordinances passed</span>
+          <span className="stat-num">{counties ? citiesWithOrdinance : '—'}</span>
+          <span className="stat-label">cities with an ordinance</span>
         </div>
       </section>
 

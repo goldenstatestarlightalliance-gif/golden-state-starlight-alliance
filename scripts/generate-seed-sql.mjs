@@ -92,11 +92,29 @@ w();
 // NOTE: this is the 1-2 outreach target cities per county from the research,
 // NOT the full ~482 incorporated CA cities. The rest are loaded separately from
 // the Census Places file by scripts/fetch-boundaries.mjs.
-w('-- Priority outreach cities (from research; ~63 rows, not the full 482)');
+// The research JSON reuses the `cities` field to carry an explanatory NOTE for
+// counties that have no incorporated cities, e.g.
+//   "(no incorporated cities – county seat Markleeville is unincorporated)"
+// An earlier version of this script inserted those sentences as city names.
+// Any real city name starting with "(" does not exist, so this is precise.
+const isNote = (name) => name.trim().startsWith('(');
+
+// Two cities are known to the research by their common name and to the Census
+// by their official one. Without this they seed as duplicates alongside the
+// Census row, inflating the city count and double-counting the county.
+const CENSUS_NAME = {
+  'Angels Camp': 'Angels',
+  'Ventura': 'San Buenaventura (Ventura)',
+};
+
+w('-- Priority outreach cities (from research; not the full 483)');
 w('insert into cities (county_id, name, slug, is_priority) values');
 const cityRows = [];
+let skippedNotes = 0;
 for (const [countyName, c] of Object.entries(seed.counties_and_cities)) {
-  for (const city of c.cities ?? []) {
+  for (const raw of c.cities ?? []) {
+    if (isNote(raw)) { skippedNotes++; continue; }
+    const city = CENSUS_NAME[raw] ?? raw;
     cityRows.push(
       `  ((select id from counties where fips = ${q(FIPS[countyName])}), ` +
       `${q(city)}, ${q(slug(city))}, true)`
@@ -329,7 +347,7 @@ writeFileSync(join(root, 'supabase/patch-org-contacts.sql'), patch.join('\n'));
 
 console.log('Wrote supabase/seed.sql');
 console.log(`  counties:      ${countyRows.length}`);
-console.log(`  cities:        ${cityRows.length}  (priority targets only)`);
+console.log(`  cities:        ${cityRows.length}  (priority targets only; ${skippedNotes} explanatory notes skipped)`);
 console.log(`  outreach plans:${outreachRows.length}`);
 console.log(`  council:       ${councilRows.length}  (only 2 counties have named champions in the research)`);
 console.log(`  organizations: ${orgRows.length}  (${linked} with a website or email)`);

@@ -1176,7 +1176,7 @@ insert into counties (fips, name, slug, region, priority, priority_reason, ratio
   ('113', 'Yolo', 'yolo', 'centralvalley_n', 3, 'No sourced dark-sky record, but a real, specific indirect hook exists (observatory, national park/forest proximity, established sustainability program, etc.). Specific to this county: No specific sourced dark-sky/light-pollution civic action was found in research for this county. City selected as county seat / largest city for outreach capacity, or (for rural/scenic counties) for its dark, low-light-pollution setting.', 'No specific sourced dark-sky/light-pollution civic action was found in research for this county. City selected as county seat / largest city for outreach capacity, or (for rural/scenic counties) for its dark, low-light-pollution setting.', 'your community''s setting and local environmental values', 'LIKELY', 'city'),
   ('115', 'Yuba', 'yuba', 'centralvalley_n', 2, 'No sourced record or specific hook; moderate-size city/county with basic local-government capacity. Specific to this county: No specific sourced dark-sky/light-pollution civic action was found in research for this county. City selected as county seat / largest city for outreach capacity, or (for rural/scenic counties) for its dark, low-light-pollution setting.', 'No specific sourced dark-sky/light-pollution civic action was found in research for this county. City selected as county seat / largest city for outreach capacity, or (for rural/scenic counties) for its dark, low-light-pollution setting.', 'your community''s setting and local environmental values', 'LIKELY', 'city');
 
--- Priority outreach cities (from research; ~63 rows, not the full 482)
+-- Priority outreach cities (from research; not the full 483)
 insert into cities (county_id, name, slug, is_priority) values
   ((select id from counties where fips = '085'), 'Palo Alto', 'palo-alto', true),
   ((select id from counties where fips = '085'), 'Mountain View', 'mountain-view', true),
@@ -1186,7 +1186,6 @@ insert into cities (county_id, name, slug, is_priority) values
   ((select id from counties where fips = '107'), 'Visalia', 'visalia', true),
   ((select id from counties where fips = '019'), 'Fresno', 'fresno', true),
   ((select id from counties where fips = '027'), 'Bishop', 'bishop', true),
-  ((select id from counties where fips = '043'), '(no incorporated cities – county seat Mariposa is unincorporated)', 'no-incorporated-cities-county-seat-mariposa-is-unincorporated', true),
   ((select id from counties where fips = '017'), 'South Lake Tahoe', 'south-lake-tahoe', true),
   ((select id from counties where fips = '061'), 'Roseville', 'roseville', true),
   ((select id from counties where fips = '057'), 'Truckee', 'truckee', true),
@@ -1201,10 +1200,9 @@ insert into cities (county_id, name, slug, is_priority) values
   ((select id from counties where fips = '053'), 'Monterey', 'monterey', true),
   ((select id from counties where fips = '067'), 'Sacramento', 'sacramento', true),
   ((select id from counties where fips = '001'), 'Berkeley', 'berkeley', true),
-  ((select id from counties where fips = '003'), '(no incorporated cities – county seat Markleeville is unincorporated)', 'no-incorporated-cities-county-seat-markleeville-is-unincorporated', true),
   ((select id from counties where fips = '005'), 'Jackson', 'jackson', true),
   ((select id from counties where fips = '007'), 'Chico', 'chico', true),
-  ((select id from counties where fips = '009'), 'Angels Camp', 'angels-camp', true),
+  ((select id from counties where fips = '009'), 'Angels', 'angels', true),
   ((select id from counties where fips = '011'), 'Colusa', 'colusa', true),
   ((select id from counties where fips = '013'), 'Walnut Creek', 'walnut-creek', true),
   ((select id from counties where fips = '015'), 'Crescent City', 'crescent-city', true),
@@ -1236,9 +1234,8 @@ insert into cities (county_id, name, slug, is_priority) values
   ((select id from counties where fips = '099'), 'Modesto', 'modesto', true),
   ((select id from counties where fips = '101'), 'Yuba City', 'yuba-city', true),
   ((select id from counties where fips = '103'), 'Red Bluff', 'red-bluff', true),
-  ((select id from counties where fips = '105'), '(no incorporated cities – county seat Weaverville is unincorporated)', 'no-incorporated-cities-county-seat-weaverville-is-unincorporated', true),
   ((select id from counties where fips = '109'), 'Sonora', 'sonora', true),
-  ((select id from counties where fips = '111'), 'Ventura', 'ventura', true),
+  ((select id from counties where fips = '111'), 'San Buenaventura (Ventura)', 'san-buenaventura-ventura', true),
   ((select id from counties where fips = '113'), 'Davis', 'davis', true),
   ((select id from counties where fips = '115'), 'Marysville', 'marysville', true)
 on conflict (county_id, name) do update set is_priority = true;

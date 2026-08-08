@@ -368,11 +368,54 @@ h3 { font-size: 1rem; }
 }
 
 .map-wrap {
+  position: relative;   /* positioning context for .hover-pop */
   border: 1px solid var(--line);
   border-radius: 12px;
   overflow: hidden;
   background: #fff;
 }
+
+/* Hover card. A sibling of the Leaflet container, not a Leaflet popup —
+   .leaflet-container sets overflow:hidden, which clipped popups near the top
+   edge of the map. Positioned in JS and clamped to the wrapper. */
+.hover-pop {
+  position: absolute;
+  z-index: 500;         /* above Leaflet panes (400) and controls (~800 is too high) */
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  box-shadow: 0 8px 24px rgba(15, 23, 42, .18);
+  padding: .75rem .85rem;
+  pointer-events: auto;
+}
+.hover-pop h3 { margin: 0 0 .45rem; font-size: .95rem; }
+
+/* Little arrow pointing back at the county. */
+.hover-pop::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  margin-left: -6px;
+  border: 6px solid transparent;
+}
+.hover-pop-bottom::after { top: 100%; border-top-color: #fff; }
+.hover-pop-top::after { bottom: 100%; border-bottom-color: #fff; }
+
+.hover-stat { margin: 0 0 .4rem; font-size: .84rem; }
+.hover-stat strong { font-size: 1rem; }
+
+.hover-bar {
+  height: 7px;
+  border-radius: 999px;
+  background: #f1f5f9;
+  overflow: hidden;
+  border: 1px solid rgba(0,0,0,.06);
+}
+.hover-bar span { display: block; height: 100%; }
+
+.hover-pct { margin: .3rem 0 0; font-size: .76rem; }
+
+.legend-note { font-size: .78rem; margin: .3rem 0 0; }
 
 /* Leaflet paints its own grey canvas by default; the tracker wants white so
    "Not Started" reads as genuinely blank. */

@@ -70,8 +70,11 @@ export const useCounties = () =>
   useQuery(() =>
     supabase
       .from('counties')
+      // City statuses come along because the map colours counties by what
+      // fraction of their cities have an ordinance, not by county status.
       .select(`
         id, fips, name, slug, status, region, priority, hook,
+        cities ( id, status ),
         county_org_participation (
           active,
           organizations ( id, name, slug, website, email, kind )

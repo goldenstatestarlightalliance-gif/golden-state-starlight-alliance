@@ -1,13 +1,12 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { MapContainer, GeoJSON, Popup } from 'react-leaflet';
+import { MapContainer, GeoJSON, useMap } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 
-import { useCounties, activeOrgs, NOT_CONFIGURED } from '../lib/queries';
-import { stageColor, stageLabel } from '../lib/pipeline';
-import Legend from '../components/Legend';
+import { useCounties, NOT_CONFIGURED } from '../lib/queries';
+import { coverageFor, coverageColor, COVERAGE_BANDS } from '../lib/coverage';
+import CoverageLegend from '../components/CoverageLegend';
 import AutoFit from '../components/AutoFit';
-import OrgList from '../components/OrgList';
 
 // Roughly the bounding box of California.
 const CA_BOUNDS = [[32.3, -124.6], [42.1, -113.9]];
@@ -17,47 +16,25 @@ const CA_BOUNDS = [[32.3, -124.6], [42.1, -113.9]];
 const slugify = (s) =>
   s.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
 
+// Publishes the Leaflet map instance upward so the hover card can convert a
+// county's lat/lng into pixel coordinates inside the map container.
+function MapRef({ onReady }) {
+  const map = useMap();
+  useEffect(() => { onReady(map); }, [map, onReady]);
+  return null;
+}
+
 export default function StateMap() {
   const { data: counties, error, loading } = useCounties();
   const [geo, setGeo] = useState(null);
   const [geoError, setGeoError] = useState(null);
   const [hovered, setHovered] = useState(null);
-  const [popupAt, setPopupAt] = useState(null);
+  const [map, setMap] = useState(null);
   const navigate = useNavigate();
 
-  // The popup has to survive the pointer leaving the county polygon, otherwise
-  // its links are unreachable — the moment you move toward them, mouseout
-  // fires and the popup closes. A short close delay bridges that gap, and
-  // hovering the popup itself cancels the pending close.
+  const wrapRef = useRef(null);
+  const cardRef = useRef(null);
   const closeTimer = useRef(null);
-
-  const cancelClose = () => {
-    if (closeTimer.current) {
-      clearTimeout(closeTimer.current);
-      closeTimer.current = null;
-    }
-  };
-
-  // Carries the Census feature's own name so the popup still works for a county
-  // that has no database row yet — before seeding, or if a row is ever missing.
-  // The map is the public face of the project; it should degrade to "we know
-  // this county exists and nothing has happened here", never to nothing at all.
-  const openPopup = (fips, name, latlng) => {
-    cancelClose();
-    setHovered({ fips, name });
-    setPopupAt(latlng);
-  };
-
-  const scheduleClose = () => {
-    cancelClose();
-    closeTimer.current = setTimeout(() => {
-      setHovered(null);
-      setPopupAt(null);
-    }, 300);
-  };
-
-  // Don't leave a timer running against an unmounted component.
-  useEffect(() => cancelClose, []);
 
   useEffect(() => {
     fetch(`${import.meta.env.BASE_URL}geo/ca-counties.geojson`)
@@ -69,6 +46,15 @@ export default function StateMap() {
       .catch((e) => setGeoError(e.message));
   }, []);
 
+  const cancelClose = () => {
+    if (closeTimer.current) { clearTimeout(closeTimer.current); closeTimer.current = null; }
+  };
+  const scheduleClose = () => {
+    cancelClose();
+    closeTimer.current = setTimeout(() => setHovered(null), 300);
+  };
+  useEffect(() => cancelClose, []);
+
   // FIPS is the join key between the Census boundary features and our rows.
   const byFips = useMemo(() => {
     const m = new Map();
@@ -78,88 +64,105 @@ export default function StateMap() {
 
   const counts = useMemo(() => {
     const out = {};
-    for (const c of counties ?? []) out[c.status] = (out[c.status] ?? 0) + 1;
+    for (const c of counties ?? []) {
+      const { band } = coverageFor(c);
+      out[band.key] = (out[band.key] ?? 0) + 1;
+    }
     return out;
   }, [counties]);
 
   const styleFor = (feature) => {
     const county = byFips.get(feature.properties.COUNTY);
-    const status = county?.status ?? 'not_started';
+    const { percent } = coverageFor(county);
+    const color = coverageColor(percent);
     return {
-      // Counties render neutral until a status says otherwise — colour is
-      // applied by progress, never baked into the base map.
-      fillColor: stageColor(status),
+      fillColor: color,
       fillOpacity: 1,
-      // Border colour adapts to the fill. A white border on the near-white
-      // "Not Started" fill is invisible, which is the state the whole map
-      // starts in — so unstarted counties get a grey outline, and coloured
-      // ones keep white, which reads as a cleaner separator against saturated
-      // fills.
-      color: status === 'not_started' ? '#cbd5e1' : '#ffffff',
+      // A white border vanishes against the near-white "none yet" fill, which
+      // is the state most of the map starts in.
+      color: color === COVERAGE_BANDS[0].color ? '#cbd5e1' : '#ffffff',
       weight: 1,
     };
   };
 
-  // Bind handlers per feature. Keyboard support matters here: this map is the
-  // primary navigation for the whole public site, so it cannot be mouse-only.
   const onEachFeature = (feature, layer) => {
     const fips = feature.properties.COUNTY;
     const county = byFips.get(fips);
+    const target = () => county?.slug ?? slugify(feature.properties.BASENAME);
 
     layer.on({
       mouseover: (e) => {
         e.target.setStyle({ weight: 2.5, color: '#111827' });
         e.target.bringToFront();
-        openPopup(fips, feature.properties.BASENAME, e.target.getBounds().getCenter());
+        cancelClose();
+        setHovered({
+          fips,
+          name: county?.name ?? feature.properties.BASENAME,
+          slug: target(),
+          center: e.target.getBounds().getCenter(),
+        });
       },
       mouseout: (e) => {
         // Recompute rather than hardcoding a colour back: the resting border
-        // depends on the county's status, so a fixed value would leave every
-        // hovered county with the wrong outline for the rest of the session.
+        // depends on coverage.
         e.target.setStyle(styleFor(feature));
-        // Delayed, so the pointer can travel from the county into the popup
-        // without it vanishing en route.
         scheduleClose();
       },
-      click: () => county && navigate(`/county/${county.slug}`),
+      click: () => navigate(`/county/${target()}`),
       keydown: (e) => {
-        if (e.originalEvent.key === 'Enter' && county) navigate(`/county/${county.slug}`);
+        if (e.originalEvent.key === 'Enter') navigate(`/county/${target()}`);
       },
     });
-
-    // No bindTooltip here: a Leaflet tooltip cannot hold a link, and showing
-    // one alongside the popup would just duplicate the same text. The popup
-    // below carries the name, status, orgs and the through-link.
   };
 
   // Leaflet caches the style closure per layer, so the GeoJSON layer has to be
-  // remounted when county statuses arrive. The key does that.
+  // remounted when county data arrives.
   const geoKey = counties ? `loaded-${counties.length}` : 'pending';
 
-  // Prefer the database row; fall back to the boundary feature so the popup
-  // never blanks out just because a county has not been seeded.
-  const row = hovered ? byFips.get(hovered.fips) : null;
-  const hoveredCounty = hovered
-    ? {
-        name: row?.name ?? hovered.name,
-        status: row?.status ?? 'not_started',
-        slug: row?.slug ?? slugify(hovered.name),
-        orgs: row ? activeOrgs(row) : [],
-      }
-    : null;
+  const hoveredCounty = hovered ? byFips.get(hovered.fips) : null;
+  const hoveredCoverage = coverageFor(hoveredCounty);
+
+  // Position the hover card in the map wrapper's pixel space, clamped so it
+  // can never spill outside.
+  //
+  // This replaces a Leaflet <Popup>. Leaflet renders popups INSIDE
+  // .leaflet-container, which sets overflow:hidden — so a popup near the top
+  // edge was cut off, and no amount of styling fixed it. Rendering the card as
+  // a sibling of the map, positioned by hand, removes the clipping surface
+  // entirely instead of fighting it.
+  const cardPos = useMemo(() => {
+    if (!hovered || !map || !wrapRef.current) return null;
+
+    const wrap = wrapRef.current.getBoundingClientRect();
+    const pt = map.latLngToContainerPoint(hovered.center);
+
+    const CARD_W = 240;
+    const CARD_H = cardRef.current?.offsetHeight ?? 150;
+    const GAP = 14;
+    const PAD = 8;
+
+    // Prefer above the county; flip below when there is not room.
+    let top = pt.y - CARD_H - GAP;
+    let arrow = 'bottom';
+    if (top < PAD) { top = pt.y + GAP; arrow = 'top'; }
+
+    let left = pt.x - CARD_W / 2;
+    left = Math.max(PAD, Math.min(left, wrap.width - CARD_W - PAD));
+    top = Math.max(PAD, Math.min(top, wrap.height - CARD_H - PAD));
+
+    return { left, top, width: CARD_W, arrow };
+  }, [hovered, map]);
 
   return (
     <div className="page">
       <header className="page-head">
         <h1>California Dark Sky Policy Tracker</h1>
         <p className="lede">
-          Tracking outdoor lighting ordinances across all 58 California counties.
-          Hover a county for detail, or select it to open its full page.
+          Counties are shaded by how many of their cities have passed a dark sky
+          ordinance. Hover a county for detail, or select it to open its page.
         </p>
       </header>
 
-      {/* A missing .env is an expected setup state, not a failure — the map is
-          still fully usable as geography, so it reads as a notice, not an error. */}
       {error === NOT_CONFIGURED && <p className="notice">{error}</p>}
       {error && error !== NOT_CONFIGURED && (
         <p className="error">Could not load county data: {error}</p>
@@ -167,7 +170,7 @@ export default function StateMap() {
       {geoError && <p className="error">{geoError}</p>}
 
       <div className="map-layout">
-        <div className="map-wrap">
+        <div className="map-wrap" ref={wrapRef}>
           {!geo && !geoError && <p className="muted">Loading map…</p>}
           {geo && (
             <MapContainer
@@ -175,97 +178,64 @@ export default function StateMap() {
               style={{ height: '70vh', width: '100%', background: '#ffffff' }}
               scrollWheelZoom={false}
               attributionControl={false}
-              /* Leaflet snaps to whole zoom levels by default, so fitBounds
-                 rounds *down* and California ends up filling under half the
-                 available height. Fractional zoom lets it fill the frame. */
               zoomSnap={0}
               zoomDelta={0.5}
             >
+              <MapRef onReady={setMap} />
               <AutoFit bounds={CA_BOUNDS} />
-              {/* No basemap tiles on purpose: the tracker is about the
-                  choropleth, and a tile layer would fight the status colours
-                  and add an external dependency to the flagship page. */}
               <GeoJSON
                 key={geoKey}
                 data={geo}
                 style={styleFor}
                 onEachFeature={onEachFeature}
               />
-
-              {hoveredCounty && popupAt && (
-                <Popup
-                  position={popupAt}
-                  closeButton={false}
-                  autoPan={false}
-                  className="county-popup"
-                >
-                  {/* Handlers go on the content, not on <Popup eventHandlers>:
-                      that binds Leaflet *layer* events (add/remove/open/close),
-                      which never fire for a pointer entering the popup box. The
-                      popup would close out from under the links. */}
-                  <div
-                    onMouseEnter={cancelClose}
-                    onMouseLeave={scheduleClose}
-                  >
-                    <h3>{hoveredCounty.name} County</h3>
-
-                    <p className="popup-status">
-                      <span
-                        className="pill"
-                        style={{ background: stageColor(hoveredCounty.status) }}
-                      >
-                        {stageLabel(hoveredCounty.status)}
-                      </span>
-                    </p>
-
-                    <h4>Participating organizations</h4>
-                    <OrgList orgs={hoveredCounty.orgs} empty="None yet." />
-
-                    <Link className="popup-link" to={`/county/${hoveredCounty.slug}`}>
-                      Open {hoveredCounty.name} County →
-                    </Link>
-                  </div>
-                </Popup>
-              )}
             </MapContainer>
+          )}
+
+          {hovered && cardPos && (
+            <div
+              ref={cardRef}
+              className={`hover-pop hover-pop-${cardPos.arrow}`}
+              style={{ left: cardPos.left, top: cardPos.top, width: cardPos.width }}
+              onMouseEnter={cancelClose}
+              onMouseLeave={scheduleClose}
+            >
+              <h3>{hovered.name} County</h3>
+
+              {hoveredCoverage.totalCities === 0 ? (
+                <p className="hover-stat muted">No incorporated cities</p>
+              ) : (
+                <>
+                  <p className="hover-stat">
+                    <strong>
+                      {hoveredCoverage.withOrdinance}/{hoveredCoverage.totalCities}
+                    </strong>{' '}
+                    cities with an ordinance
+                  </p>
+                  <div className="hover-bar">
+                    <span
+                      style={{
+                        width: `${hoveredCoverage.percent}%`,
+                        background: hoveredCoverage.band.color,
+                      }}
+                    />
+                  </div>
+                  <p className="hover-pct muted">
+                    {hoveredCoverage.percent.toFixed(0)}% covered
+                  </p>
+                </>
+              )}
+
+              <Link className="popup-link" to={`/county/${hovered.slug}`}>
+                Open {hovered.name} County →
+              </Link>
+            </div>
           )}
         </div>
 
         <aside className="map-side">
-          <h2>Progress</h2>
-          {loading ? (
-            <p className="muted">Loading…</p>
-          ) : (
-            <Legend counts={counts} />
-          )}
-
-          <div className="hover-card">
-            {hoveredCounty ? (
-              <>
-                <h3>{hoveredCounty.name} County</h3>
-                <p>
-                  <span
-                    className="pill"
-                    style={{ background: stageColor(hoveredCounty.status) }}
-                  >
-                    {stageLabel(hoveredCounty.status)}
-                  </span>
-                </p>
-                <h4>Participating organizations</h4>
-                <ul className="org-list">
-                  {hoveredCounty.orgs.slice(0, 5).map((o) => (
-                    <li key={o.id}>{o.name}</li>
-                  ))}
-                  {!hoveredCounty.orgs.length && <li className="muted">None yet</li>}
-                </ul>
-                <button onClick={() => navigate(`/county/${hoveredCounty.slug}`)}>
-                  Open {hoveredCounty.name} County →
-                </button>
-              </>
-            ) : (
-              <p className="muted">Hover a county to see its status and partners.</p>
-            )}
-          </div>
+          <h2>Ordinance coverage</h2>
+          {loading ? <p className="muted">Loading…</p> : <CoverageLegend counts={counts} />}
         </aside>
       </div>
 

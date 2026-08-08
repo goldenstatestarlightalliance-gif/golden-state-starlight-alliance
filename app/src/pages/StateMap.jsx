@@ -1,6 +1,6 @@
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { MapContainer, GeoJSON, useMap } from 'react-leaflet';
+import { MapContainer, GeoJSON } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 
 import { useCounties, NOT_CONFIGURED } from '../lib/queries';
@@ -16,25 +16,12 @@ const CA_BOUNDS = [[32.3, -124.6], [42.1, -113.9]];
 const slugify = (s) =>
   s.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
 
-// Publishes the Leaflet map instance upward so the hover card can convert a
-// county's lat/lng into pixel coordinates inside the map container.
-function MapRef({ onReady }) {
-  const map = useMap();
-  useEffect(() => { onReady(map); }, [map, onReady]);
-  return null;
-}
-
 export default function StateMap() {
   const { data: counties, error, loading } = useCounties();
   const [geo, setGeo] = useState(null);
   const [geoError, setGeoError] = useState(null);
   const [hovered, setHovered] = useState(null);
-  const [map, setMap] = useState(null);
   const navigate = useNavigate();
-
-  const wrapRef = useRef(null);
-  const cardRef = useRef(null);
-  const closeTimer = useRef(null);
 
   useEffect(() => {
     fetch(`${import.meta.env.BASE_URL}geo/ca-counties.geojson`)
@@ -45,15 +32,6 @@ export default function StateMap() {
       .then(setGeo)
       .catch((e) => setGeoError(e.message));
   }, []);
-
-  const cancelClose = () => {
-    if (closeTimer.current) { clearTimeout(closeTimer.current); closeTimer.current = null; }
-  };
-  const scheduleClose = () => {
-    cancelClose();
-    closeTimer.current = setTimeout(() => setHovered(null), 300);
-  };
-  useEffect(() => cancelClose, []);
 
   // FIPS is the join key between the Census boundary features and our rows.
   const byFips = useMemo(() => {
@@ -94,19 +72,19 @@ export default function StateMap() {
       mouseover: (e) => {
         e.target.setStyle({ weight: 2.5, color: '#111827' });
         e.target.bringToFront();
-        cancelClose();
         setHovered({
           fips,
           name: county?.name ?? feature.properties.BASENAME,
           slug: target(),
-          center: e.target.getBounds().getCenter(),
         });
       },
       mouseout: (e) => {
         // Recompute rather than hardcoding a colour back: the resting border
         // depends on coverage.
         e.target.setStyle(styleFor(feature));
-        scheduleClose();
+        // Deliberately does NOT clear `hovered`. The panel keeps showing the
+        // last county you looked at, so its link stays reachable — clearing it
+        // would blank the panel the moment you moved toward the link.
       },
       click: () => navigate(`/county/${target()}`),
       keydown: (e) => {
@@ -121,37 +99,6 @@ export default function StateMap() {
 
   const hoveredCounty = hovered ? byFips.get(hovered.fips) : null;
   const hoveredCoverage = coverageFor(hoveredCounty);
-
-  // Position the hover card in the map wrapper's pixel space, clamped so it
-  // can never spill outside.
-  //
-  // This replaces a Leaflet <Popup>. Leaflet renders popups INSIDE
-  // .leaflet-container, which sets overflow:hidden — so a popup near the top
-  // edge was cut off, and no amount of styling fixed it. Rendering the card as
-  // a sibling of the map, positioned by hand, removes the clipping surface
-  // entirely instead of fighting it.
-  const cardPos = useMemo(() => {
-    if (!hovered || !map || !wrapRef.current) return null;
-
-    const wrap = wrapRef.current.getBoundingClientRect();
-    const pt = map.latLngToContainerPoint(hovered.center);
-
-    const CARD_W = 240;
-    const CARD_H = cardRef.current?.offsetHeight ?? 150;
-    const GAP = 14;
-    const PAD = 8;
-
-    // Prefer above the county; flip below when there is not room.
-    let top = pt.y - CARD_H - GAP;
-    let arrow = 'bottom';
-    if (top < PAD) { top = pt.y + GAP; arrow = 'top'; }
-
-    let left = pt.x - CARD_W / 2;
-    left = Math.max(PAD, Math.min(left, wrap.width - CARD_W - PAD));
-    top = Math.max(PAD, Math.min(top, wrap.height - CARD_H - PAD));
-
-    return { left, top, width: CARD_W, arrow };
-  }, [hovered, map]);
 
   return (
     <div className="page">
@@ -170,7 +117,7 @@ export default function StateMap() {
       {geoError && <p className="error">{geoError}</p>}
 
       <div className="map-layout">
-        <div className="map-wrap" ref={wrapRef}>
+        <div className="map-wrap">
           {!geo && !geoError && <p className="muted">Loading map…</p>}
           {geo && (
             <MapContainer
@@ -181,7 +128,6 @@ export default function StateMap() {
               zoomSnap={0}
               zoomDelta={0.5}
             >
-              <MapRef onReady={setMap} />
               <AutoFit bounds={CA_BOUNDS} />
               <GeoJSON
                 key={geoKey}
@@ -192,48 +138,55 @@ export default function StateMap() {
             </MapContainer>
           )}
 
-          {hovered && cardPos && (
-            <div
-              ref={cardRef}
-              className={`hover-pop hover-pop-${cardPos.arrow}`}
-              style={{ left: cardPos.left, top: cardPos.top, width: cardPos.width }}
-              onMouseEnter={cancelClose}
-              onMouseLeave={scheduleClose}
-            >
-              <h3>{hovered.name} County</h3>
-
-              {hoveredCoverage.totalCities === 0 ? (
-                <p className="hover-stat muted">No incorporated cities</p>
-              ) : (
-                <>
-                  <p className="hover-stat">
-                    <strong>
-                      {hoveredCoverage.withOrdinance}/{hoveredCoverage.totalCities}
-                    </strong>{' '}
-                    cities with an ordinance
-                  </p>
-                  <div className="hover-bar">
-                    <span
-                      style={{
-                        width: `${hoveredCoverage.percent}%`,
-                        background: hoveredCoverage.band.color,
-                      }}
-                    />
-                  </div>
-                  <p className="hover-pct muted">
-                    {hoveredCoverage.percent.toFixed(0)}% covered
-                  </p>
-                </>
-              )}
-
-              <Link className="popup-link" to={`/county/${hovered.slug}`}>
-                Open {hovered.name} County →
-              </Link>
-            </div>
-          )}
         </div>
 
         <aside className="map-side">
+          {/* Detail panel lives beside the map, never over it. An overlay card
+              sat between the cursor and whatever county was behind it, so
+              moving north out of Santa Clara hit the card instead of the next
+              county. Off to the side, the map is never obstructed — and there
+              is nothing left to clip at the edges either. */}
+          <div className="detail-card">
+            {hovered ? (
+              <>
+                <h3>{hovered.name} County</h3>
+
+                {hoveredCoverage.totalCities === 0 ? (
+                  <p className="hover-stat muted">No incorporated cities</p>
+                ) : (
+                  <>
+                    <p className="hover-stat">
+                      <strong>
+                        {hoveredCoverage.withOrdinance}/{hoveredCoverage.totalCities}
+                      </strong>{' '}
+                      cities with an ordinance
+                    </p>
+                    <div className="hover-bar">
+                      <span
+                        style={{
+                          width: `${hoveredCoverage.percent}%`,
+                          background: hoveredCoverage.band.color,
+                        }}
+                      />
+                    </div>
+                    <p className="hover-pct muted">
+                      {hoveredCoverage.percent.toFixed(0)}% covered
+                    </p>
+                  </>
+                )}
+
+                <Link className="popup-link" to={`/county/${hovered.slug}`}>
+                  Open {hovered.name} County →
+                </Link>
+              </>
+            ) : (
+              <p className="muted detail-empty">
+                Hover a county to see its ordinance coverage. Select one to open
+                its page.
+              </p>
+            )}
+          </div>
+
           <h2>Ordinance coverage</h2>
           {loading ? <p className="muted">Loading…</p> : <CoverageLegend counts={counts} />}
         </aside>

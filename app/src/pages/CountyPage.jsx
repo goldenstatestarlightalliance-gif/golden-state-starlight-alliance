@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { MapContainer, GeoJSON, CircleMarker, Tooltip } from 'react-leaflet';
+import { MapContainer, GeoJSON, CircleMarker, Tooltip, Pane } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 
 import { useCounty, useCountyTimeline, activeOrgs } from '../lib/queries';
@@ -21,8 +21,13 @@ export default function CountyPage() {
   const { data: timeline } = useCountyTimeline(county?.id);
   const [places, setPlaces] = useState(null);
   const [outline, setOutline] = useState(null);
-  const [subdivisions, setSubdivisions] = useState(null);
   const [darkSkyGeo, setDarkSkyGeo] = useState(null);
+
+  // Optional layers. The ordinance hatch is off by default: it covers
+  // everything outside the cities, which is legally right but visually loud
+  // enough to bury the city outlines that are the point of the map.
+  const [showOrdinance, setShowOrdinance] = useState(false);
+  const [showDarkSky, setShowDarkSky] = useState(true);
 
   // Only this county's cities are fetched — the boundary build splits places
   // into one file per county so a page never downloads all 483.
@@ -35,19 +40,12 @@ export default function CountyPage() {
       .catch(() => setPlaces(null));
   }, [county?.fips]);
 
-  // Census county subdivisions — the named areas that tile the whole county
-  // with no gaps (Camp Pendleton, Ramona, Palomar-Julian…). Drawn as neutral
-  // background so the county reads as fully accounted for rather than mostly
-  // empty. They are statistical areas, not governments: they cannot pass an
-  // ordinance, so they never carry a status colour.
-  useEffect(() => {
-    if (!county?.fips) return;
-    setSubdivisions(null);
-    fetch(`${import.meta.env.BASE_URL}geo/subdivisions/${county.fips}.geojson`)
-      .then((r) => (r.ok ? r.json() : null))
-      .then(setSubdivisions)
-      .catch(() => setSubdivisions(null));
-  }, [county?.fips]);
+  // Census county subdivisions were drawn here as a background layer. Removed:
+  // several of them share a city's name while covering far more ground, so
+  // their outlines read as a competing, wrong set of city boundaries. The map
+  // now shows only real municipal boundaries — the Census incorporated places —
+  // over the county outline. app/public/geo/subdivisions/ is left in place in
+  // case the data is wanted for something else.
 
   // Certified dark sky places for THIS county. The file holds every certified
   // place in California, so it is filtered by the GEOIDs recorded against this
@@ -236,112 +234,76 @@ export default function CountyPage() {
                 <AutoFit bounds={boundsOf(outline)} />
                 <HatchDefs />
 
-                {/* Drawn first so it sits beneath the cities. */}
+                {/* The county itself — a plain backdrop for the cities. */}
                 <GeoJSON
                   key={`outline-${county.fips}`}
                   data={outline}
                   interactive={false}
                   style={{
-                    // Sits under the subdivisions and shows only where they do
-                    // not reach — the offshore strip a TIGER county polygon
-                    // includes out to the state water limit. A slightly cooler
-                    // tone reads as water rather than as a gap in the data.
-                    fillColor: '#eef4f8',
+                    fillColor: '#eef2f7',
                     fillOpacity: 1,
                     color: '#64748b',
                     weight: 1.8,
                   }}
                 />
 
-                {/* Named subregions filling the county — and they ARE
-                    interactive. Cities cover a small share of most counties,
-                    so with these inert the majority of the map answered
-                    nothing on hover. Cities sit on top and win any overlap,
-                    so this only catches the space between them. */}
-                {subdivisions && (
-                  <GeoJSON
-                    key={`subs-${county.fips}`}
-                    data={subdivisions}
-                    style={{
-                      // A shade darker than the cities drawn on top, so cities
-                      // read as figure against ground.
-                      fillColor: '#e2e8f0',
-                      fillOpacity: 1,
-                      // Borders deliberately near-invisible. At a comparable
-                      // weight to the city outlines these read as a SECOND set
-                      // of city borders — several subdivisions share a city's
-                      // name while covering far more ground ("San Diego",
-                      // "Oceanside-Escondido"), so the pair looked like an old
-                      // and a new boundary for the same place. Subdivisions are
-                      // background; only cities get a real outline.
-                      color: '#d8e0e9',
-                      weight: 0.5,
-                    }}
-                    onEachFeature={(feature, layer) => {
-                      const name = feature.properties.BASENAME;
-                      layer.bindTooltip(
-                        `${name} — unincorporated${
-                          countyHasOrdinance
-                            ? '<br>Covered by the county ordinance'
-                            : '<br>No county ordinance yet'
-                        }`,
-                        { sticky: true }
-                      );
-                      layer.on({
-                        mouseover: (e) => e.target.setStyle({ fillColor: '#cbd5e1', weight: 1.5, color: '#64748b' }),
-                        mouseout: (e) => e.target.setStyle({ fillColor: '#e2e8f0', weight: 0.5, color: '#d8e0e9' }),
-                      });
-                    }}
-                  />
+                {/* Explicit panes fix the stacking order.
+                    Leaflet appends each new layer on top of the pane, so
+                    switching the ordinance layer on AFTER the cities had
+                    rendered put the hatch over them and buried their
+                    boundaries. Panes give each layer a fixed z-index, so the
+                    order no longer depends on what was toggled when. */}
+                {countyHasOrdinance && showOrdinance && (
+                  <Pane name="ordinance" style={{ zIndex: 410 }}>
+                    <GeoJSON
+                      key={`ord-${county.fips}`}
+                      data={outline}
+                      interactive={false}
+                      style={{
+                        fillColor: `url(#${COUNTY_HATCH_ID})`,
+                        fillOpacity: 1,
+                        stroke: false,
+                      }}
+                    />
+                  </Pane>
                 )}
 
-                {/* County ordinance, drawn with the same hatch as the
-                    statewide map. It goes over the subdivisions and NOT over
-                    the cities, which is exactly what the ordinance covers in
-                    law: the unincorporated area only. */}
-                {countyHasOrdinance && subdivisions && (
-                  <GeoJSON
-                    key={`ord-${county.fips}`}
-                    data={subdivisions}
-                    interactive={false}
-                    style={{
-                      fillColor: `url(#${COUNTY_HATCH_ID})`,
-                      fillOpacity: 1,
-                      stroke: false,
-                    }}
-                  />
+                {/* Certified dark sky places, when switched on. Unincorporated,
+                    so they never overlap a city. */}
+                {darkSkyGeo && showDarkSky && (
+                  <Pane name="darksky" style={{ zIndex: 420 }}>
+                    <GeoJSON
+                      key={`ds-${county.fips}`}
+                      data={darkSkyGeo}
+                      style={{
+                        fillColor: '#7c3aed',
+                        fillOpacity: 0.55,
+                        color: '#4c1d95',
+                        weight: 1.5,
+                      }}
+                      onEachFeature={(feature, layer) => {
+                        const p = feature.properties;
+                        layer.bindTooltip(
+                          `${p.BASENAME} — ${p.designation} (${p.designated_year})`,
+                          { sticky: true }
+                        );
+                      }}
+                    />
+                  </Pane>
                 )}
 
+                {/* Cities in the highest pane, so their status colours and
+                    boundaries sit above every optional layer. They are what
+                    the map is for. */}
                 {places && (
-                  <GeoJSON
-                    key={`places-${county.fips}-${cities.length}`}
-                    data={places}
-                    style={cityStyle}
-                    onEachFeature={onEachCity}
-                  />
-                )}
-
-                {/* Certified dark sky places — unincorporated, so they are
-                    never cities and would otherwise appear nowhere on the map
-                    despite being the county's most notable wins. */}
-                {darkSkyGeo && (
-                  <GeoJSON
-                    key={`ds-${county.fips}`}
-                    data={darkSkyGeo}
-                    style={{
-                      fillColor: '#7c3aed',
-                      fillOpacity: 0.55,
-                      color: '#4c1d95',
-                      weight: 1.5,
-                    }}
-                    onEachFeature={(feature, layer) => {
-                      const p = feature.properties;
-                      layer.bindTooltip(
-                        `${p.BASENAME} — ${p.designation} (${p.designated_year})`,
-                        { sticky: true }
-                      );
-                    }}
-                  />
+                  <Pane name="cities" style={{ zIndex: 430 }}>
+                    <GeoJSON
+                      key={`places-${county.fips}-${cities.length}`}
+                      data={places}
+                      style={cityStyle}
+                      onEachFeature={onEachCity}
+                    />
+                  </Pane>
                 )}
 
                 {smallCityMarkers.map((c) => {
@@ -382,27 +344,34 @@ export default function CountyPage() {
 
           <Legend />
 
-          {/* The non-city layers need naming too, or the hatching and the
-              purple read as decoration. */}
+          {/* Optional layers, each with its own switch. Both sit over the
+              cities' territory in different ways, so being able to clear them
+              matters when reading city boundaries. */}
           {(countyHasOrdinance || darkSkyGeo) && (
-            <ul className="legend legend-extra">
+            <div className="legend-extra">
               {countyHasOrdinance && (
-                <li>
+                <label className="layer-toggle">
+                  <input
+                    type="checkbox"
+                    checked={showOrdinance}
+                    onChange={(e) => setShowOrdinance(e.target.checked)}
+                  />
                   <span className="legend-swatch swatch-hatch" />
-                  <span className="legend-label">
-                    County ordinance — unincorporated areas
-                  </span>
-                </li>
+                  <span>County ordinance coverage</span>
+                </label>
               )}
               {darkSkyGeo && (
-                <li>
+                <label className="layer-toggle">
+                  <input
+                    type="checkbox"
+                    checked={showDarkSky}
+                    onChange={(e) => setShowDarkSky(e.target.checked)}
+                  />
                   <span className="legend-swatch swatch-darksky" />
-                  <span className="legend-label">
-                    Certified dark sky place
-                  </span>
-                </li>
+                  <span>Certified dark sky places</span>
+                </label>
               )}
-            </ul>
+            </div>
           )}
 
           <h3>Progress by city</h3>

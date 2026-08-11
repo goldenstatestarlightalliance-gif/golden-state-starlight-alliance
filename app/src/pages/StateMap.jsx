@@ -28,6 +28,9 @@ export default function StateMap() {
   const [hovered, setHovered] = useState(null);
   const [darkSkyGeo, setDarkSkyGeo] = useState(null);
   const [showDarkSky, setShowDarkSky] = useState(true);
+  // Matches the county pages: the hatch is heavy enough to compete with the
+  // coverage colours underneath, so it is opt-in rather than always on.
+  const [showOrdinance, setShowOrdinance] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -170,7 +173,7 @@ export default function StateMap() {
                   non-interactive, so it annotates without stealing hover from
                   the counties underneath — city coverage stays the primary
                   reading of the map. */}
-              {ordinanceGeo && (
+              {showOrdinance && ordinanceGeo && (
                 <GeoJSON
                   key={`ord-${ordinanceGeo.features.length}`}
                   data={ordinanceGeo}
@@ -279,15 +282,24 @@ export default function StateMap() {
           {loading ? <p className="muted">Loading…</p> : <CoverageLegend counts={counts} />}
 
           <h2>Other layers</h2>
-          <ul className="legend">
-            <li>
-              <span className="legend-swatch swatch-hatch" />
-              <span className="legend-label">County ordinance passed</span>
-              <span className="legend-count">
-                {counties ? counties.filter(countyHasOrdinance).length : '—'}
-              </span>
-            </li>
-          </ul>
+
+          <label className="layer-toggle">
+            <input
+              type="checkbox"
+              checked={showOrdinance}
+              onChange={(e) => setShowOrdinance(e.target.checked)}
+              disabled={!ordinanceGeo}
+            />
+            <span className="legend-swatch swatch-hatch" />
+            <span>
+              County ordinance passed
+              {counties && (
+                <span className="legend-count">
+                  {' '}({counties.filter(countyHasOrdinance).length})
+                </span>
+              )}
+            </span>
+          </label>
           <p className="legend-note muted">
             A California county ordinance covers only the <strong>unincorporated</strong>{' '}
             area — it does not apply inside that county’s cities, so it is shown

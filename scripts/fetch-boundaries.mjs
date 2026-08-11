@@ -14,6 +14,27 @@
 import { writeFileSync, mkdirSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { dirname, join } from 'node:path';
+import intersect from '@turf/intersect';
+import turfArea from '@turf/area';
+import { featureCollection } from '@turf/helpers';
+
+// Bounding boxes touch? Cheap filter before an expensive polygon intersection.
+function bboxOf(geom) {
+  let W = 180, S = 90, E = -180, N = -90;
+  const walk = (c) => {
+    if (typeof c[0] === 'number') {
+      W = Math.min(W, c[0]); E = Math.max(E, c[0]);
+      S = Math.min(S, c[1]); N = Math.max(N, c[1]);
+    } else c.forEach(walk);
+  };
+  walk(geom.coordinates);
+  return { W, S, E, N };
+}
+
+function bboxOverlaps(a, b) {
+  const A = bboxOf(a), B = bboxOf(b);
+  return !(A.E < B.W || A.W > B.E || A.N < B.S || A.S > B.N);
+}
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..');
 const outDir = join(root, 'app/public/geo');
@@ -215,30 +236,49 @@ const sampleVertices = (geom, n = 40) => {
   return Array.from({ length: n }, (_, i) => all[Math.floor(i * step)]);
 };
 
+// Assign each place to the county holding the LARGEST SHARE OF ITS AREA.
+//
+// Vertex voting was tried first and is subtly wrong for places that hug a
+// county line: West Sacramento sits on the Sacramento River, the Yolo/
+// Sacramento boundary, and enough of its outline vertices fell on the
+// Sacramento side to win the vote — putting Yolo County's largest city in the
+// wrong county and inflating Sacramento's area by 2.3%. Vertices cluster where
+// a boundary is detailed, not where the land is; area does not have that bias.
 const byCounty = new Map();
 const unassigned = [];
+const straddlers = [];
+
 for (const place of places.features) {
-  // Centroid alone is wrong for places whose polygon spans open water: San
-  // Francisco's includes the Farallon Islands ~30mi offshore, which drags its
-  // centroid into the Pacific. A single fallback vertex is worse still — it can
-  // be one of the islands and land in a neighbouring county's water.
-  //
-  // So: vote. Sample vertices around the outline and take the county that
-  // contains the most of them. The mainland bulk of a place always outvotes an
-  // offshore appendage.
-  const votes = new Map();
-  for (const v of sampleVertices(place.geometry)) {
-    const county = counties.features.find((f) => contains(f.geometry, v));
-    if (county) {
-      const fips = county.properties.COUNTY;
-      votes.set(fips, (votes.get(fips) ?? 0) + 1);
+  let best = null;
+
+  for (const county of counties.features) {
+    // Cheap bbox reject before the expensive intersection.
+    if (!bboxOverlaps(place.geometry, county.geometry)) continue;
+    let overlap;
+    try {
+      overlap = intersect(featureCollection([place, county]));
+    } catch {
+      overlap = null;
     }
+    if (!overlap) continue;
+    const a = turfArea(overlap);
+    if (!best || a > best.area) best = { fips: county.properties.COUNTY, area: a };
   }
 
-  if (!votes.size) { unassigned.push(place.properties.BASENAME); continue; }
-  const [fips] = [...votes.entries()].sort((a, b) => b[1] - a[1])[0];
-  if (!byCounty.has(fips)) byCounty.set(fips, []);
-  byCounty.get(fips).push(place);
+  if (!best) { unassigned.push(place.properties.BASENAME); continue; }
+
+  const total = turfArea(place);
+  // Under 95% in one county means the city genuinely spans a county line.
+  // Worth reporting: it is assigned to the majority county, but a human should
+  // know it is not wholly there.
+  if (total && best.area / total < 0.95) {
+    straddlers.push(
+      `${place.properties.BASENAME} (${(100 * best.area / total).toFixed(0)}% in county ${best.fips})`
+    );
+  }
+
+  if (!byCounty.has(best.fips)) byCounty.set(best.fips, []);
+  byCounty.get(best.fips).push(place);
 }
 
 mkdirSync(join(outDir, 'places'), { recursive: true });
@@ -257,6 +297,10 @@ console.log(`  -> app/public/geo/places/*.geojson (${byCounty.size} files, ` +
   `largest ${(Math.max(...[...byCounty.values()].map(f => JSON.stringify(f).length)) / 1e3).toFixed(0)} KB)`);
 if (unassigned.length) {
   console.log(`  ! ${unassigned.length} place(s) unassigned: ${unassigned.join(', ')}`);
+}
+if (straddlers.length) {
+  console.log(`  cities spanning a county line (assigned to the majority county):`);
+  straddlers.forEach((s) => console.log(`    - ${s}`));
 }
 
 console.log(`\nDone. ${counties.features.length} counties, ${places.features.length} places.`);

@@ -113,8 +113,10 @@ export default function CountyPage() {
     const y = n - s;
     if (!y) return 1.5;
 
-    // Clamped so an extreme county cannot produce a letterbox or a tower.
-    return Math.min(2.0, Math.max(0.85, x / y));
+    // Clamped only against genuinely unusable extremes. A tighter clamp (0.85)
+    // forced San Diego's tall coastal strip of cities into a wide frame, and
+    // the extra width filled with empty desert.
+    return Math.min(2.2, Math.max(0.55, x / y));
   }, [outline, places]);
 
   if (loading) return <div className="page"><p className="muted">Loading…</p></div>;
@@ -170,11 +172,17 @@ export default function CountyPage() {
             <div className="map-wrap">
               <MapContainer
                 style={{
-                  width: '100%',
+                  // Width is capped by BOTH the column and the height ceiling.
+                  //
+                  // Using max-height alone silently broke the aspect ratio: a
+                  // tall frame got squashed to 68vh while keeping full width,
+                  // so Leaflet fitted the bounds into a box far wider than
+                  // asked for and padded the difference with empty land — which
+                  // is exactly the blank space this was meant to remove.
+                  // Deriving width from the height ceiling keeps the shape.
+                  width: `min(100%, calc(68vh * ${frameAspect}))`,
                   aspectRatio: frameAspect,
-                  // Ceiling so a tall county cannot push the rest of the page
-                  // off-screen; below it, the frame matches the county's shape.
-                  maxHeight: '68vh',
+                  margin: '0 auto',
                   background: '#ffffff',
                 }}
                 bounds={framingBounds(outline, places)}
@@ -418,8 +426,13 @@ function framingBounds(outline, places) {
   const countyH = countyN - countyS;
   const countyWidth = countyE - countyW;
 
-  const MIN_SHARE = 0.45; // always show at least this much of the county
-  const PAD = 0.35;       // breathing room around the cities themselves
+  // The cities are the subject; the county outline is context that may run off
+  // the edge. An earlier version demanded 45% of the county be visible, which
+  // for San Diego meant framing almost the whole county — its cities hug the
+  // coast while two-thirds of the county is empty desert, so everything
+  // interesting shrank to nothing.
+  const MIN_SHARE = 0.2; // floor, so a single tiny town cannot zoom to street level
+  const PAD = 0.18;      // breathing room around the cities themselves
 
   const height = Math.min(
     Math.max((n - s) * (1 + PAD * 2), countyH * MIN_SHARE),

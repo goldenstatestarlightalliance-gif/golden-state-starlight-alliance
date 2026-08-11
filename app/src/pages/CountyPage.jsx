@@ -11,6 +11,7 @@ import AutoFit from '../components/AutoFit';
 import SlidesEmbed from '../components/SlidesEmbed';
 import DocumentLinks from '../components/DocumentLinks';
 import CountyEditor from '../components/CountyEditor';
+import HatchDefs, { COUNTY_HATCH_ID } from '../components/HatchDefs';
 import { useCanEditCounty } from '../lib/auth';
 
 export default function CountyPage() {
@@ -21,6 +22,7 @@ export default function CountyPage() {
   const [places, setPlaces] = useState(null);
   const [outline, setOutline] = useState(null);
   const [subdivisions, setSubdivisions] = useState(null);
+  const [darkSkyGeo, setDarkSkyGeo] = useState(null);
 
   // Only this county's cities are fetched — the boundary build splits places
   // into one file per county so a page never downloads all 483.
@@ -46,6 +48,28 @@ export default function CountyPage() {
       .then(setSubdivisions)
       .catch(() => setSubdivisions(null));
   }, [county?.fips]);
+
+  // Certified dark sky places for THIS county. The file holds every certified
+  // place in California, so it is filtered by the GEOIDs recorded against this
+  // county in the database — that join is why place_geoid exists.
+  const dsGeoids = (county?.dark_sky_places ?? [])
+    .map((p) => p.place_geoid)
+    .filter(Boolean)
+    .join(',');
+
+  useEffect(() => {
+    if (!dsGeoids) { setDarkSkyGeo(null); return; }
+    const wanted = new Set(dsGeoids.split(','));
+
+    fetch(`${import.meta.env.BASE_URL}geo/ca-darksky-places.geojson`)
+      .then((r) => (r.ok ? r.json() : null))
+      .then((fc) => {
+        if (!fc) return setDarkSkyGeo(null);
+        const features = fc.features.filter((f) => wanted.has(f.properties.GEOID));
+        setDarkSkyGeo(features.length ? { type: 'FeatureCollection', features } : null);
+      })
+      .catch(() => setDarkSkyGeo(null));
+  }, [dsGeoids]);
 
   // The county's own boundary, drawn underneath the cities.
   //
@@ -210,6 +234,7 @@ export default function CountyPage() {
                 zoomDelta={0.5}
               >
                 <AutoFit bounds={boundsOf(outline)} />
+                <HatchDefs />
 
                 {/* Drawn first so it sits beneath the cities. */}
                 <GeoJSON
@@ -242,8 +267,15 @@ export default function CountyPage() {
                       // read as figure against ground.
                       fillColor: '#e2e8f0',
                       fillOpacity: 1,
-                      color: '#cbd5e1',
-                      weight: 0.8,
+                      // Borders deliberately near-invisible. At a comparable
+                      // weight to the city outlines these read as a SECOND set
+                      // of city borders — several subdivisions share a city's
+                      // name while covering far more ground ("San Diego",
+                      // "Oceanside-Escondido"), so the pair looked like an old
+                      // and a new boundary for the same place. Subdivisions are
+                      // background; only cities get a real outline.
+                      color: '#d8e0e9',
+                      weight: 0.5,
                     }}
                     onEachFeature={(feature, layer) => {
                       const name = feature.properties.BASENAME;
@@ -257,8 +289,25 @@ export default function CountyPage() {
                       );
                       layer.on({
                         mouseover: (e) => e.target.setStyle({ fillColor: '#cbd5e1', weight: 1.5, color: '#64748b' }),
-                        mouseout: (e) => e.target.setStyle({ fillColor: '#e2e8f0', weight: 0.8, color: '#cbd5e1' }),
+                        mouseout: (e) => e.target.setStyle({ fillColor: '#e2e8f0', weight: 0.5, color: '#d8e0e9' }),
                       });
+                    }}
+                  />
+                )}
+
+                {/* County ordinance, drawn with the same hatch as the
+                    statewide map. It goes over the subdivisions and NOT over
+                    the cities, which is exactly what the ordinance covers in
+                    law: the unincorporated area only. */}
+                {countyHasOrdinance && subdivisions && (
+                  <GeoJSON
+                    key={`ord-${county.fips}`}
+                    data={subdivisions}
+                    interactive={false}
+                    style={{
+                      fillColor: `url(#${COUNTY_HATCH_ID})`,
+                      fillOpacity: 1,
+                      stroke: false,
                     }}
                   />
                 )}
@@ -269,6 +318,29 @@ export default function CountyPage() {
                     data={places}
                     style={cityStyle}
                     onEachFeature={onEachCity}
+                  />
+                )}
+
+                {/* Certified dark sky places — unincorporated, so they are
+                    never cities and would otherwise appear nowhere on the map
+                    despite being the county's most notable wins. */}
+                {darkSkyGeo && (
+                  <GeoJSON
+                    key={`ds-${county.fips}`}
+                    data={darkSkyGeo}
+                    style={{
+                      fillColor: '#7c3aed',
+                      fillOpacity: 0.55,
+                      color: '#4c1d95',
+                      weight: 1.5,
+                    }}
+                    onEachFeature={(feature, layer) => {
+                      const p = feature.properties;
+                      layer.bindTooltip(
+                        `${p.BASENAME} — ${p.designation} (${p.designated_year})`,
+                        { sticky: true }
+                      );
+                    }}
                   />
                 )}
 
@@ -309,6 +381,29 @@ export default function CountyPage() {
           )}
 
           <Legend />
+
+          {/* The non-city layers need naming too, or the hatching and the
+              purple read as decoration. */}
+          {(countyHasOrdinance || darkSkyGeo) && (
+            <ul className="legend legend-extra">
+              {countyHasOrdinance && (
+                <li>
+                  <span className="legend-swatch swatch-hatch" />
+                  <span className="legend-label">
+                    County ordinance — unincorporated areas
+                  </span>
+                </li>
+              )}
+              {darkSkyGeo && (
+                <li>
+                  <span className="legend-swatch swatch-darksky" />
+                  <span className="legend-label">
+                    Certified dark sky place
+                  </span>
+                </li>
+              )}
+            </ul>
+          )}
 
           <h3>Progress by city</h3>
           {cities.length ? (

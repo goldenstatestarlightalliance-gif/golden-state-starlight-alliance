@@ -739,3 +739,12 @@ a.org-card:hover { border-color: var(--night); background: #f8fafc; }
 @media (max-width: 900px) {
   .map-layout, .county-grid { grid-template-columns: minmax(0, 1fr); }
 }
+
+/* Extra map layers on county pages (hatching, dark sky places), listed under
+   the pipeline legend rather than mixed into it — they are different kinds of
+   thing from a city's stage. */
+.legend-extra {
+  margin-top: .5rem;
+  padding-top: .5rem;
+  border-top: 1px solid var(--line);
+}

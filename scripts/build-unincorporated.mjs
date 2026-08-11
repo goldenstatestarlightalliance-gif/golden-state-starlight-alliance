@@ -60,6 +60,50 @@ const differenceOf = (subject, clip) => {
   }
 };
 
+// Subtracting cities from subdivisions leaves hairline slivers wherever the
+// two source layers disagree — they are separate Census products and their
+// shared edges are not bit-identical. In dense metro areas this shattered a
+// region into dozens of fragments: the "San Diego" region came out as 48
+// pieces, 19 of them under an ACRE, 8 acres between them.
+//
+// Real unincorporated communities are square miles, not acres. Anything below
+// this threshold is an artefact of the subtraction and is dropped.
+const MIN_PIECE_SQ_MI = 10 / 640; // 10 acres
+
+const R = 6371.0088;
+const toRad = (d) => (d * Math.PI) / 180;
+const SQKM_TO_SQMI = 0.386102;
+
+function ringAreaSqMi(ring) {
+  let s = 0;
+  for (let i = 0; i < ring.length - 1; i++) {
+    const x1 = toRad(ring[i][0]), y1 = toRad(ring[i][1]);
+    const x2 = toRad(ring[i + 1][0]), y2 = toRad(ring[i + 1][1]);
+    s += (x2 - x1) * (2 + Math.sin(y1) + Math.sin(y2));
+  }
+  return Math.abs((s * R * R) / 2) * SQKM_TO_SQMI;
+}
+
+let sliversDropped = 0;
+
+/** Drops sub-threshold polygons from a (Multi)Polygon. Returns null if none survive. */
+function dropSlivers(geom) {
+  if (!geom) return null;
+  const polys = geom.type === 'MultiPolygon' ? geom.coordinates : [geom.coordinates];
+
+  const kept = polys.filter((p) => {
+    if (!p?.length) return false;
+    const keep = ringAreaSqMi(p[0]) >= MIN_PIECE_SQ_MI;
+    if (!keep) sliversDropped++;
+    return keep;
+  });
+
+  if (!kept.length) return null;
+  return kept.length === 1
+    ? { type: 'Polygon', coordinates: kept[0] }
+    : { type: 'MultiPolygon', coordinates: kept };
+}
+
 let totalRegions = 0, totalBytes = 0, skipped = [], noCities = [];
 
 for (const county of counties.features) {
@@ -92,6 +136,10 @@ for (const county of counties.features) {
     // it has no unincorporated land left. San Francisco is the clean example.
     if (!geom) continue;
 
+    const cleaned = dropSlivers(geom.geometry ?? geom);
+    if (!cleaned) continue;
+    geom = { type: 'Feature', geometry: cleaned, properties: {} };
+
     geom.properties = {
       GEOID: sub.properties.GEOID,
       NAME: sub.properties.BASENAME,
@@ -115,6 +163,7 @@ console.log(`  regions:    ${totalRegions}`);
 console.log(`  total size: ${(totalBytes / 1e6).toFixed(2)} MB`);
 if (noCities.length) console.log(`  no incorporated cities: ${noCities.join(', ')}`);
 if (skipped.length) console.log(`  SKIPPED: ${skipped.join('; ')}`);
+console.log(`  slivers dropped: ${sliversDropped} (pieces under 10 acres)`);
 if (unionFailures || differenceFailures) {
   console.log(`  ! geometry failures — union ${unionFailures}, difference ${differenceFailures}`);
 }

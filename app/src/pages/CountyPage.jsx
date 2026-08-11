@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, useNavigate } from 'react-router-dom';
 import { MapContainer, GeoJSON, CircleMarker, Tooltip, Pane } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 
@@ -8,7 +8,6 @@ import { STAGES, stageColor, stageLabel, stageIndex } from '../lib/pipeline';
 import OrgList from '../components/OrgList';
 import Legend from '../components/Legend';
 import AutoFit from '../components/AutoFit';
-import SlidesEmbed from '../components/SlidesEmbed';
 import DocumentLinks from '../components/DocumentLinks';
 import CountyEditor from '../components/CountyEditor';
 import HatchDefs, { COUNTY_HATCH_ID } from '../components/HatchDefs';
@@ -16,6 +15,7 @@ import { useCanEditCounty } from '../lib/auth';
 
 export default function CountyPage() {
   const { slug } = useParams();
+  const navigate = useNavigate();
   const { data: county, error, loading, reload } = useCounty(slug);
   const canEdit = useCanEditCounty(county);
   const { data: timeline } = useCountyTimeline(county?.id);
@@ -193,7 +193,25 @@ export default function CountyPage() {
   const onEachCity = (feature, layer) => {
     const name = feature.properties.BASENAME;
     const city = cityByName.get(name?.toLowerCase());
-    layer.bindTooltip(`${name} — ${stageLabel(city?.status ?? 'not_started')}`, { sticky: true });
+    layer.bindTooltip(
+      `${name} — ${stageLabel(city?.status ?? 'not_started')}` +
+        (city ? '<br><em>Select for details</em>' : ''),
+      { sticky: true }
+    );
+
+    // Click through to the city page, matching the statewide map's behaviour.
+    // Only for cities we hold a row for — a Census place with no database row
+    // has no page to open.
+    if (city) {
+      layer.on({
+        click: () => navigate(`/county/${county.slug}/${city.slug}`),
+        keydown: (e) => {
+          if (e.originalEvent.key === 'Enter') {
+            navigate(`/county/${county.slug}/${city.slug}`);
+          }
+        },
+      });
+    }
   };
 
   return (
@@ -475,8 +493,10 @@ export default function CountyPage() {
                 {cities.map((c) => (
                   <tr key={c.id}>
                     <td>
-                      {c.name}
+                      {/* Every city now has its own page. */}
+                      <Link to={`/county/${county.slug}/${c.slug}`}>{c.name}</Link>
                       {c.is_priority && <span className="star" title="Priority outreach target">★</span>}
+                      {c.slides_url && <span className="has-deck" title="Has an outreach deck">▶</span>}
                     </td>
                     <td>{stageLabel(c.status)}</td>
                     <td>
@@ -500,8 +520,8 @@ export default function CountyPage() {
             <p className="muted">No cities tracked yet for this county.</p>
           )}
 
-          <h2>Outreach presentation</h2>
-          <SlidesEmbed url={county.slides_url} countyName={county.name} />
+          {/* Slide decks moved to city pages — a deck is a pitch to a specific
+              council, so it belongs with the city being pitched. */}
 
           {canEdit && <CountyEditor county={county} onSaved={reload} />}
         </section>

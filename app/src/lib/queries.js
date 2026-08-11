@@ -94,10 +94,10 @@ export const useCounty = (slug) =>
         .from('counties')
         .select(`
           id, fips, name, slug, status, region, priority, priority_reason,
-          rationale, hook, confidence, slides_url,
+          rationale, hook, confidence,
           ordinance_title, ordinance_summary, ordinance_date_passed, ordinance_url,
           dark_sky_places ( id, name, designation, designated_year, place_geoid, source_url ),
-          cities ( id, name, slug, status, is_priority, place_fips ),
+          cities ( id, name, slug, status, is_priority, place_fips, slides_url, ordinance_notes ),
           county_org_participation (
             active,
             organizations ( id, name, slug, website, email, kind, logo_url )
@@ -108,6 +108,28 @@ export const useCounty = (slug) =>
         .eq('slug', slug)
         .single(),
     [slug]
+  );
+
+// One city, with everything its page needs. Scoped by county slug as well as
+// city slug because city slugs are only unique WITHIN a county — there is a
+// Lincoln in Placer and a Lincoln Village elsewhere, and several counties have
+// a city sharing their own name.
+export const useCity = (countySlug, citySlug) =>
+  useQuery(
+    () =>
+      supabase
+        .from('cities')
+        .select(`
+          id, name, slug, status, is_priority, place_fips, slides_url,
+          ordinance_notes, code_reviewed_at, code_review_source,
+          counties!inner ( id, name, slug, status, ordinance_title, ordinance_url ),
+          ordinances ( id, title, summary, date_passed, date_effective, legal_text_url ),
+          county_documents ( id, kind, label, url, sort_order )
+        `)
+        .eq('slug', citySlug)
+        .eq('counties.slug', countySlug)
+        .maybeSingle(),
+    [countySlug, citySlug]
   );
 
 // The public county timeline (spec §4). Only rows flagged public come back for

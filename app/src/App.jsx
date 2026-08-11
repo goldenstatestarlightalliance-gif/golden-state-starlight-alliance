@@ -4,6 +4,8 @@ import { useAuth } from './lib/auth';
 const TABS = [
   { to: '/', label: 'Home', end: true },
   { to: '/map', label: 'Progress Map' },
+  { to: '/guide', label: 'How It Works' },
+  { to: '/model-ordinance', label: 'Model Ordinance' },
   { to: '/contact', label: 'Contact Us' },
 ];
 

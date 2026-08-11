@@ -748,3 +748,210 @@ a.org-card:hover { border-color: var(--night); background: #f8fafc; }
   padding-top: .5rem;
   border-top: 1px solid var(--line);
 }
+
+/* ---------- city page ---------- */
+
+.city-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr);
+  gap: 2rem;
+  align-items: start;
+}
+
+.city-stage-flow { margin-bottom: 1.5rem; }
+.city-stage-flow .stage-pending { opacity: .45; }
+.city-stage-flow .stage-reached { border-color: var(--ink-soft); }
+
+.assessment {
+  border: 1px solid var(--line);
+  border-left: 3px solid var(--star);
+  border-radius: 10px;
+  padding: .9rem 1.1rem;
+  background: #fffbeb;
+  margin-top: 1rem;
+}
+.assessment h3 { margin-top: 0; font-size: .95rem; }
+.assessment p { margin: 0; font-size: .9rem; }
+
+.review-status {
+  font-size: .82rem;
+  margin-top: 1rem;
+  padding-top: .7rem;
+  border-top: 1px solid var(--line);
+}
+
+.has-deck { color: var(--ink-soft); margin-left: .35rem; font-size: .75rem; }
+
+/* ---------- guide + model ordinance ---------- */
+
+.guide-section {
+  margin-top: 2.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--line);
+}
+.guide-section:first-of-type { border-top: 0; }
+
+.callout {
+  border: 1px solid #bfdbfe;
+  background: #eff6ff;
+  border-radius: 10px;
+  padding: .9rem 1.1rem;
+  margin: 1.2rem 0;
+  font-size: .9rem;
+  color: #1e3a8a;
+}
+.callout-warn { border-color: #fde68a; background: #fffbeb; color: #78350f; }
+
+.guide-stages { list-style: none; margin: 1.2rem 0 0; padding: 0; }
+.guide-stages li {
+  display: flex;
+  gap: .85rem;
+  align-items: flex-start;
+  padding: .7rem 0;
+  border-bottom: 1px solid var(--line);
+}
+.guide-stages strong { font-size: .95rem; }
+.guide-stages p { margin: .15rem 0 0; font-size: .88rem; }
+.guide-stage-dot {
+  width: 20px; height: 20px;
+  border-radius: 50%;
+  border: 1px solid rgba(0,0,0,.15);
+  flex: none;
+  margin-top: .1rem;
+}
+
+.guide-bands { list-style: none; margin: 1rem 0 0; padding: 0; }
+.guide-bands li { display: flex; align-items: center; gap: .7rem; padding: .3rem 0; font-size: .9rem; }
+.guide-band-swatch {
+  width: 34px; height: 18px;
+  border-radius: 4px;
+  border: 1px solid rgba(0,0,0,.15);
+  flex: none;
+}
+
+.guide-split {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1.1rem;
+  margin: 1.2rem 0;
+}
+.guide-card {
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 1.1rem 1.2rem;
+}
+.guide-card h3 { margin-top: 0; }
+.guide-card p { font-size: .9rem; }
+.guide-card-alt { background: #fdf3d3; border-color: #e7d9a8; }
+.source-strong { color: #14532d; }
+.source-weak { color: #7c2d12; }
+
+.lever-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: 1rem;
+  margin-top: 1.2rem;
+}
+.lever {
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 1rem 1.1rem;
+}
+.lever h3 { margin: .3rem 0 .35rem; font-size: .98rem; }
+.lever p { margin: 0; font-size: .87rem; color: var(--ink-soft); }
+.lever-icon { font-size: 1.4rem; }
+.lever-model {
+  margin-top: .6rem !important;
+  padding-top: .5rem;
+  border-top: 1px solid var(--line);
+  font-size: .8rem !important;
+  font-weight: 600;
+}
+
+.redline-steps { list-style: none; margin: 1.2rem 0 0; padding: 0; counter-reset: r; }
+.redline-steps li {
+  display: flex;
+  gap: .9rem;
+  align-items: flex-start;
+  padding: .8rem 0;
+  border-bottom: 1px solid var(--line);
+}
+.redline-n {
+  flex: none;
+  width: 26px; height: 26px;
+  border-radius: 50%;
+  background: var(--night);
+  color: #fff;
+  display: flex; align-items: center; justify-content: center;
+  font-size: .8rem; font-weight: 700;
+}
+.redline-steps strong { font-size: .93rem; }
+.redline-steps p { margin: .2rem 0 0; font-size: .87rem; }
+
+.phase-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1rem;
+  margin-top: 1.2rem;
+}
+.phase {
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 1rem 1.1rem;
+}
+/* The phases with no meeting are the ones that get skipped — shaded so the
+   pattern is visible at a glance rather than stated in prose. */
+.phase-quiet { background: #fffbeb; border-color: #fde68a; }
+.phase-meeting { background: #fff; }
+.phase header { margin-bottom: .6rem; }
+.phase h3 { margin: .1rem 0; font-size: 1rem; }
+.phase-n {
+  font-size: .72rem;
+  text-transform: uppercase;
+  letter-spacing: .06em;
+  color: var(--ink-soft);
+  font-weight: 700;
+}
+.phase-tag { font-size: .74rem; color: var(--ink-soft); }
+.phase ol { margin: 0; padding-left: 1.1rem; }
+.phase li { font-size: .85rem; padding: .18rem 0; color: var(--ink-soft); }
+
+.guide-facts { margin-top: 1.2rem; }
+.guide-facts dt {
+  font-weight: 700;
+  font-size: .93rem;
+  margin-top: 1rem;
+}
+.guide-facts dd {
+  margin: .25rem 0 0;
+  font-size: .88rem;
+  color: var(--ink-soft);
+}
+
+.provision-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: .875rem;
+  margin-top: 1rem;
+}
+.provision-table th, .provision-table td {
+  text-align: left;
+  padding: .6rem .6rem;
+  border-bottom: 1px solid var(--line);
+  vertical-align: top;
+}
+.provision-table th { color: var(--ink-soft); font-weight: 600; }
+.provision-value { font-weight: 650; white-space: nowrap; }
+
+.status-list { list-style: none; margin: 1rem 0 0; padding: 0; }
+.status-list li {
+  padding: .6rem .9rem;
+  border-radius: 8px;
+  margin-bottom: .5rem;
+  font-size: .89rem;
+}
+.status-open { background: #fffbeb; border: 1px solid #fde68a; color: #78350f; }
+
+@media (max-width: 900px) {
+  .city-grid { grid-template-columns: minmax(0, 1fr); }
+}

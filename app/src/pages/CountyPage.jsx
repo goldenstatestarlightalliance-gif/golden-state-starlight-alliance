@@ -169,20 +169,26 @@ export default function CountyPage() {
           {/* Frame on the county, not the cities. Fitting to the cities zoomed
               a one-city county in until its fragments filled the screen. */}
           {outline ? (
-            <div className="map-wrap">
+            // The sizing lives on the bordered box, not the map inside it.
+            // With it on the map, the box stayed full column width while the
+            // map shrank to its aspect ratio — so the "empty space" was the
+            // container's own padding, not the map at all.
+            <div
+              className="map-wrap"
+              style={{
+                width: `min(100%, calc(68vh * ${frameAspect}))`,
+                margin: '0 auto',
+              }}
+            >
               <MapContainer
                 style={{
-                  // Width is capped by BOTH the column and the height ceiling.
-                  //
-                  // Using max-height alone silently broke the aspect ratio: a
-                  // tall frame got squashed to 68vh while keeping full width,
-                  // so Leaflet fitted the bounds into a box far wider than
-                  // asked for and padded the difference with empty land — which
-                  // is exactly the blank space this was meant to remove.
-                  // Deriving width from the height ceiling keeps the shape.
-                  width: `min(100%, calc(68vh * ${frameAspect}))`,
+                  // Fills the box, which is already the right shape and size.
+                  // aspectRatio (rather than height:100%) so the map has a
+                  // definite height before Leaflet measures it — a percentage
+                  // height inside an auto-height parent resolves to zero, which
+                  // is the 0x0 container problem AutoFit exists to catch.
+                  width: '100%',
                   aspectRatio: frameAspect,
-                  margin: '0 auto',
                   background: '#ffffff',
                 }}
                 bounds={framingBounds(outline, places)}

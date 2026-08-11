@@ -135,13 +135,17 @@ export default function CountyPage() {
   const cityStyle = (feature) => {
     const city = cityByName.get(feature.properties.BASENAME?.toLowerCase());
     const status = city?.status ?? 'not_started';
+    const started = status !== 'not_started';
     return {
-      fillColor: stageColor(status),
+      // Cities must read as distinct objects whatever their status. The
+      // pipeline's "Not Started" grey is near-white, and so is the subdivision
+      // background behind it, so an unstarted city vanished entirely — on Del
+      // Norte that hid Crescent City, the county's only city. White fill plus a
+      // dark outline makes cities read as islands on the county.
+      fillColor: started ? stageColor(status) : '#ffffff',
       fillOpacity: 1,
-      // Same reasoning as the statewide map: a white border disappears against
-      // the near-white "Not Started" fill.
-      color: status === 'not_started' ? '#cbd5e1' : '#ffffff',
-      weight: 1,
+      color: started ? '#ffffff' : '#475569',
+      weight: started ? 1 : 1.2,
     };
   };
 
@@ -210,10 +214,14 @@ export default function CountyPage() {
                   data={outline}
                   interactive={false}
                   style={{
-                    fillColor: '#f8fafc',
+                    // Sits under the subdivisions and shows only where they do
+                    // not reach — the offshore strip a TIGER county polygon
+                    // includes out to the state water limit. A slightly cooler
+                    // tone reads as water rather than as a gap in the data.
+                    fillColor: '#eef4f8',
                     fillOpacity: 1,
-                    color: '#94a3b8',
-                    weight: 1.5,
+                    color: '#64748b',
+                    weight: 1.8,
                   }}
                 />
 
@@ -225,7 +233,11 @@ export default function CountyPage() {
                     data={subdivisions}
                     interactive={false}
                     style={{
-                      fillColor: '#f1f5f9',
+                      // Deliberately a shade darker than the cities drawn on
+                      // top. Cities are the subject and need to read as
+                      // figure against ground; when both were near-white the
+                      // unstarted ones disappeared into the background.
+                      fillColor: '#e2e8f0',
                       fillOpacity: 1,
                       color: '#cbd5e1',
                       weight: 0.8,

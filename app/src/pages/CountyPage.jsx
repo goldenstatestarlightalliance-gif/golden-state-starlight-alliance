@@ -127,6 +127,9 @@ export default function CountyPage() {
   if (!county) return <div className="page"><p className="error">County not found.</p></div>;
 
   const orgs = activeOrgs(county);
+  // Whether the COUNTY government has its own ordinance — which in California
+  // covers exactly the unincorporated land the subdivisions represent.
+  const countyHasOrdinance = stageIndex(county.status) >= stageIndex('passed');
   const ordinances = county.ordinances ?? [];
   const cities = [...(county.cities ?? [])].sort(
     (a, b) => stageIndex(b.status) - stageIndex(a.status) || a.name.localeCompare(b.name)
@@ -225,22 +228,37 @@ export default function CountyPage() {
                   }}
                 />
 
-                {/* Named subregions filling the county. Non-interactive so
-                    they never intercept a hover meant for a city on top. */}
+                {/* Named subregions filling the county — and they ARE
+                    interactive. Cities cover a small share of most counties,
+                    so with these inert the majority of the map answered
+                    nothing on hover. Cities sit on top and win any overlap,
+                    so this only catches the space between them. */}
                 {subdivisions && (
                   <GeoJSON
                     key={`subs-${county.fips}`}
                     data={subdivisions}
-                    interactive={false}
                     style={{
-                      // Deliberately a shade darker than the cities drawn on
-                      // top. Cities are the subject and need to read as
-                      // figure against ground; when both were near-white the
-                      // unstarted ones disappeared into the background.
+                      // A shade darker than the cities drawn on top, so cities
+                      // read as figure against ground.
                       fillColor: '#e2e8f0',
                       fillOpacity: 1,
                       color: '#cbd5e1',
                       weight: 0.8,
+                    }}
+                    onEachFeature={(feature, layer) => {
+                      const name = feature.properties.BASENAME;
+                      layer.bindTooltip(
+                        `${name} — unincorporated${
+                          countyHasOrdinance
+                            ? '<br>Covered by the county ordinance'
+                            : '<br>No county ordinance yet'
+                        }`,
+                        { sticky: true }
+                      );
+                      layer.on({
+                        mouseover: (e) => e.target.setStyle({ fillColor: '#cbd5e1', weight: 1.5, color: '#64748b' }),
+                        mouseout: (e) => e.target.setStyle({ fillColor: '#e2e8f0', weight: 0.8, color: '#cbd5e1' }),
+                      });
                     }}
                   />
                 )}

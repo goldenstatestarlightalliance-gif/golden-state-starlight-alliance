@@ -1,0 +1,7 @@
+{
+  "devDependencies": {
+    "@turf/difference": "^7.4.0",
+    "@turf/helpers": "^7.4.0",
+    "@turf/union": "^7.4.0"
+  }
+}

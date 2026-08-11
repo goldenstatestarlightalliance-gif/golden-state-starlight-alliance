@@ -22,6 +22,7 @@ export default function CountyPage() {
   const [places, setPlaces] = useState(null);
   const [outline, setOutline] = useState(null);
   const [darkSkyGeo, setDarkSkyGeo] = useState(null);
+  const [unincorporated, setUnincorporated] = useState(null);
 
   // Optional layers. The ordinance hatch is off by default: it covers
   // everything outside the cities, which is legally right but visually loud
@@ -40,12 +41,24 @@ export default function CountyPage() {
       .catch(() => setPlaces(null));
   }, [county?.fips]);
 
-  // Census county subdivisions were drawn here as a background layer. Removed:
-  // several of them share a city's name while covering far more ground, so
-  // their outlines read as a competing, wrong set of city boundaries. The map
-  // now shows only real municipal boundaries — the Census incorporated places —
-  // over the county outline. app/public/geo/subdivisions/ is left in place in
-  // case the data is wanted for something else.
+  // Named unincorporated regions — everything in the county that is NOT in a
+  // city, split into the areas people actually name (Ramona, Fallbrook,
+  // Borrego Springs, Mountain Empire…). Built by subtracting the cities from
+  // the Census subdivisions, so cities and regions tile the county exactly:
+  // 15.3% + 84.7% = 100% for San Diego.
+  //
+  // Raw subdivisions were tried here first and were wrong — they cover the
+  // whole county INCLUDING the cities, so a "San Diego" subdivision sat under
+  // the city of San Diego and its outline read as a second, larger, incorrect
+  // city boundary.
+  useEffect(() => {
+    if (!county?.fips) return;
+    setUnincorporated(null);
+    fetch(`${import.meta.env.BASE_URL}geo/unincorporated/${county.fips}.geojson`)
+      .then((r) => (r.ok ? r.json() : null))
+      .then((fc) => setUnincorporated(fc?.features?.length ? fc : null))
+      .catch(() => setUnincorporated(null));
+  }, [county?.fips]);
 
   // Certified dark sky places for THIS county. The file holds every certified
   // place in California, so it is filtered by the GEOIDs recorded against this
@@ -244,29 +257,49 @@ export default function CountyPage() {
                 <GeoJSON
                   key={`outline-${county.fips}`}
                   data={outline}
+                  interactive={false}
                   style={{
-                    fillColor: '#eef2f7',
+                    fillColor: '#eef4f8',
                     fillOpacity: 1,
-                    color: '#64748b',
+                    color: '#475569',
                     weight: 1.8,
                   }}
-                  onEachFeature={(feature, layer) => {
-                    layer.bindTooltip(
-                      `<strong>Unincorporated ${county.name} County</strong>` +
-                        `<br>No city government — governed by the county` +
-                        `<br>${
-                          countyHasOrdinance
-                            ? 'Covered by the county ordinance'
-                            : 'No county ordinance yet'
-                        }`,
-                      { sticky: true }
-                    );
-                    layer.on({
-                      mouseover: (e) => e.target.setStyle({ fillColor: '#e2e8f0' }),
-                      mouseout: (e) => e.target.setStyle({ fillColor: '#eef2f7' }),
-                    });
-                  }}
                 />
+
+                {/* Named unincorporated regions. Distinct from cities on
+                    purpose — warm fill against the cities' status colours —
+                    because they have no city government and can only be
+                    reached by county-level policy. */}
+                {unincorporated && (
+                  <GeoJSON
+                    key={`uninc-${county.fips}`}
+                    data={unincorporated}
+                    style={{
+                      fillColor: '#fdf3d3',
+                      fillOpacity: 1,
+                      color: '#a8a29e',
+                      weight: 0.9,
+                    }}
+                    onEachFeature={(feature, layer) => {
+                      layer.bindTooltip(
+                        `<strong>${feature.properties.NAME}</strong>` +
+                          `<br>Unincorporated — no city government` +
+                          `<br>${
+                            countyHasOrdinance
+                              ? 'Covered by the county ordinance'
+                              : 'No county ordinance yet'
+                          }`,
+                        { sticky: true }
+                      );
+                      layer.on({
+                        mouseover: (e) =>
+                          e.target.setStyle({ fillColor: '#f7e6a8', weight: 1.6, color: '#78716c' }),
+                        mouseout: (e) =>
+                          e.target.setStyle({ fillColor: '#fdf3d3', weight: 0.9, color: '#a8a29e' }),
+                      });
+                    }}
+                  />
+                )}
 
                 {/* Explicit panes fix the stacking order.
                     Leaflet appends each new layer on top of the pane, so
@@ -274,11 +307,15 @@ export default function CountyPage() {
                     rendered put the hatch over them and buried their
                     boundaries. Panes give each layer a fixed z-index, so the
                     order no longer depends on what was toggled when. */}
-                {countyHasOrdinance && showOrdinance && (
+                {/* Hatched over the unincorporated regions specifically, not
+                    the whole county — that is exactly the land a California
+                    county ordinance governs. Cities are excluded by the
+                    geometry itself rather than by drawing order. */}
+                {countyHasOrdinance && showOrdinance && unincorporated && (
                   <Pane name="ordinance" style={{ zIndex: 410 }}>
                     <GeoJSON
                       key={`ord-${county.fips}`}
-                      data={outline}
+                      data={unincorporated}
                       interactive={false}
                       style={{
                         fillColor: `url(#${COUNTY_HATCH_ID})`,
@@ -362,10 +399,11 @@ export default function CountyPage() {
                 // data. In most California counties the cities are a minority
                 // of the land, and that surprises people.
                 <p className="map-caption muted">
-                  Coloured shapes are incorporated cities, each with its own
-                  council. The shaded area around them is{' '}
-                  <strong>unincorporated {county.name} County</strong> — no city
-                  government, governed directly by the Board of Supervisors.
+                  Coloured shapes are <strong>incorporated cities</strong>, each
+                  with its own council. Cream regions are{' '}
+                  <strong>unincorporated communities</strong> — no city
+                  government, governed directly by the Board of Supervisors, and
+                  reachable only by a county ordinance.
                 </p>
               )}
             </div>

@@ -20,6 +20,7 @@ export default function CountyPage() {
   const { data: timeline } = useCountyTimeline(county?.id);
   const [places, setPlaces] = useState(null);
   const [outline, setOutline] = useState(null);
+  const [subdivisions, setSubdivisions] = useState(null);
 
   // Only this county's cities are fetched — the boundary build splits places
   // into one file per county so a page never downloads all 483.
@@ -30,6 +31,20 @@ export default function CountyPage() {
       .then((r) => (r.ok ? r.json() : null))
       .then(setPlaces)
       .catch(() => setPlaces(null));
+  }, [county?.fips]);
+
+  // Census county subdivisions — the named areas that tile the whole county
+  // with no gaps (Camp Pendleton, Ramona, Palomar-Julian…). Drawn as neutral
+  // background so the county reads as fully accounted for rather than mostly
+  // empty. They are statistical areas, not governments: they cannot pass an
+  // ordinance, so they never carry a status colour.
+  useEffect(() => {
+    if (!county?.fips) return;
+    setSubdivisions(null);
+    fetch(`${import.meta.env.BASE_URL}geo/subdivisions/${county.fips}.geojson`)
+      .then((r) => (r.ok ? r.json() : null))
+      .then(setSubdivisions)
+      .catch(() => setSubdivisions(null));
   }, [county?.fips]);
 
   // The county's own boundary, drawn underneath the cities.
@@ -104,7 +119,11 @@ export default function CountyPage() {
   // amount of zooming fixes that; the frame itself is the wrong shape.
   const frameAspect = useMemo(() => {
     if (!outline) return 1.5;
-    const [[s, w], [n, e]] = framingBounds(outline, places);
+    // Frame the whole county now that subdivisions fill it. Framing tightly on
+    // the cities was a workaround for everything else being blank; with every
+    // part of the county drawn and named, that blank space no longer exists
+    // and cropping it away would hide real territory.
+    const [[s, w], [n, e]] = boundsOf(outline);
 
     // Longitude degrees shrink toward the poles, so compare like with like
     // before taking a ratio — otherwise every county looks too wide.
@@ -176,7 +195,9 @@ export default function CountyPage() {
             <div
               className="map-wrap"
               style={{
-                width: `min(100%, calc(68vh * ${frameAspect}))`,
+                // Bigger than before: the height ceiling is the only cap, and
+                // the box takes the full column when the county's shape allows.
+                width: `min(100%, calc(82vh * ${frameAspect}))`,
                 margin: '0 auto',
               }}
             >
@@ -191,13 +212,13 @@ export default function CountyPage() {
                   aspectRatio: frameAspect,
                   background: '#ffffff',
                 }}
-                bounds={framingBounds(outline, places)}
+                bounds={boundsOf(outline)}
                 scrollWheelZoom={false}
                 attributionControl={false}
                 zoomSnap={0}
                 zoomDelta={0.5}
               >
-                <AutoFit bounds={framingBounds(outline, places)} />
+                <AutoFit bounds={boundsOf(outline)} />
 
                 {/* Drawn first so it sits beneath the cities. */}
                 <GeoJSON
@@ -211,6 +232,22 @@ export default function CountyPage() {
                     weight: 1.5,
                   }}
                 />
+
+                {/* Named subregions filling the county. Non-interactive so
+                    they never intercept a hover meant for a city on top. */}
+                {subdivisions && (
+                  <GeoJSON
+                    key={`subs-${county.fips}`}
+                    data={subdivisions}
+                    interactive={false}
+                    style={{
+                      fillColor: '#f1f5f9',
+                      fillOpacity: 1,
+                      color: '#cbd5e1',
+                      weight: 0.8,
+                    }}
+                  />
+                )}
 
                 {places && (
                   <GeoJSON
@@ -407,67 +444,6 @@ export default function CountyPage() {
       </div>
     </div>
   );
-}
-
-/**
- * Frame the city sub-map so cities are legible without losing county context.
- *
- * Neither extreme works on its own:
- *  - Fit the whole county and big counties become unreadable. San Diego's
- *    cities sit in the western quarter, so the rest renders as empty desert
- *    and the cities shrink to specks.
- *  - Fit the cities and small counties break — that was the original Lassen
- *    bug, where one city's fragments filled the screen with no sense of place.
- *
- * So frame the cities with padding, but never tighter than a minimum share of
- * the county, and never beyond the county's own box.
- */
-function framingBounds(outline, places) {
-  const county = boundsOf(outline);
-  if (!places?.features?.length) return county;
-
-  const [[countyS, countyW], [countyN, countyE]] = county;
-  const [[s, w], [n, e]] = boundsOf(places);
-
-  const countyH = countyN - countyS;
-  const countyWidth = countyE - countyW;
-
-  // The cities are the subject; the county outline is context that may run off
-  // the edge. An earlier version demanded 45% of the county be visible, which
-  // for San Diego meant framing almost the whole county — its cities hug the
-  // coast while two-thirds of the county is empty desert, so everything
-  // interesting shrank to nothing.
-  const MIN_SHARE = 0.2; // floor, so a single tiny town cannot zoom to street level
-  const PAD = 0.18;      // breathing room around the cities themselves
-
-  const height = Math.min(
-    Math.max((n - s) * (1 + PAD * 2), countyH * MIN_SHARE),
-    countyH
-  );
-  const width = Math.min(
-    Math.max((e - w) * (1 + PAD * 2), countyWidth * MIN_SHARE),
-    countyWidth
-  );
-
-  const midLat = (n + s) / 2;
-  const midLng = (e + w) / 2;
-
-  let south = midLat - height / 2;
-  let north = midLat + height / 2;
-  let west = midLng - width / 2;
-  let east = midLng + width / 2;
-
-  // Slide (rather than clip) back inside the county, so the window keeps its
-  // size when the cities hug one edge — which is the usual case.
-  if (south < countyS) { north += countyS - south; south = countyS; }
-  if (north > countyN) { south -= north - countyN; north = countyN; }
-  if (west < countyW) { east += countyW - west; west = countyW; }
-  if (east > countyE) { west -= east - countyE; east = countyE; }
-
-  return [
-    [Math.max(south, countyS), Math.max(west, countyW)],
-    [Math.min(north, countyN), Math.min(east, countyE)],
-  ];
 }
 
 // Bounding box of a FeatureCollection, as Leaflet [[s,w],[n,e]].

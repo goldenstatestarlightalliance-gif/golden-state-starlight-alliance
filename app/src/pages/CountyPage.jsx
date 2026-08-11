@@ -110,33 +110,17 @@ export default function CountyPage() {
       .filter((c) => c.share < 0.01);
   }, [places, outline]);
 
-  // Shape the map frame to the county rather than forcing every county into a
-  // fixed-width box.
+  // Every county page uses the same wide landscape frame.
   //
-  // A 45vh-tall frame is roughly 1.5:1, which suits a wide county like San
-  // Diego and wastes two-thirds of the width on a tall one — Los Angeles filled
-  // 94% of the height but only 34% of the width, and the rest was blank. No
-  // amount of zooming fixes that; the frame itself is the wrong shape.
-  const frameAspect = useMemo(() => {
-    if (!outline) return 1.5;
-    // Frame the whole county now that subdivisions fill it. Framing tightly on
-    // the cities was a workaround for everything else being blank; with every
-    // part of the county drawn and named, that blank space no longer exists
-    // and cropping it away would hide real territory.
-    const [[s, w], [n, e]] = boundsOf(outline);
-
-    // Longitude degrees shrink toward the poles, so compare like with like
-    // before taking a ratio — otherwise every county looks too wide.
-    const midLat = (((s + n) / 2) * Math.PI) / 180;
-    const x = (e - w) * Math.cos(midLat);
-    const y = n - s;
-    if (!y) return 1.5;
-
-    // Clamped only against genuinely unusable extremes. A tighter clamp (0.85)
-    // forced San Diego's tall coastal strip of cities into a wide frame, and
-    // the extra width filled with empty desert.
-    return Math.min(2.2, Math.max(0.55, x / y));
-  }, [outline, places]);
+  // An earlier version matched the frame to each county's own proportions,
+  // which packed each map tightly but meant no two county pages were the same
+  // shape — the layout jumped as you moved between counties. A fixed 16:9 is
+  // consistent and gives the map the full width of its column.
+  //
+  // The trade-off is real and unavoidable: a tall county (Los Angeles, Alpine)
+  // sits centred with margins either side, because Leaflet fits the whole
+  // county inside the frame rather than cropping it.
+  const frameAspect = 16 / 9;
 
   if (loading) return <div className="page"><p className="muted">Loading…</p></div>;
   if (error) return <div className="page"><p className="error">Could not load this county: {error}</p></div>;

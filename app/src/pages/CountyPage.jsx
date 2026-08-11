@@ -234,16 +234,37 @@ export default function CountyPage() {
                 <AutoFit bounds={boundsOf(outline)} />
                 <HatchDefs />
 
-                {/* The county itself — a plain backdrop for the cities. */}
+                {/* The county backdrop — and it is INTERACTIVE, because it is
+                    not empty space. Incorporated cities cover only about 15%
+                    of San Diego County; the other 85% is unincorporated land
+                    with no city government at all, run directly by the Board
+                    of Supervisors. Hovering it says so, which is the honest
+                    answer to "why is nothing here". Cities sit in a higher
+                    pane and win every overlap. */}
                 <GeoJSON
                   key={`outline-${county.fips}`}
                   data={outline}
-                  interactive={false}
                   style={{
                     fillColor: '#eef2f7',
                     fillOpacity: 1,
                     color: '#64748b',
                     weight: 1.8,
+                  }}
+                  onEachFeature={(feature, layer) => {
+                    layer.bindTooltip(
+                      `<strong>Unincorporated ${county.name} County</strong>` +
+                        `<br>No city government — governed by the county` +
+                        `<br>${
+                          countyHasOrdinance
+                            ? 'Covered by the county ordinance'
+                            : 'No county ordinance yet'
+                        }`,
+                      { sticky: true }
+                    );
+                    layer.on({
+                      mouseover: (e) => e.target.setStyle({ fillColor: '#e2e8f0' }),
+                      mouseout: (e) => e.target.setStyle({ fillColor: '#eef2f7' }),
+                    });
                   }}
                 />
 
@@ -329,12 +350,22 @@ export default function CountyPage() {
                 })}
               </MapContainer>
 
-              {!places && (
+              {!places ? (
                 // Alpine, Mariposa and Trinity have no incorporated cities at
                 // all. Saying so beats an unexplained empty county shape.
                 <p className="map-caption muted">
                   {county.name} County has no incorporated cities — lighting
                   policy here goes through the county Board of Supervisors.
+                </p>
+              ) : (
+                // Names the shaded background so nobody reads it as missing
+                // data. In most California counties the cities are a minority
+                // of the land, and that surprises people.
+                <p className="map-caption muted">
+                  Coloured shapes are incorporated cities, each with its own
+                  council. The shaded area around them is{' '}
+                  <strong>unincorporated {county.name} County</strong> — no city
+                  government, governed directly by the Board of Supervisors.
                 </p>
               )}
             </div>

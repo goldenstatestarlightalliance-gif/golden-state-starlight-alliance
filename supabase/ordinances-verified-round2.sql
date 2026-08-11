@@ -25,7 +25,7 @@ values
    || 'O-20186 N.S. was adopted 31 July 2012 and took effect 6 September 2012, '
    || 'adding light pollution reduction requirements for non-residential '
    || 'buildings. The regulations apply to all new outdoor lighting fixtures and '
-   || 'cover shields and flat lenses, light trespass, lighting colour, hours of '
+   || 'cover shields and flat lenses, light trespass, lighting color, hours of '
    || 'lighting, and sensitive biological resource areas. Entirely separate from '
    || 'San Diego County''s Light Pollution Code, which covers only '
    || 'unincorporated land.',

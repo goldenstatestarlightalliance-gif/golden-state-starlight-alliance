@@ -16,14 +16,14 @@ const PHASES = [
     steps: [
       'Decide one exact ask — not "better lighting", a specific code section',
       'Source every number you will cite',
-      'Recruit 3–5 partner organisations before going public',
+      'Recruit 3–5 partner organizations before going public',
       'Write the objections sheet before opponents write it for you',
       'Identify a sponsor on the council',
     ],
   },
   {
     n: 1,
-    title: 'Authorisation',
+    title: 'Authorization',
     meeting: true,
     steps: [
       'Get a council referral',
@@ -101,7 +101,7 @@ const REDLINE_STEPS = [
   },
   {
     t: 'Read it for what is missing, not what is wrong',
-    d: 'Most California cities have some lighting language. The gaps are usually the same ones: a shielding threshold set too high, no colour temperature cap, sports and signs exempted, the city exempting its own streetlights, and no amortization — so existing fixtures stay legal forever.',
+    d: 'Most California cities have some lighting language. The gaps are usually the same ones: a shielding threshold set too high, no color temperature cap, sports and signs exempted, the city exempting its own streetlights, and no amortization — so existing fixtures stay legal forever.',
   },
   {
     t: 'Amend rather than replace',
@@ -127,7 +127,7 @@ export default function Guide() {
       <header className="page-head">
         <h1>How this works</h1>
         <p className="lede">
-          What the colours mean, why a county ordinance is not a city ordinance,
+          What the colors mean, why a county ordinance is not a city ordinance,
           how a redline is put together, and the thirty steps between an idea and
           an adopted rule.
         </p>
@@ -163,7 +163,7 @@ export default function Guide() {
 
       {/* ---------------------------------------------------------------- */}
       <section className="guide-section">
-        <h2>How counties are coloured</h2>
+        <h2>How counties are colored</h2>
         <p className="lede">
           The statewide map shades each county by the share of its incorporated
           cities that have passed an ordinance.
@@ -182,7 +182,7 @@ export default function Guide() {
           <strong>Why 0% has its own band.</strong> With a single 0–20% bottom
           band, Los Angeles would need eighteen city ordinances before it stopped
           looking identical to a county that had done nothing. The first real win
-          in a county would be invisible for years. Zero is its own colour so
+          in a county would be invisible for years. Zero is its own color so
           that the first ordinance shows immediately.
         </div>
       </section>
@@ -224,7 +224,7 @@ export default function Guide() {
           <strong>A county ordinance stops at the city limit.</strong> San Diego
           County’s Light Pollution Code protects Borrego Springs and Julian, and
           does nothing inside the city of San Diego. That is why county
-          ordinances are shown as hatching over the city colours rather than
+          ordinances are shown as hatching over the city colors rather than
           replacing them: they are real protection over different ground.
         </div>
 
@@ -368,7 +368,7 @@ export default function Guide() {
         <h2>The model ordinance</h2>
         <p>
           The joint model is the starting text these redlines are built from —
-          shielding, colour temperature, lumen budgets, trespass limits, curfew
+          shielding, color temperature, lumen budgets, trespass limits, curfew
           and amortization, with the reasoning behind each number.
         </p>
         <Link className="btn btn-primary" to="/model-ordinance">
@@ -397,14 +397,14 @@ const LEVERS = [
   },
   {
     icon: '🌡️',
-    t: 'Colour temperature',
+    t: 'Color temperature',
     d: 'Warmer light scatters less and disrupts wildlife and sleep less. Blue-rich white LED is the main thing that got worse over the last fifteen years.',
     model: 'Model: 3,000K general · 2,700K in dark zones and streetlights',
   },
   {
     icon: '📏',
     t: 'Light trespass',
-    d: 'A numeric limit on light crossing onto a neighbouring property, measured at the receiving property line. Without a number it is unenforceable.',
+    d: 'A numeric limit on light crossing onto a neighboring property, measured at the receiving property line. Without a number it is unenforceable.',
     model: 'Model: 0.01 fc wilderness · 0.1 fc residential · 0.5 fc public right of way',
   },
   {

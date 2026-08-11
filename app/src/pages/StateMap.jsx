@@ -29,7 +29,7 @@ export default function StateMap() {
   const [darkSkyGeo, setDarkSkyGeo] = useState(null);
   const [showDarkSky, setShowDarkSky] = useState(true);
   // Matches the county pages: the hatch is heavy enough to compete with the
-  // coverage colours underneath, so it is opt-in rather than always on.
+  // coverage colors underneath, so it is opt-in rather than always on.
   const [showOrdinance, setShowOrdinance] = useState(false);
   const navigate = useNavigate();
 
@@ -51,7 +51,7 @@ export default function StateMap() {
   }, []);
 
   // Counties whose own government has passed an ordinance — drawn as a hatch
-  // layer on top of the coverage colours.
+  // layer on top of the coverage colors.
   const ordinanceGeo = useMemo(() => {
     if (!geo || !counties) return null;
     const acted = new Set(
@@ -110,7 +110,7 @@ export default function StateMap() {
         });
       },
       mouseout: (e) => {
-        // Recompute rather than hardcoding a colour back: the resting border
+        // Recompute rather than hardcoding a color back: the resting border
         // depends on coverage.
         e.target.setStyle(styleFor(feature));
         // Deliberately does NOT clear `hovered`. The panel keeps showing the
@@ -169,7 +169,7 @@ export default function StateMap() {
                 onEachFeature={onEachFeature}
               />
 
-              {/* County-ordinance hatch. Drawn over the coverage colours but
+              {/* County-ordinance hatch. Drawn over the coverage colors but
                   non-interactive, so it annotates without stealing hover from
                   the counties underneath — city coverage stays the primary
                   reading of the map. */}
@@ -303,7 +303,7 @@ export default function StateMap() {
           <p className="legend-note muted">
             A California county ordinance covers only the <strong>unincorporated</strong>{' '}
             area — it does not apply inside that county’s cities, so it is shown
-            as hatching over the city-coverage colour rather than replacing it.
+            as hatching over the city-coverage color rather than replacing it.
           </p>
 
           <label className="layer-toggle">

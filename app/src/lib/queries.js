@@ -70,7 +70,7 @@ export const useCounties = () =>
   useQuery(() =>
     supabase
       .from('counties')
-      // City statuses come along because the map colours counties by what
+      // City statuses come along because the map colors counties by what
       // fraction of their cities have an ordinance. `status` and the ordinance
       // columns are the COUNTY government's own action, which in California
       // covers only unincorporated land — tracked and shown separately.

@@ -36,7 +36,7 @@ begin;
 -- ---------------------------------------------------------------------------
 
 -- The fixed six-stage pipeline (spec §4). Order matters: it is used for sorting
--- and for the map colour ramp.
+-- and for the map color ramp.
 create type progress_stage as enum (
   'not_started',
   'contacted',

@@ -5,9 +5,9 @@
 --
 -- CRITERION USED
 -- The coalition's definition of dark sky policy (spec §1): shielded fixtures,
--- warmer colour temperatures, lighting curfews. A city qualifies when its code
--- REQUIRES full shielding and/or caps colour temperature. Discretionary
--- language ("minimise glare to the maximum extent feasible") does not qualify,
+-- warmer color temperatures, lighting curfews. A city qualifies when its code
+-- REQUIRES full shielding and/or caps color temperature. Discretionary
+-- language ("minimize glare to the maximum extent feasible") does not qualify,
 -- because almost every city zoning code contains something like it, and
 -- counting those would make the map meaningless.
 
@@ -24,12 +24,12 @@ values
   ((select id from cities where place_fips = '22804'),
    'Municipal Code Article 35 — Outdoor Lighting',
    'Requires shielded low-pressure sodium, shielded narrow-spectrum amber LEDs, '
-   || 'or other shielded energy-efficient fixtures with a correlated colour '
+   || 'or other shielded energy-efficient fixtures with a correlated color '
    || 'temperature of 3,000 Kelvin or less. Also requires that fixture types, '
    || 'locations and controls for single-family and small multifamily homes '
-   || 'minimise glare, light trespass and artificial sky glow. The clearest '
+   || 'minimize glare, light trespass and artificial sky glow. The clearest '
    || 'city-level dark sky ordinance in the county after San Diego itself — it '
-   || 'has both a shielding mandate and a colour temperature cap.',
+   || 'has both a shielding mandate and a color temperature cap.',
    null,
    'https://ecode360.com/43266390'),
 
@@ -57,7 +57,7 @@ commit;
 --
 -- That is genuine dark sky intent, and stronger than boilerplate. But the
 -- operative wording is "to the maximum extent feasible" — discretionary rather
--- than a hard shielding mandate, and there is no colour temperature cap or
+-- than a hard shielding mandate, and there is no color temperature cap or
 -- curfew. Someone from the coalition should read the section and decide; it is
 -- a defensible "yes" under a looser criterion.
 -- ---------------------------------------------------------------------------

@@ -71,7 +71,7 @@ update counties set
   ordinance_title = 'Zoning Ordinance Chapter 19.81 — Outdoor Lighting "Dark Skies Ordinance"',
   ordinance_summary =
     'County zoning chapter intended to reduce unnecessary night lighting and '
-    || 'minimise lighting impacts on surrounding properties, explicitly to protect '
+    || 'minimize lighting impacts on surrounding properties, explicitly to protect '
     || 'Kern County''s rural character of access to a natural dark sky environment. '
     || 'Applies in unincorporated Kern County.',
   ordinance_url = 'https://kernplanning.com/dark-skies-ordinance-informational-guide/'
@@ -83,7 +83,7 @@ update counties set
   ordinance_title = 'Development Code Chapter 83.07 — Light Trespass',
   ordinance_summary =
     'Adopted by the Board of Supervisors on 7 December 2021. Full shielding on '
-    || 'all fixtures, colour temperature capped at 3000K, and no blinking or '
+    || 'all fixtures, color temperature capped at 3000K, and no blinking or '
     || 'flashing lights. Stricter limits in the Mountain and Desert regions '
     || '(0.1 foot-candles at residential property lines) than in the Valley '
     || 'region (0.5). Lights must be extinguished once no one is present '
@@ -118,7 +118,7 @@ update counties set
     || 'Sky Overlay (2022), Coastal ESHA regulations (2022), Habitat Connectivity '
     || '& Wildlife Corridor Overlay (2019) and Scenic Resource Protection Overlay '
     || '(2008). Common requirements are fully shielded fixtures directing light '
-    || 'below the horizontal, dark-hours curfews, and colour temperature limits. '
+    || 'below the horizontal, dark-hours curfews, and color temperature limits. '
     || 'Unincorporated areas only — these do not affect the county''s cities.',
   ordinance_date_passed = '2018-01-01',
   ordinance_url = 'https://rma.venturacounty.gov/divisions/planning/ventura-county-outdoor-lighting-restrictions/'
@@ -130,7 +130,7 @@ update counties set
   ordinance_title = 'County Code of Regulatory Ordinances — Light Pollution Code',
   ordinance_summary =
     'Regulates outdoor lighting across unincorporated San Diego County with the '
-    || 'stated intent of minimising light pollution and protecting astronomical '
+    || 'stated intent of minimizing light pollution and protecting astronomical '
     || 'research at the Palomar and Mount Laguna observatories. This is the code '
     || 'that protects Borrego Springs and Julian, California''s two DarkSky '
     || 'International certified communities, neither of which is an incorporated '

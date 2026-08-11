@@ -1,15 +1,15 @@
 // The fixed six-stage advocacy pipeline (spec §4).
 //
 // Order here is authoritative: it drives sorting, progress bars, and the map
-// colour ramp. It must stay in sync with the progress_stage enum in
+// color ramp. It must stay in sync with the progress_stage enum in
 // supabase/migrations/0001_schema.sql.
 
 export const STAGES = [
   {
     key: 'not_started',
     label: 'Not Started',
-    // Counties default to neutral and only take on colour as they progress,
-    // per the founder's instruction that colour is applied by status, not
+    // Counties default to neutral and only take on color as they progress,
+    // per the founder's instruction that color is applied by status, not
     // baked into the base map.
     color: '#f4f4f5',
     text: '#3f3f46',

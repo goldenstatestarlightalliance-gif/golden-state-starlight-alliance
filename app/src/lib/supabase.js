@@ -12,7 +12,7 @@ if (!configured) {
   console.warn(
     'Supabase is not configured. Copy .env.example to .env and set ' +
       'VITE_SUPABASE_URL and VITE_SUPABASE_PUBLISHABLE_KEY. ' +
-      'Status colours and org credits will be empty until then.'
+      'Status colors and org credits will be empty until then.'
   );
 }
 

@@ -35,7 +35,7 @@ test('band edges are upper-inclusive', () => {
   assert.equal(bandFor(100).key, 'nearly');
 });
 
-test('every band has a distinct colour', () => {
+test('every band has a distinct color', () => {
   const colors = COVERAGE_BANDS.map((b) => b.color);
   assert.equal(new Set(colors).size, colors.length);
 });

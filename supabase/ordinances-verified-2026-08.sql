@@ -16,7 +16,7 @@
 --
 -- CRITERION
 -- A dedicated outdoor lighting / dark sky ordinance with real substance:
--- shielding requirements, and usually a curfew and/or colour temperature cap.
+-- shielding requirements, and usually a curfew and/or color temperature cap.
 -- General zoning glare rules do not count — most cities have those, and
 -- counting them would make the map meaningless.
 
@@ -66,7 +66,7 @@ values
    'Ordinance 687 — Chapter 15.88 Outdoor Lighting Standards',
    'Adopted 18 January 2024, effective 1 March 2024 for new installations with '
    || 'phased compliance for existing lighting. Fully shielded fixtures required '
-   || '(opaque covering over the source), correlated colour temperature capped at '
+   || '(opaque covering over the source), correlated color temperature capped at '
    || '3000K, and a 10pm curfew for residential and commercial alike (or close of '
    || 'business, whichever is later). Motion-sensor lights exempt if they '
    || 'extinguish within 10 minutes. Zero light trespass standard.',

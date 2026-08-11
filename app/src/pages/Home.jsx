@@ -64,7 +64,7 @@ export default function Home() {
         <p className="hero-lede">
           We are working to get dark sky lighting policy adopted by at least one
           city or county government in <strong>all 58 California counties</strong>.
-          Shielded fixtures, warmer colour temperatures, and sensible lighting
+          Shielded fixtures, warmer color temperatures, and sensible lighting
           curfews: small changes, applied locally, that add up to a darker sky
           and a lighter energy bill.
         </p>
@@ -112,7 +112,7 @@ export default function Home() {
       <section>
         <h2>How a county gets there</h2>
         <p className="lede">
-          Every county moves through the same six stages. The map colours each
+          Every county moves through the same six stages. The map colors each
           county by whichever stage it has reached, so progress is visible and
           credited to the organizations doing the work.
         </p>

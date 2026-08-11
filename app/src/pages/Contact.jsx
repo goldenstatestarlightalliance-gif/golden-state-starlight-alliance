@@ -14,7 +14,7 @@ const ROLES = [
   },
   {
     title: 'Lead Researcher',
-    body: 'Read ordinances. Track what neighbouring jurisdictions have adopted, and turn that into model language a council can actually use.',
+    body: 'Read ordinances. Track what neighboring jurisdictions have adopted, and turn that into model language a council can actually use.',
   },
   {
     title: 'Outreach Coordinator',

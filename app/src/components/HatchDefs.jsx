@@ -8,15 +8,15 @@ export const COUNTY_HATCH_ID = 'county-ordinance-hatch';
  * filled with diagonal hatching.
  *
  * The hatch marks "this county government has passed its own ordinance". It has
- * to coexist with the coverage colour rather than replace it: the fill answers
+ * to coexist with the coverage color rather than replace it: the fill answers
  * "how many of this county's cities are covered", the hatch answers "has the
  * county itself acted". Both matter, and in California they are genuinely
  * independent — a county ordinance covers only unincorporated land, so a
  * hatched county can still be 0% on cities.
  *
- * Hence a pattern with a transparent background: the coverage colour shows
+ * Hence a pattern with a transparent background: the coverage color shows
  * through the gaps, and the hatch reads as an annotation on top of it rather
- * than as a competing colour.
+ * than as a competing color.
  */
 export default function HatchDefs() {
   const map = useMap();
@@ -37,7 +37,7 @@ export default function HatchDefs() {
     pattern.setAttribute('height', '8');
     pattern.setAttribute('patternTransform', 'rotate(45)');
 
-    // Single stripe per tile: sparse enough to read the fill colour underneath.
+    // Single stripe per tile: sparse enough to read the fill color underneath.
     const line = document.createElementNS(svgNS, 'line');
     line.setAttribute('x1', '0');
     line.setAttribute('y1', '0');

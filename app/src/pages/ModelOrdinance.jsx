@@ -9,9 +9,9 @@ import { Link } from 'react-router-dom';
 const ZONES = [
   { z: 'LZ0', desc: 'No ambient light — wilderness, observatory cores', budget: '2,500', cct: '2,700K' },
   { z: 'LZ1', desc: 'Dark — rural, parks, natural areas', budget: '5,000', cct: '2,700K' },
-  { z: 'LZ2', desc: 'Low — residential neighbourhoods', budget: '12,000', cct: '3,000K' },
+  { z: 'LZ2', desc: 'Low — residential neighborhoods', budget: '12,000', cct: '3,000K' },
   { z: 'LZ3', desc: 'Moderate — commercial districts', budget: '25,000', cct: '3,000K' },
-  { z: 'LZ4', desc: 'High — city centres, dense commercial', budget: '50,000', cct: '3,000K' },
+  { z: 'LZ4', desc: 'High — city centers, dense commercial', budget: '50,000', cct: '3,000K' },
 ];
 
 const PROVISIONS = [
@@ -21,7 +21,7 @@ const PROVISIONS = [
     d: 'U0 / G2 maximum above 1,000 lumens. Identical in every zone — a zone governs how much light, never how badly it is aimed.',
   },
   {
-    t: 'Colour temperature',
+    t: 'Color temperature',
     v: '3,000K general · 2,700K sensitive',
     d: '2,700K in LZ0/LZ1, observatory areas, streetlights and string lights. 5,700K permitted for sports only.',
   },
@@ -85,7 +85,7 @@ export default function ModelOrdinance() {
         <strong>Provenance.</strong> This model merges DarkSky International’s
         2026 U.S. Municipal Code for Outdoor Lighting v1.1 with the SCVBA /
         Sierra Club Loma Prieta Model Lighting Ordinance (May 2025). The Loma
-        Prieta model is those organisations’ own work.{' '}
+        Prieta model is those organizations’ own work.{' '}
         <strong>Ask before circulating derivatives.</strong>
       </div>
 
@@ -175,7 +175,7 @@ export default function ModelOrdinance() {
         <div className="callout callout-warn">
           <strong>The per-acre lumen budgets are uncalibrated placeholders.</strong>{' '}
           They have not been tested against real site data and should be flagged
-          as provisional in any submission. Colour temperature has two tiers,
+          as provisional in any submission. Color temperature has two tiers,
           trespass scales by receiving area, and only the lumen budget varies
           across all five zones.
         </div>
@@ -205,7 +205,7 @@ export default function ModelOrdinance() {
         <p>
           GSSA supplies research and support — ordinance analysis, redline
           language, comparable-jurisdiction precedents, calendar and election
-          tracking, coalition coordination. Local organisations lead their own
+          tracking, coalition coordination. Local organizations lead their own
           campaigns.
         </p>
         <Link className="btn btn-primary" to="/guide">

@@ -170,7 +170,7 @@ const countyVerts = countVertices(counties);
 // These two layers are drawn on top of each other on every county page, and
 // they share real edges — a coastal city's seaward boundary IS the county's.
 // Simplifying counties 4x more coarsely (0.002 vs 0.0005) made those shared
-// edges disagree by a few hundred metres, so cities visibly failed to meet the
+// edges disagree by a few hundred meters, so cities visibly failed to meet the
 // county outline along the coast. Matching tolerances keeps shared edges
 // identical.
 write('ca-counties.geojson', simplify(counties, { tolerance: 0.0005, decimals: 5 }));

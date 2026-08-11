@@ -156,7 +156,7 @@ export default function CountyPage() {
   // consistent and gives the map the full width of its column.
   //
   // The trade-off is real and unavoidable: a tall county (Los Angeles, Alpine)
-  // sits centred with margins either side, because Leaflet fits the whole
+  // sits centerd with margins either side, because Leaflet fits the whole
   // county inside the frame rather than cropping it.
   const frameAspect = 16 / 9;
 
@@ -199,7 +199,7 @@ export default function CountyPage() {
       { sticky: true }
     );
 
-    // Click through to the city page, matching the statewide map's behaviour.
+    // Click through to the city page, matching the statewide map's behavior.
     // Only for cities we hold a row for — a Census place with no database row
     // has no page to open.
     if (city) {
@@ -294,7 +294,7 @@ export default function CountyPage() {
                 />
 
                 {/* Named unincorporated regions. Distinct from cities on
-                    purpose — warm fill against the cities' status colours —
+                    purpose — warm fill against the cities' status colors —
                     because they have no city government and can only be
                     reached by county-level policy. */}
                 {unincorporated && (
@@ -309,7 +309,7 @@ export default function CountyPage() {
                     }}
                     onEachFeature={(feature, layer) => {
                       // Census subdivisions are often named after the town at
-                      // their centre, so the leftover after removing that town
+                      // their center, so the leftover after removing that town
                       // inherits its name — Mono County's "Mammoth Lakes"
                       // region surrounds the incorporated town of Mammoth
                       // Lakes. Saying "Mammoth Lakes — unincorporated" next to
@@ -390,7 +390,7 @@ export default function CountyPage() {
                   </Pane>
                 )}
 
-                {/* Cities in the highest pane, so their status colours and
+                {/* Cities in the highest pane, so their status colors and
                     boundaries sit above every optional layer. They are what
                     the map is for. */}
                 {places && (
@@ -439,7 +439,7 @@ export default function CountyPage() {
                 // data. In most California counties the cities are a minority
                 // of the land, and that surprises people.
                 <p className="map-caption muted">
-                  Coloured shapes are <strong>incorporated cities</strong>, each
+                  Colored shapes are <strong>incorporated cities</strong>, each
                   with its own council. Cream regions are{' '}
                   <strong>unincorporated communities</strong> — no city
                   government, governed directly by the Board of Supervisors, and

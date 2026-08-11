@@ -12,7 +12,7 @@
 // almost exactly the same names as the county's own SRA map.
 //
 // IMPORTANT: these are STATISTICAL areas, not governments. They cannot pass an
-// ordinance, so they are drawn as neutral background only — the status colours
+// ordinance, so they are drawn as neutral background only — the status colors
 // stay on incorporated cities, which are the bodies that actually legislate.
 //
 // Run: node scripts/fetch-subdivisions.mjs

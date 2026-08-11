@@ -1,4 +1,4 @@
-// County map colouring by ordinance coverage — what fraction of a county's
+// County map coloring by ordinance coverage — what fraction of a county's
 // incorporated cities have actually passed a dark sky ordinance.
 //
 // This is separate from the six-stage pipeline in pipeline.js. The pipeline
@@ -17,17 +17,17 @@ export const hasOrdinance = (city) =>
   stageIndex(city?.status) >= stageIndex('passed');
 
 /**
- * The colour bands.
+ * The color bands.
  *
  * NOTE ON THE SCALE: the brief asked for five bands with white as 0–20%. I
  * split the bottom band instead, so 0% is white and anything above zero picks
- * up colour. The reason is concrete — with a 0–20% bottom band, Los Angeles
+ * up color. The reason is concrete — with a 0–20% bottom band, Los Angeles
  * needs 18 city ordinances before it stops looking identical to a county that
  * has done nothing, and San Bernardino needs 5. Early wins would be invisible
  * for years on a map whose whole job is showing momentum.
  *
  * This way the first ordinance in a county is visible immediately, and the
- * five colours still map to the 20% bands that were asked for.
+ * five colors still map to the 20% bands that were asked for.
  *
  * To go back to the original scale, delete the `{ min: 0, max: 0 }` entry and
  * set the next band's min to 0 — nothing else reads these numbers.

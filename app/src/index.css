@@ -1,5 +1,5 @@
 /* Golden State Starlight Alliance — base styles.
-   Night-sky palette for the chrome, white map canvas so the status colours
+   Night-sky palette for the chrome, white map canvas so the status colors
    carry all the meaning. */
 
 :root {
@@ -71,7 +71,7 @@ h3 { font-size: 1rem; }
   font-weight: 550;
   border-radius: 8px 8px 0 0;
   /* Reserve the indicator height on every tab so the selected one does not
-     shift its neighbours downward. */
+     shift its neighbors downward. */
   border-bottom: 3px solid transparent;
 }
 
@@ -376,7 +376,7 @@ h3 { font-size: 1rem; }
 }
 
 /* County detail panel. Sits beside the map rather than over it: an overlay
-   card intercepted the pointer, so moving from one county to a neighbour hit
+   card intercepted the pointer, so moving from one county to a neighbor hit
    the card instead of the map. Beside the map, nothing is ever obstructed. */
 .detail-card {
   border: 1px solid var(--line);

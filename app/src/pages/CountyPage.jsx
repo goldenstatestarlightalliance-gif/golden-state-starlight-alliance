@@ -141,8 +141,11 @@ export default function CountyPage() {
           center: [(b[0][0] + b[1][0]) / 2, (b[0][1] + b[1][1]) / 2],
         };
       })
-      // Below ~1% of the county, a polygon is a few pixels at best.
-      .filter((c) => c.share < 0.01);
+      // 0.1%, not 1%. At 1% the marker also landed on cities that are
+      // perfectly visible — Mammoth Lakes is 0.79% of Mono County and renders
+      // as a clear shape, so the dot sat on top of it looking like a stray
+      // graphic. Bishop (0.04%) and Loyalton (0.03%) are the real cases.
+      .filter((c) => c.share < 0.001);
   }, [places, outline]);
 
   // Every county page uses the same wide landscape frame.
@@ -259,7 +262,13 @@ export default function CountyPage() {
                   data={outline}
                   interactive={false}
                   style={{
-                    fillColor: '#eef4f8',
+                    // Same cream as the unincorporated regions on purpose.
+                    // Subtracting cities from subdivisions leaves hairline gaps
+                    // where the two Census layers disagree, and a contrasting
+                    // backdrop showed through them as white slivers along city
+                    // edges. Matching the fill makes those gaps invisible
+                    // instead of chasing sub-pixel geometry.
+                    fillColor: '#fdf3d3',
                     fillOpacity: 1,
                     color: '#475569',
                     weight: 1.8,
@@ -281,8 +290,21 @@ export default function CountyPage() {
                       weight: 0.9,
                     }}
                     onEachFeature={(feature, layer) => {
+                      // Census subdivisions are often named after the town at
+                      // their centre, so the leftover after removing that town
+                      // inherits its name — Mono County's "Mammoth Lakes"
+                      // region surrounds the incorporated town of Mammoth
+                      // Lakes. Saying "Mammoth Lakes — unincorporated" next to
+                      // an incorporated town is just wrong, so name it as the
+                      // surrounding area when the collision exists.
+                      const regionName = feature.properties.NAME;
+                      const collides = cityByName.has(regionName?.toLowerCase());
+                      const label = collides
+                        ? `Around ${regionName}`
+                        : regionName;
+
                       layer.bindTooltip(
-                        `<strong>${feature.properties.NAME}</strong>` +
+                        `<strong>${label}</strong>` +
                           `<br>Unincorporated — no city government` +
                           `<br>${
                             countyHasOrdinance

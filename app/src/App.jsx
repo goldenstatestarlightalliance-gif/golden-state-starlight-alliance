@@ -37,6 +37,18 @@ export default function App() {
             </NavLink>
           ))}
 
+          {/* Members-only, so it is not advertised to signed-out visitors —
+              every channel is behind auth and the page would only bounce them
+              to the sign-in screen. */}
+          {!loading && session && (
+            <NavLink
+              to="/chat"
+              className={({ isActive }) => (isActive ? 'tab tab-active' : 'tab')}
+            >
+              Chat
+            </NavLink>
+          )}
+
           {/* Held back until the session is known, so the nav does not flash
               "Sign in" at someone who is already signed in. */}
           {!loading && (

@@ -12,6 +12,7 @@ import Guide from './pages/Guide.jsx';
 import ModelOrdinance from './pages/ModelOrdinance.jsx';
 import SignIn from './pages/SignIn.jsx';
 import Account from './pages/Account.jsx';
+import Chat from './pages/Chat.jsx';
 import NotFound from './pages/NotFound.jsx';
 import RequireAuth from './components/RequireAuth.jsx';
 import { AuthProvider } from './lib/auth.jsx';
@@ -40,6 +41,16 @@ createRoot(document.getElementById('root')).render(
               element={
                 <RequireAuth>
                   <Account />
+                </RequireAuth>
+              }
+            />
+            {/* Chat is members-only — there is no public read of any channel,
+                so it sits behind the same guard as the account page. */}
+            <Route
+              path="chat"
+              element={
+                <RequireAuth>
+                  <Chat />
                 </RequireAuth>
               }
             />

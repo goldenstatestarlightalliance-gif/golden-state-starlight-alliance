@@ -995,3 +995,213 @@ a.org-card:hover { border-color: var(--night); background: #f8fafc; }
   border-left: 2px solid var(--star);
   font-size: .85rem !important;
 }
+
+/* ---------------------------------------------------------------------------
+   Chat (spec §5)
+
+   Two columns: a channel rail and the conversation. The rail scrolls
+   independently because there are 100+ channels once every organization has
+   one, and the message list has to stay pinned to the bottom regardless.
+   --------------------------------------------------------------------------- */
+
+.chat-page {
+  display: grid;
+  grid-template-columns: 260px 1fr;
+  gap: 1.5rem;
+  /* Fills the viewport below the header so only the inner panes scroll. */
+  height: calc(100vh - 190px);
+  min-height: 420px;
+  max-width: 1200px;
+  margin: 1.5rem auto;
+  padding: 0 1.5rem;
+}
+
+.chat-sidebar {
+  overflow-y: auto;
+  border-right: 1px solid var(--line);
+  padding-right: 1rem;
+}
+
+.chat-filter {
+  width: 100%;
+  padding: 0.5rem 0.65rem;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  font: inherit;
+  margin-bottom: 1rem;
+}
+
+.chat-group {
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--ink-soft);
+  margin: 1.25rem 0 0.4rem;
+}
+
+.chat-count {
+  color: var(--ink-soft);
+  font-weight: 400;
+}
+
+.chat-list { list-style: none; margin: 0; padding: 0; }
+
+.chan {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.5rem;
+  width: 100%;
+  text-align: left;
+  background: none;
+  border: 0;
+  border-radius: 6px;
+  padding: 0.4rem 0.55rem;
+  font: inherit;
+  color: var(--ink);
+  cursor: pointer;
+}
+
+.chan:hover { background: #f1f5f9; }
+
+.chan-on {
+  background: var(--night);
+  color: #fff;
+  font-weight: 600;
+}
+
+.chan-lock { font-size: 0.75rem; opacity: 0.7; }
+
+.chat-note { font-size: 0.85rem; margin-top: 0.5rem; }
+
+.chat-main {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.chat-head {
+  border-bottom: 1px solid var(--line);
+  padding-bottom: 0.75rem;
+}
+
+.chat-head h2 { margin: 0 0 0.15rem; }
+.chat-head p { margin: 0; font-size: 0.85rem; }
+
+.chat-messages {
+  flex: 1;
+  overflow-y: auto;
+  list-style: none;
+  margin: 0;
+  padding: 1rem 0.25rem;
+}
+
+.chat-empty { text-align: center; padding: 3rem 1rem; }
+.chat-empty p { margin: 0.25rem 0; }
+
+.msg { padding: 0.5rem 0; position: relative; }
+.msg + .msg { border-top: 1px solid #f1f5f9; }
+
+.msg-head {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.msg-author { font-size: 0.9rem; }
+.msg-author-me { color: var(--night); }
+.msg-time { font-size: 0.75rem; color: var(--ink-soft); }
+
+.msg-badge {
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  padding: 0.1rem 0.4rem;
+  border-radius: 999px;
+  background: #f1f5f9;
+  color: var(--ink-soft);
+}
+
+.msg-badge-flag { background: #fef3c7; color: #92400e; }
+
+.msg-body {
+  margin: 0.15rem 0 0;
+  /* Preserves the author's line breaks without letting a pasted URL blow out
+     the column. */
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.msg-deleted { opacity: 0.55; }
+.msg-deleted .msg-body { text-decoration: line-through; }
+
+.msg-reason {
+  margin: 0.3rem 0 0;
+  font-size: 0.8rem;
+  color: #92400e;
+}
+
+.msg-retract {
+  font-size: 0.75rem;
+  margin-top: 0.2rem;
+}
+
+.linkish {
+  background: none;
+  border: 0;
+  padding: 0;
+  font: inherit;
+  color: var(--ink-soft);
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.linkish:hover { color: var(--ink); }
+
+.chat-error {
+  margin: 0.5rem 0;
+  padding: 0.5rem 0.75rem;
+  border-radius: 6px;
+  background: #fee2e2;
+  color: #991b1b;
+  font-size: 0.85rem;
+}
+
+.chat-composer {
+  display: flex;
+  gap: 0.75rem;
+  align-items: flex-end;
+  border-top: 1px solid var(--line);
+  padding-top: 0.75rem;
+}
+
+.chat-composer textarea {
+  flex: 1;
+  resize: vertical;
+  min-height: 2.6rem;
+  padding: 0.55rem 0.7rem;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  font: inherit;
+}
+
+/* The rail becomes a short scrolling strip above the conversation rather than
+   eating half a phone screen. */
+@media (max-width: 720px) {
+  .chat-page {
+    grid-template-columns: 1fr;
+    height: auto;
+    padding: 0 1rem;
+  }
+
+  .chat-sidebar {
+    border-right: 0;
+    border-bottom: 1px solid var(--line);
+    padding-right: 0;
+    padding-bottom: 1rem;
+    max-height: 210px;
+  }
+
+  .chat-messages { max-height: 55vh; }
+}

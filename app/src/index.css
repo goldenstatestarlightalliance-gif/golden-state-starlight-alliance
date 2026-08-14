@@ -1,29 +1,87 @@
 /* Golden State Starlight Alliance — base styles.
-   Night-sky palette for the chrome, white map canvas so the status colors
-   carry all the meaning. */
+   White map canvas throughout, so the status colors carry all the meaning. */
 
 :root {
-  --ink: #0f172a;
-  --ink-soft: #475569;
-  --line: #e2e8f0;
-  --night: #131a3a;
-  --star: #fbbf24;
-  --bg: #ffffff;
+  /* --- Brand sheet. These three are the identity and are not negotiable. --- */
+  --ink: #0B1226;    /* Backgrounds. Prints as the black horizon. */
+  --gold: #E9B44C;   /* Horizon on navy. Stars in print. */
+  --cream: #F5EFE3;  /* The stars on navy. NOTHING ELSE — deliberately unused
+                        as a surface anywhere below. */
 
-  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  /* --- Neutrals. The brand sheet specifies a mark, not a UI, and a page
+         needs greys it does not define. These are tuned to sit under Ink
+         rather than to compete with Gold. --- */
+  --ink-soft: #5b6478;
+  --line: #e6e3dd;
+  --bg: #ffffff;
+  --tint: #faf8f5;   /* Section band. DarkSky alternates white against a very
+                        light tint; this is the warm equivalent, and it is a
+                        neutral rather than Cream so the Cream rule holds. */
+
+  /* Kept as aliases so the map and pipeline colors, which are semantic rather
+     than decorative, did not have to be touched by the rebrand. */
+  --night: var(--ink);
+  --star: var(--gold);
+
+  font-family: 'Poppins', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
   color: var(--ink);
   background: var(--bg);
 }
 
 * { box-sizing: border-box; }
 
-body { margin: 0; line-height: 1.55; }
+body { margin: 0; line-height: 1.6; }
 
 a { color: #1d4ed8; }
-h1, h2, h3, h4 { line-height: 1.25; margin: 0 0 .5rem; }
-h1 { font-size: 1.85rem; }
-h2 { font-size: 1.2rem; margin-top: 1.75rem; }
-h3 { font-size: 1rem; }
+
+/* Tight, slightly negative tracking on headings — the thing that makes
+   DarkSky's large type read as designed rather than as default browser bold. */
+h1, h2, h3, h4 {
+  line-height: 1.12;
+  margin: 0 0 .5rem;
+  letter-spacing: -0.015em;
+  font-weight: 700;
+}
+
+h1 { font-size: clamp(2rem, 4vw, 2.75rem); }
+h2 { font-size: clamp(1.5rem, 2.6vw, 2.05rem); margin-top: 1.75rem; }
+h3 { font-size: 1.05rem; letter-spacing: -0.01em; }
+
+/* Wordmark, per the brand sheet's letterspacing figures. */
+.wordmark { display: inline-flex; align-items: center; gap: .6rem; }
+.wordmark-text { display: flex; flex-direction: column; line-height: 1.1; }
+
+.wordmark-name {
+  font-weight: 700;
+  font-size: 1.35rem;
+  letter-spacing: 0.13em;   /* brand sheet: wordmark */
+}
+
+.wordmark-tagline {
+  font-weight: 500;
+  font-size: .58rem;
+  letter-spacing: 0.20em;   /* brand sheet: tagline and labels */
+  text-transform: uppercase;
+}
+
+/* Section bands, alternating white and tint the way DarkSky does. */
+.band { padding: 3.5rem 1.5rem; }
+.band-tint { background: var(--tint); }
+.band-ink { background: var(--ink); color: #fff; }
+.band-ink h2, .band-ink h3 { color: #fff; }
+.band-ink .muted, .band-ink p { color: #b9c0d4; }
+.band-inner { max-width: 1200px; margin: 0 auto; }
+
+/* A gold rule under a section heading — the one recurring accent. */
+.band h2::after {
+  content: '';
+  display: block;
+  width: 2.5rem;
+  height: 3px;
+  background: var(--gold);
+  border-radius: 2px;
+  margin-top: .7rem;
+}
 
 /* ---------- chrome ---------- */
 
@@ -1423,3 +1481,178 @@ a.org-card:hover { border-color: var(--night); background: #f8fafc; }
   font-size: 0.82rem;
   color: #15803d;
 }
+
+/* ---------------------------------------------------------------------------
+   Rebrand — header and footer
+
+   Appended rather than edited in place: these override the originals by
+   source order at equal specificity, which keeps the diff readable and makes
+   the rebrand trivially revertible by deleting one block.
+   --------------------------------------------------------------------------- */
+
+.topbar {
+  padding: 0 2rem;
+  background: var(--ink);
+  align-items: stretch;
+  gap: 2rem;
+}
+
+.brand {
+  display: inline-flex;
+  align-items: center;
+  padding: 1rem 0;
+  text-decoration: none;
+}
+
+.tabs { gap: .1rem; }
+
+.tab {
+  display: flex;
+  align-items: center;
+  padding: 0 1rem;
+  font-size: .87rem;
+  font-weight: 500;
+  letter-spacing: .01em;
+  color: #c3c9da;
+  border-bottom: 3px solid transparent;
+  border-radius: 0;
+}
+
+.tab:hover { background: rgba(255, 255, 255, .06); color: #fff; }
+
+/* Gold underline, not a filled tab — the accent stays a hairline so the
+   header reads as one dark band rather than a row of buttons. */
+.tab-active,
+.tab-active:hover {
+  background: transparent;
+  color: #fff;
+  border-bottom-color: var(--gold);
+}
+
+.footer {
+  background: var(--ink);
+  color: #b9c0d4;
+  border-top: 0;
+  margin-top: 4rem;
+  padding: 3rem 2rem 2rem;
+  font-size: .9rem;
+}
+
+.footer-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
+  gap: 2.5rem;
+  padding-bottom: 2rem;
+  border-bottom: 1px solid rgba(255, 255, 255, .1);
+}
+
+.footer-brand { display: flex; gap: 1rem; align-items: flex-start; }
+.footer-mission { margin: 0; max-width: 46ch; color: #b9c0d4; }
+
+.footer-nav { display: flex; flex-direction: column; gap: .45rem; }
+
+.footer-nav h4 {
+  margin: 0 0 .3rem;
+  color: var(--gold);
+  font-size: .7rem;
+  font-weight: 500;
+  letter-spacing: .20em;      /* brand sheet: labels */
+  text-transform: uppercase;
+}
+
+.footer-nav a { color: #e2e6f0; text-decoration: none; }
+.footer-nav a:hover { color: #fff; text-decoration: underline; }
+
+.footer-fine {
+  max-width: 1200px;
+  margin: 1.5rem auto 0;
+  font-size: .8rem;
+  color: #8790a8;
+}
+
+@media (max-width: 760px) {
+  .topbar { padding: 0 1rem; }
+  .footer-inner { grid-template-columns: 1fr; gap: 1.75rem; }
+  .wordmark-tagline { display: none; }
+}
+
+/* ---------------------------------------------------------------------------
+   Rebrand — hero
+
+   Full-bleed dark hero with the statement set large, the way DarkSky opens.
+   A CSS gradient stands in for their photograph: the site has no licensed
+   night-sky image, and an unlicensed one on a public advocacy site is a real
+   liability rather than a hypothetical one.
+   --------------------------------------------------------------------------- */
+
+.hero-band {
+  background:
+    radial-gradient(1100px 520px at 18% -12%, #1e2a52 0%, transparent 62%),
+    radial-gradient(760px 420px at 88% 8%, #24305c 0%, transparent 58%),
+    var(--ink);
+  color: #fff;
+  padding: 4.5rem 1.5rem 4rem;
+  position: relative;
+  overflow: hidden;
+}
+
+/* The horizon from the mark, drawn once at page scale. */
+.hero-band::after {
+  content: '';
+  position: absolute;
+  left: -5%;
+  right: -5%;
+  bottom: -55px;
+  height: 110px;
+  border-radius: 50%;
+  border-top: 3px solid var(--gold);
+  opacity: .5;
+}
+
+.hero-inner { max-width: 1200px; margin: 0 auto; }
+
+.hero-band .eyebrow { color: var(--gold); }
+
+.hero-band h1 {
+  color: #fff;
+  max-width: 18ch;
+  font-size: clamp(2.1rem, 5vw, 3.4rem);
+}
+
+.hero-band .hero-lede {
+  color: #c7cde0;
+  max-width: 56ch;
+  font-size: 1.06rem;
+}
+
+.hero-band .btn-ghost { color: #fff; border-color: rgba(255, 255, 255, .35); }
+.hero-band .btn-ghost:hover { border-color: var(--gold); color: var(--gold); }
+
+.btn-primary { background: var(--gold); color: var(--ink); border-color: var(--gold); }
+.btn-primary:hover { background: #d9a23c; border-color: #d9a23c; }
+
+/* Stat row under the hero. Bordered top and bottom in the original; now it is
+   its own band, so the rules would double up against the hero edge. */
+.stat-band { padding: 2.25rem 1.5rem; }
+.stat-band .stats { margin: 0; padding: 0; border-block: 0; }
+.stat-band .stat-num { font-size: clamp(2.2rem, 4vw, 3rem); }
+.stat-band .stat-label {
+  font-size: .74rem;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  font-weight: 500;
+}
+
+/* Cards lose their border on the tint band — the tint already separates them,
+   and an outline on top of it reads as a table. */
+.band-tint .reason { border-color: transparent; background: #fff; }
+
+.band-ink .btn-primary { background: var(--gold); color: var(--ink); border-color: var(--gold); }
+.band-ink .stage-name, .band-ink .stage-n { color: #fff; }
+.band-ink .stage-flow li { border-color: rgba(255, 255, 255, .18); }
+
+/* The closing dark band sits directly on the footer, so its bottom padding
+   would otherwise double the gap. */
+.band-ink + .footer { margin-top: 0; }

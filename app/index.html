@@ -9,6 +9,17 @@
       name="description"
       content="Tracking dark sky outdoor lighting ordinances across all 58 California counties."
     />
+
+    <!-- Poppins, per the brand sheet: Bold for the wordmark, Medium for
+         taglines and labels. preconnect first because the font is render-
+         blocking for the header and a cold DNS+TLS round trip is the whole
+         delay. Only the weights actually used are requested. -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
   </head>
   <body>
     <div id="root"></div>

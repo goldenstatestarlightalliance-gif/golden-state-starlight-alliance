@@ -1,5 +1,6 @@
 import { Link, NavLink, Outlet } from 'react-router-dom';
 import { useAuth } from './lib/auth';
+import Logo, { Wordmark } from './components/Logo';
 
 const TABS = [
   { to: '/', label: 'Home', end: true },
@@ -15,12 +16,10 @@ export default function App() {
   return (
     <>
       <header className="topbar">
-        <Link to="/" className="brand">
-          <span className="brand-mark" aria-hidden="true">✦</span>
-          <span>
-            Golden State Starlight Alliance
-            <small>Dark sky policy across all 58 California counties</small>
-          </span>
+        {/* Navy variant: cream stars, gold horizon — the only combination the
+            brand sheet allows on a dark ground. */}
+        <Link to="/" className="brand" aria-label="Golden State Starlight Alliance — home">
+          <Wordmark variant="navy" size={42} />
         </Link>
 
         <nav className="tabs" aria-label="Main">
@@ -66,15 +65,31 @@ export default function App() {
         <Outlet />
       </main>
 
+      {/* Dark footer, mirroring DarkSky's — it closes the page on the brand's
+          own ground rather than trailing off into white. */}
       <footer className="footer">
-        <p>
-          <strong>Golden State Starlight Alliance</strong> — a California
-          coalition working to reduce light pollution through local outdoor
-          lighting ordinances.
-        </p>
-        <p className="muted">
+        <div className="footer-inner">
+          <div className="footer-brand">
+            <Logo variant="navy" size={52} />
+            <p className="footer-mission">
+              A California coalition working to reduce light pollution through
+              local outdoor lighting ordinances — one city, one county at a time.
+            </p>
+          </div>
+
+          <nav className="footer-nav" aria-label="Footer">
+            <h4>The work</h4>
+            <Link to="/map">Progress map</Link>
+            <Link to="/guide">How it works</Link>
+            <Link to="/model-ordinance">Model ordinance</Link>
+            <Link to="/contact">Contact us</Link>
+          </nav>
+        </div>
+
+        <p className="footer-fine">
           County and city boundaries from the US Census Bureau TIGER/Line
-          service (public domain).
+          service (public domain). Ordinance records are compiled from primary
+          municipal code sources and cited on each city page.
         </p>
       </footer>
     </>

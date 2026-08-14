@@ -1218,6 +1218,12 @@ a.org-card:hover { border-color: var(--night); background: #f8fafc; }
 .map-search {
   position: relative;
   margin-bottom: 0.6rem;
+  /* Above the Leaflet map that follows it in the DOM. Leaflet puts its control
+     corners at z-index 1000, and with equal z-index the later sibling wins —
+     so the zoom buttons drew straight through the suggestion list. Lifting the
+     whole search (not just the dropdown) keeps it one stacking context, which
+     is what stops the list slipping back under the controls. */
+  z-index: 1200;
 }
 
 .map-search-row {

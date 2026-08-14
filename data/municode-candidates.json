@@ -1,0 +1,1301 @@
+{
+  "scanned": 237,
+  "candidates": [
+    {
+      "clientId": 1199,
+      "name": "Beaumont",
+      "strong": [
+        {
+          "nodeId": "TIT8HESA_CH8.50OULI",
+          "where": "Beaumont, California - Code of Ordinances › TITLE 8 - HEALTH AND SAFETY › Chapter 8.50 - <em class=\"hit hlt1\">OUTDOOR LIGHTING</em>"
+        },
+        {
+          "nodeId": "TIT17ZO_CH17.04PEST_17.04.070LIGL",
+          "where": "Beaumont, California - Code of Ordinances › TITLE 17 - ZONING › Chapter 17.04 - PERFORMANCE STANDARDS › 17.04.070 - <em class=\"hit hlt4\">Light</em> and glare."
+        },
+        {
+          "nodeId": "TIT8HESA_CH8.50OULI_8.50.060LIRELIZO",
+          "where": "Beaumont, California - Code of Ordinances › TITLE 8 - HEALTH AND SAFETY › Chapter 8.50 - OUTDOOR LIGHTING › 8.50.060 - <em class=\"hit hlt4\">Lighting</em> in the Residential <em class=\"hit hlt4\">Lighting</em> Zone."
+        },
+        {
+          "nodeId": "TIT8HESA_CH8.50OULI_8.50.070LICOINZO",
+          "where": "Beaumont, California - Code of Ordinances › TITLE 8 - HEALTH AND SAFETY › Chapter 8.50 - OUTDOOR LIGHTING › 8.50.070 - <em class=\"hit hlt4\">Lighting</em> in the Commercial/Industrial Zone."
+        },
+        {
+          "nodeId": "TIT8HESA_CH8.50OULI_8.50.080SPUSZO",
+          "where": "Beaumont, California - Code of Ordinances › TITLE 8 - HEALTH AND SAFETY › Chapter 8.50 - OUTDOOR LIGHTING › 8.50.080 - Special Use Zone."
+        },
+        {
+          "nodeId": "TIT8HESA_CH8.50OULI_8.50.050EXLI",
+          "where": "Beaumont, California - Code of Ordinances › TITLE 8 - HEALTH AND SAFETY › Chapter 8.50 - OUTDOOR LIGHTING › 8.50.050 - Exempt <em class=\"hit hlt4\">lighting</em>."
+        },
+        {
+          "nodeId": "TIT8HESA_CH8.50OULI_8.50.100ADEN",
+          "where": "Beaumont, California - Code of Ordinances › TITLE 8 - HEALTH AND SAFETY › Chapter 8.50 - OUTDOOR LIGHTING › 8.50.100 - Administration and enforcement."
+        },
+        {
+          "nodeId": "TIT8HESA_CH8.50OULI_8.50.030ESLIZO",
+          "where": "Beaumont, California - Code of Ordinances › TITLE 8 - HEALTH AND SAFETY › Chapter 8.50 - OUTDOOR LIGHTING › 8.50.030 - Establishment of <em class=\"hit hlt4\">Lighting</em> Zones."
+        },
+        {
+          "nodeId": "TIT8HESA_CH8.50OULI_8.50.010PUIN",
+          "where": "Beaumont, California - Code of Ordinances › TITLE 8 - HEALTH AND SAFETY › Chapter 8.50 - OUTDOOR LIGHTING › 8.50.010 - Purpose and intent."
+        },
+        {
+          "nodeId": "TIT8HESA_CH8.50OULI_8.50.020DE",
+          "where": "Beaumont, California - Code of Ordinances › TITLE 8 - HEALTH AND SAFETY › Chapter 8.50 - OUTDOOR LIGHTING › 8.50.020 - Definitions."
+        },
+        {
+          "nodeId": "TIT8HESA_CH8.50OULI_8.50.090STLISP",
+          "where": "Beaumont, California - Code of Ordinances › TITLE 8 - HEALTH AND SAFETY › Chapter 8.50 - OUTDOOR LIGHTING › 8.50.090 - Street lighting specifications."
+        }
+      ],
+      "weak": 4,
+      "error": null
+    },
+    {
+      "clientId": 6662,
+      "name": "Los Angeles County",
+      "strong": [
+        {
+          "nodeId": "TIT22PLZO_DIV4COZOSUDI_CH22.80RUOULIDI_22.80.040PROULI",
+          "where": "Los Angeles County, California - Code of Ordinances › Title 22 - PLANNING AND ZONING › Division 4 - COMBINING ZONES AND SUPPLEMENTAL DISTRICTS › Chapter 22.80 - RURAL OUTDOOR LIGHTING DISTRICT › 22.80.040 - Prohibited <em class=\"hit hlt1\">Outdoor Lighting</em>."
+        },
+        {
+          "nodeId": "TIT22PLZO_DIV4COZOSUDI_CH22.80RUOULIDI",
+          "where": "Los Angeles County, California - Code of Ordinances › Title 22 - PLANNING AND ZONING › Division 4 - COMBINING ZONES AND SUPPLEMENTAL DISTRICTS › Chapter 22.80 - RURAL <em class=\"hit hlt1\">OUTDOOR LIGHTING</em> DISTRICT"
+        },
+        {
+          "nodeId": "TIT12ENPR_CH12.44OULIUSNAGA",
+          "where": "Los Angeles County, California - Code of Ordinances › Title 12 - ENVIRONMENTAL PROTECTION › Chapter 12.44 - <em class=\"hit hlt1\">OUTDOOR LIGHTING</em> USING NATURAL GAS"
+        },
+        {
+          "nodeId": "TIT22PLZO_DIV4COZOSUDI_CH22.80RUOULIDI_22.80.100EX",
+          "where": "Los Angeles County, California - Code of Ordinances › Title 22 - PLANNING AND ZONING › Division 4 - COMBINING ZONES AND SUPPLEMENTAL DISTRICTS › Chapter 22.80 - RURAL OUTDOOR LIGHTING DISTRICT › 22.80.100 - Exemptions."
+        },
+        {
+          "nodeId": "TIT22PLZO_DIV4COZOSUDI_CH22.80RUOULIDI_22.80.050GEDEST",
+          "where": "Los Angeles County, California - Code of Ordinances › Title 22 - PLANNING AND ZONING › Division 4 - COMBINING ZONES AND SUPPLEMENTAL DISTRICTS › Chapter 22.80 - RURAL OUTDOOR LIGHTING DISTRICT › 22.80.050 - General Development Standards."
+        },
+        {
+          "nodeId": "TIT22PLZO_DIV4COZOSUDI_CH22.80RUOULIDI_22.80.030AP",
+          "where": "Los Angeles County, California - Code of Ordinances › Title 22 - PLANNING AND ZONING › Division 4 - COMBINING ZONES AND SUPPLEMENTAL DISTRICTS › Chapter 22.80 - RURAL OUTDOOR LIGHTING DISTRICT › 22.80.030 - Applicability."
+        },
+        {
+          "nodeId": "TIT22PLZO_DIV4COZOSUDI_CH22.80RUOULIDI_22.80.060ADSTCOINMIUS",
+          "where": "Los Angeles County, California - Code of Ordinances › Title 22 - PLANNING AND ZONING › Division 4 - COMBINING ZONES AND SUPPLEMENTAL DISTRICTS › Chapter 22.80 - RURAL OUTDOOR LIGHTING DISTRICT › 22.80.060 - Additional Standards for Commercial, Industrial, and Mixed Uses."
+        },
+        {
+          "nodeId": "TIT22PLZO_DIV4COZOSUDI_CH22.80RUOULIDI_22.80.010PU",
+          "where": "Los Angeles County, California - Code of Ordinances › Title 22 - PLANNING AND ZONING › Division 4 - COMBINING ZONES AND SUPPLEMENTAL DISTRICTS › Chapter 22.80 - RURAL OUTDOOR LIGHTING DISTRICT › 22.80.010 - Purpose."
+        },
+        {
+          "nodeId": "TIT22PLZO_DIV4COZOSUDI_CH22.80RUOULIDI_22.80.080ADSTSI",
+          "where": "Los Angeles County, California - Code of Ordinances › Title 22 - PLANNING AND ZONING › Division 4 - COMBINING ZONES AND SUPPLEMENTAL DISTRICTS › Chapter 22.80 - RURAL OUTDOOR LIGHTING DISTRICT › 22.80.080 - Additional Standards for Signage."
+        },
+        {
+          "nodeId": "TIT22PLZO_DIV4COZOSUDI_CH22.44SAMOMOLOIMPR_CODEDEST_22.44.1270EXLI",
+          "where": "Los Angeles County, California - Code of Ordinances › Title 22 - PLANNING AND ZONING › Division 4 - COMBINING ZONES AND SUPPLEMENTAL DISTRICTS › Chapter 22.44 - SANTA MONICA MOUNTAINS LOCAL IMPLEMENTATION PROGRAM › COMMUNITY-WIDE DEVELOPMENT STANDARDS › 22.44.1270 - Exterior Lighting."
+        }
+      ],
+      "weak": 10,
+      "error": null
+    },
+    {
+      "clientId": 933,
+      "name": "Citrus Heights",
+      "strong": [
+        {
+          "nodeId": "COOR_CH106ZO_CH106.35OULI_S106.35.050OULIPL",
+          "where": "Citrus Heights, California - Code of Ordinances › Chapter 106 - ZONING › CHAPTER 106.35  - OUTDOOR LIGHTING › Sec. 106.35.050. - <em class=\"hit hlt1\">Outdoor Lighting</em> Plans"
+        },
+        {
+          "nodeId": "COOR_CH106ZO_CH106.30STALDELAUS_S106.30.070OULI",
+          "where": "Citrus Heights, California - Code of Ordinances › Chapter 106 - ZONING › CHAPTER 106.30  - STANDARDS FOR ALL DEVELOPMENT AND LAND USES › Sec. 106.30.070. - <em class=\"hit hlt1\">Outdoor Lighting</em>"
+        },
+        {
+          "nodeId": "COOR_CH106ZO_CH106.35OULI",
+          "where": "Citrus Heights, California - Code of Ordinances › Chapter 106 - ZONING › CHAPTER 106.35  - <em class=\"hit hlt1\">OUTDOOR LIGHTING</em>"
+        },
+        {
+          "nodeId": "COOR_CH106ZO_CH106.35OULI_S106.35.020AP",
+          "where": "Citrus Heights, California - Code of Ordinances › Chapter 106 - ZONING › CHAPTER 106.35  - OUTDOOR LIGHTING › Sec. 106.35.020. - Applicability"
+        },
+        {
+          "nodeId": "COOR_CH106ZO_CH106.35OULI_S106.35.080ENCOGU",
+          "where": "Citrus Heights, California - Code of Ordinances › Chapter 106 - ZONING › CHAPTER 106.35  - OUTDOOR LIGHTING › Sec. 106.35.080. - Energy Conservation Guidelines"
+        },
+        {
+          "nodeId": "COOR_CH106ZO_CH106.35OULI_S106.35.030DE",
+          "where": "Citrus Heights, California - Code of Ordinances › Chapter 106 - ZONING › CHAPTER 106.35  - OUTDOOR LIGHTING › Sec. 106.35.030. - Definitions"
+        },
+        {
+          "nodeId": "COOR_CH106ZO_CH106.35OULI_S106.35.040GELIDEDEST",
+          "where": "Citrus Heights, California - Code of Ordinances › Chapter 106 - ZONING › CHAPTER 106.35  - OUTDOOR LIGHTING › Sec. 106.35.040. - General <em class=\"hit hlt4\">Lighting</em> Design and Development Standards"
+        },
+        {
+          "nodeId": "COOR_CH106ZO_CH106.35OULI_S106.35.060SI",
+          "where": "Citrus Heights, California - Code of Ordinances › Chapter 106 - ZONING › CHAPTER 106.35  - OUTDOOR LIGHTING › Sec. 106.35.060. - Signs"
+        },
+        {
+          "nodeId": "COOR_CH106ZO_CH106.35OULI_S106.35.010PU",
+          "where": "Citrus Heights, California - Code of Ordinances › Chapter 106 - ZONING › CHAPTER 106.35  - OUTDOOR LIGHTING › Sec. 106.35.010. - Purpose"
+        }
+      ],
+      "weak": 10,
+      "error": null
+    },
+    {
+      "clientId": 6459,
+      "name": "Kern County",
+      "strong": [
+        {
+          "nodeId": "TIT19ZO_CH19.81OULIDASKOR_19.81.060OULIPL",
+          "where": "Kern County, California - Code of Ordinances › Title 19 - ZONING › Chapter 19.81 - OUTDOOR LIGHTING \"DARK SKIES ORDINANCE\" › 19.81.060 - <em class=\"hit hlt1\">Outdoor lighting</em> plans."
+        },
+        {
+          "nodeId": "TIT19ZO_CH19.81OULIDASKOR",
+          "where": "Kern County, California - Code of Ordinances › Title 19 - ZONING › Chapter 19.81 - <em class=\"hit hlt1\">OUTDOOR LIGHTING</em> \"DARK SKIES ORDINANCE\""
+        },
+        {
+          "nodeId": "TIT19ZO_CH19.81OULIDASKOR_19.81.030AP",
+          "where": "Kern County, California - Code of Ordinances › Title 19 - ZONING › Chapter 19.81 - OUTDOOR LIGHTING \"DARK SKIES ORDINANCE\" › 19.81.030 - Applicability."
+        },
+        {
+          "nodeId": "TIT19ZO_CH19.81OULIDASKOR_19.81.070VICO",
+          "where": "Kern County, California - Code of Ordinances › Title 19 - ZONING › Chapter 19.81 - OUTDOOR LIGHTING \"DARK SKIES ORDINANCE\" › 19.81.070 - Violations and complaints."
+        },
+        {
+          "nodeId": "TIT19ZO_CH19.81OULIDASKOR_19.81.050EX",
+          "where": "Kern County, California - Code of Ordinances › Title 19 - ZONING › Chapter 19.81 - OUTDOOR LIGHTING \"DARK SKIES ORDINANCE\" › 19.81.050 - Exemptions."
+        },
+        {
+          "nodeId": "TIT19ZO_CH19.81OULIDASKOR_19.81.010PUAP",
+          "where": "Kern County, California - Code of Ordinances › Title 19 - ZONING › Chapter 19.81 - OUTDOOR LIGHTING \"DARK SKIES ORDINANCE\" › 19.81.010 - Purpose and application."
+        },
+        {
+          "nodeId": "TIT19ZO_CH19.81OULIDASKOR_19.81.040GERE",
+          "where": "Kern County, California - Code of Ordinances › Title 19 - ZONING › Chapter 19.81 - OUTDOOR LIGHTING \"DARK SKIES ORDINANCE\" › 19.81.040 - General requirements."
+        },
+        {
+          "nodeId": "TIT19ZO_CH19.81OULIDASKOR_19.81.020DE",
+          "where": "Kern County, California - Code of Ordinances › Title 19 - ZONING › Chapter 19.81 - OUTDOOR LIGHTING \"DARK SKIES ORDINANCE\" › 19.81.020 - Definitions."
+        },
+        {
+          "nodeId": "TIT19ZO_CH19.81OULIDASKOR_19.81.080PESEEXCH",
+          "where": "Kern County, California - Code of Ordinances › Title 19 - ZONING › Chapter 19.81 - OUTDOOR LIGHTING \"DARK SKIES ORDINANCE\" › 19.81.080 - Persons seeking an exception to this chapter."
+        }
+      ],
+      "weak": 2,
+      "error": null
+    },
+    {
+      "clientId": 3647,
+      "name": "Oceanside",
+      "strong": [
+        {
+          "nodeId": "CH39LIPORE_S39.4DE",
+          "where": "Oceanside, California - Code of Ordinances › Chapter 39 - LIGHT POLLUTION REGULATIONS › Sec. 39.4. - Definitions."
+        },
+        {
+          "nodeId": "CH39LIPORE_S39.5GERE",
+          "where": "Oceanside, California - Code of Ordinances › Chapter 39 - LIGHT POLLUTION REGULATIONS › Sec. 39.5. - General requirements."
+        },
+        {
+          "nodeId": "CH39LIPORE_S39.7SUPLEVCO",
+          "where": "Oceanside, California - Code of Ordinances › Chapter 39 - LIGHT POLLUTION REGULATIONS › Sec. 39.7. - Submission of plans and evidence of compliance."
+        },
+        {
+          "nodeId": "CH39LIPORE_S39.9PEEX",
+          "where": "Oceanside, California - Code of Ordinances › Chapter 39 - LIGHT POLLUTION REGULATIONS › Sec. 39.9. - Permanent exemptions."
+        },
+        {
+          "nodeId": "CH39LIPORE_S39.6RELASOSH",
+          "where": "Oceanside, California - Code of Ordinances › Chapter 39 - LIGHT POLLUTION REGULATIONS › Sec. 39.6. - Requirement for lamp source and shielding."
+        },
+        {
+          "nodeId": "CH39LIPORE_S39.8PR",
+          "where": "Oceanside, California - Code of Ordinances › Chapter 39 - LIGHT POLLUTION REGULATIONS › Sec. 39.8. - Prohibitions."
+        },
+        {
+          "nodeId": "CH39LIPORE_S39.2COAPCO",
+          "where": "Oceanside, California - Code of Ordinances › Chapter 39 - LIGHT POLLUTION REGULATIONS › Sec. 39.2. - Conformance with applicable costs."
+        },
+        {
+          "nodeId": "CH39LIPORE_S39.11VIPE",
+          "where": "Oceanside, California - Code of Ordinances › Chapter 39 - LIGHT POLLUTION REGULATIONS › Sec. 39.11. - Violations and penalties."
+        },
+        {
+          "nodeId": "CH39LIPORE",
+          "where": "Oceanside, California - Code of Ordinances › Chapter 39 - <em class=\"hit hlt1\">LIGHT POLLUTION</em> REGULATIONS"
+        }
+      ],
+      "weak": 3,
+      "error": null
+    },
+    {
+      "clientId": 1411,
+      "name": "Brisbane",
+      "strong": [
+        {
+          "nodeId": "TIT15BUCO_CH15.88DASKOR_15.88.060CIRE",
+          "where": "Brisbane, California - Municipal Code › Title 15 - BUILDINGS AND CONSTRUCTION › Chapter 15.88 - DARK SKY ORDINANCE › 15.88.060 - Citywide requirements."
+        },
+        {
+          "nodeId": "TIT15BUCO_CH15.88DASKOR_15.88.110APCHEXNOLI",
+          "where": "Brisbane, California - Municipal Code › Title 15 - BUILDINGS AND CONSTRUCTION › Chapter 15.88 - DARK SKY ORDINANCE › 15.88.110 - Application of chapter to existing nonconforming <em class=\"hit hlt4\">lighting</em>."
+        },
+        {
+          "nodeId": "TIT15BUCO_CH15.88DASKOR_15.88.020PU",
+          "where": "Brisbane, California - Municipal Code › Title 15 - BUILDINGS AND CONSTRUCTION › Chapter 15.88 - DARK SKY ORDINANCE › 15.88.020 - Purpose."
+        },
+        {
+          "nodeId": "TIT15BUCO_CH15.88DASKOR_15.88.040AP",
+          "where": "Brisbane, California - Municipal Code › Title 15 - BUILDINGS AND CONSTRUCTION › Chapter 15.88 - DARK SKY ORDINANCE › 15.88.040 - Applicability."
+        },
+        {
+          "nodeId": "TIT15BUCO_CH15.88DASKOR_15.88.030DE",
+          "where": "Brisbane, California - Municipal Code › Title 15 - BUILDINGS AND CONSTRUCTION › Chapter 15.88 - DARK SKY ORDINANCE › 15.88.030 - Definitions."
+        },
+        {
+          "nodeId": "TIT15BUCO_CH15.88DASKOR_15.88.080REATFIFA",
+          "where": "Brisbane, California - Municipal Code › Title 15 - BUILDINGS AND CONSTRUCTION › Chapter 15.88 - DARK SKY ORDINANCE › 15.88.080 - Recreational and athletic field facilities."
+        },
+        {
+          "nodeId": "TIT15BUCO_CH15.88DASKOR",
+          "where": "Brisbane, California - Municipal Code › Title 15 - BUILDINGS AND CONSTRUCTION › Chapter 15.88 - <em class=\"hit hlt1\">DARK SKY</em> ORDINANCE"
+        },
+        {
+          "nodeId": "TIT15BUCO_CH15.88DASKOR_15.88.010TI",
+          "where": "Brisbane, California - Municipal Code › Title 15 - BUILDINGS AND CONSTRUCTION › Chapter 15.88 - DARK SKY ORDINANCE › 15.88.010 - Title."
+        }
+      ],
+      "weak": 5,
+      "error": null
+    },
+    {
+      "clientId": 2273,
+      "name": "Fowler",
+      "strong": [
+        {
+          "nodeId": "ZOOR_ART4SIDERE_CH9.170OULIST_9.170.040OULIPLRE",
+          "where": "Fowler, California - Zoning › ARTICLE 4. - SITE DEVELOPMENT REGULATIONS › CHAPTER 9.170. - OUTDOOR LIGHTING STANDARDS › 9.170.040 - <em class=\"hit hlt1\">Outdoor Lighting</em> Plan Requirements."
+        },
+        {
+          "nodeId": "ZOOR_ART4SIDERE_CH9.170OULIST",
+          "where": "Fowler, California - Zoning › ARTICLE 4. - SITE DEVELOPMENT REGULATIONS › CHAPTER 9.170. - <em class=\"hit hlt1\">OUTDOOR LIGHTING</em> STANDARDS"
+        },
+        {
+          "nodeId": "ZOOR_ART4SIDERE_CH9.170OULIST_9.170.070GELIST",
+          "where": "Fowler, California - Zoning › ARTICLE 4. - SITE DEVELOPMENT REGULATIONS › CHAPTER 9.170. - OUTDOOR LIGHTING STANDARDS › 9.170.070 - General <em class=\"hit hlt4\">Lighting</em> Standards."
+        },
+        {
+          "nodeId": "ZOOR_ART4SIDERE_CH9.170OULIST_9.170.050EXLI",
+          "where": "Fowler, California - Zoning › ARTICLE 4. - SITE DEVELOPMENT REGULATIONS › CHAPTER 9.170. - OUTDOOR LIGHTING STANDARDS › 9.170.050 - Exempt <em class=\"hit hlt4\">Lighting</em>."
+        },
+        {
+          "nodeId": "ZOOR_ART4SIDERE_CH9.170OULIST_9.170.030PERE",
+          "where": "Fowler, California - Zoning › ARTICLE 4. - SITE DEVELOPMENT REGULATIONS › CHAPTER 9.170. - OUTDOOR LIGHTING STANDARDS › 9.170.030 - Permit Requirements."
+        },
+        {
+          "nodeId": "ZOOR_ART4SIDERE_CH9.170OULIST_9.170.020AP",
+          "where": "Fowler, California - Zoning › ARTICLE 4. - SITE DEVELOPMENT REGULATIONS › CHAPTER 9.170. - OUTDOOR LIGHTING STANDARDS › 9.170.020 - Applicability."
+        },
+        {
+          "nodeId": "ZOOR_ART4SIDERE_CH9.170OULIST_9.170.080LISTUS",
+          "where": "Fowler, California - Zoning › ARTICLE 4. - SITE DEVELOPMENT REGULATIONS › CHAPTER 9.170. - OUTDOOR LIGHTING STANDARDS › 9.170.080 - <em class=\"hit hlt4\">Lighting</em> Standards by Use."
+        },
+        {
+          "nodeId": "ZOOR_ART4SIDERE_CH9.170OULIST_9.170.010PU",
+          "where": "Fowler, California - Zoning › ARTICLE 4. - SITE DEVELOPMENT REGULATIONS › CHAPTER 9.170. - OUTDOOR LIGHTING STANDARDS › 9.170.010 - Purpose."
+        }
+      ],
+      "weak": 4,
+      "error": null
+    },
+    {
+      "clientId": 3479,
+      "name": "National City",
+      "strong": [
+        {
+          "nodeId": "CD_ORD_TIT18ZO_DIV4GEDEDERE_CH18.46OULI",
+          "where": "National City, California - Code of Ordinances › Title 18 - ZONING › DIVISION 4. - GENERAL DESIGN AND DEVELOPMENT REGULATIONS › Chapter 18.46 - <em class=\"hit hlt1\">OUTDOOR LIGHTING</em>"
+        },
+        {
+          "nodeId": "CD_ORD_TIT18ZO_DIV4GEDEDERE_CH18.46OULI_18.46.030GEST",
+          "where": "National City, California - Code of Ordinances › Title 18 - ZONING › DIVISION 4. - GENERAL DESIGN AND DEVELOPMENT REGULATIONS › Chapter 18.46 - OUTDOOR LIGHTING › 18.46.030 - General standards."
+        },
+        {
+          "nodeId": "CD_ORD_TIT18ZO_DIV4GEDEDERE_CH18.46OULI_18.46.020AP",
+          "where": "National City, California - Code of Ordinances › Title 18 - ZONING › DIVISION 4. - GENERAL DESIGN AND DEVELOPMENT REGULATIONS › Chapter 18.46 - OUTDOOR LIGHTING › 18.46.020 - Applicability."
+        },
+        {
+          "nodeId": "CD_ORD_TIT18ZO_DIV4GEDEDERE_CH18.46OULI_18.46.090LIOUPESPREFA",
+          "where": "National City, California - Code of Ordinances › Title 18 - ZONING › DIVISION 4. - GENERAL DESIGN AND DEVELOPMENT REGULATIONS › Chapter 18.46 - OUTDOOR LIGHTING › 18.46.090 - <em class=\"hit hlt4\">Lighting</em> of <em class=\"hit hlt3\">outdoor</em> performance, sport and recreational facilities."
+        },
+        {
+          "nodeId": "CD_ORD_TIT18ZO_DIV4GEDEDERE_CH18.46OULI_18.46.010PU",
+          "where": "National City, California - Code of Ordinances › Title 18 - ZONING › DIVISION 4. - GENERAL DESIGN AND DEVELOPMENT REGULATIONS › Chapter 18.46 - OUTDOOR LIGHTING › 18.46.010 - Purpose."
+        },
+        {
+          "nodeId": "CD_ORD_TIT18ZO_DIV4GEDEDERE_CH18.46OULI_18.46.100LIMUITATREPR",
+          "where": "National City, California - Code of Ordinances › Title 18 - ZONING › DIVISION 4. - GENERAL DESIGN AND DEVELOPMENT REGULATIONS › Chapter 18.46 - OUTDOOR LIGHTING › 18.46.100 - <em class=\"hit hlt4\">Lighting</em> for multi-unit attached residential projects."
+        },
+        {
+          "nodeId": "CD_ORD_TIT18ZO_DIV4GEDEDERE_CH18.46OULI_18.46.110STSIMIREUS",
+          "where": "National City, California - Code of Ordinances › Title 18 - ZONING › DIVISION 4. - GENERAL DESIGN AND DEVELOPMENT REGULATIONS › Chapter 18.46 - OUTDOOR LIGHTING › 18.46.110 - Standards for single-family residential uses."
+        },
+        {
+          "nodeId": "CD_ORD_TIT18ZO_DIV4GEDEDERE_CH18.46OULI_18.46.080PALOLI",
+          "where": "National City, California - Code of Ordinances › Title 18 - ZONING › DIVISION 4. - GENERAL DESIGN AND DEVELOPMENT REGULATIONS › Chapter 18.46 - OUTDOOR LIGHTING › 18.46.080 - Parking lot lighting."
+        }
+      ],
+      "weak": 7,
+      "error": null
+    },
+    {
+      "clientId": 11433,
+      "name": "Butte County",
+      "strong": [
+        {
+          "nodeId": "CH24ZO_ARTIIIGERE_DIV4OULI",
+          "where": "Butte County, California - Code of Ordinances › Chapter 24 - ZONING › Article III. - General Regulations › Division 4. - <em class=\"hit hlt1\">Outdoor Lighting</em>"
+        },
+        {
+          "nodeId": "CH24ZO_ARTIIIGERE_DIV14LAUSCOST_24-148LIGL",
+          "where": "Butte County, California - Code of Ordinances › Chapter 24 - ZONING › Article III. - General Regulations › Division 14. - Land Use Compatibility Standards › 24-148 - <em class=\"hit hlt4\">Light</em> and glare."
+        },
+        {
+          "nodeId": "CH24ZO_ARTIIIGERE_DIV4OULI_24-64NEDE",
+          "where": "Butte County, California - Code of Ordinances › Chapter 24 - ZONING › Article III. - General Regulations › Division 4. - Outdoor Lighting › 24-64 - New development."
+        },
+        {
+          "nodeId": "CH24ZO_ARTIIIGERE_DIV4OULI_24-63AP",
+          "where": "Butte County, California - Code of Ordinances › Chapter 24 - ZONING › Article III. - General Regulations › Division 4. - Outdoor Lighting › 24-63 - Applicability."
+        },
+        {
+          "nodeId": "CH24ZO_ARTIIIGERE_DIV4OULI_24-62PU",
+          "where": "Butte County, California - Code of Ordinances › Chapter 24 - ZONING › Article III. - General Regulations › Division 4. - Outdoor Lighting › 24-62 - Purpose."
+        },
+        {
+          "nodeId": "CH24ZO_ARTIIIGERE_DIV4OULI_24-67ST",
+          "where": "Butte County, California - Code of Ordinances › Chapter 24 - ZONING › Article III. - General Regulations › Division 4. - Outdoor Lighting › 24-67 - Standards."
+        },
+        {
+          "nodeId": "CH24ZO_ARTIIIGERE_DIV4OULI_24-65TILICO",
+          "where": "Butte County, California - Code of Ordinances › Chapter 24 - ZONING › Article III. - General Regulations › Division 4. - Outdoor Lighting › 24-65 - Time limitations for compliance."
+        }
+      ],
+      "weak": 5,
+      "error": null
+    },
+    {
+      "clientId": 11684,
+      "name": "Richmond",
+      "strong": [
+        {
+          "nodeId": "ARTXVZOSU_CH15.04ZOSURE_SERIES_600GEST_ART15.04.604LIIL_15.04.604.020APLIZOCLLI",
+          "where": "Richmond, California - Code of Ordinances › Article XV - ZONING AND SUBDIVISION › Chapter 15.04 - ZONING AND SUBDIVISION REGULATIONS › SERIES 600 - GENERAL STANDARDS › ARTICLE 15.04.604 - LIGHTING AND ILLUMINATION › 15.04.604.020 - Applicability; <em class=\"hit hlt4\">Lighting</em> Zones and Classes of <em class=\"hit hlt4\">Lighting</em>."
+        },
+        {
+          "nodeId": "ARTXVZOSU_CH15.04ZOSURE_SERIES_600GEST_ART15.04.604LIIL_15.04.604.050GERE",
+          "where": "Richmond, California - Code of Ordinances › Article XV - ZONING AND SUBDIVISION › Chapter 15.04 - ZONING AND SUBDIVISION REGULATIONS › SERIES 600 - GENERAL STANDARDS › ARTICLE 15.04.604 - LIGHTING AND ILLUMINATION › 15.04.604.050 - General Requirements."
+        },
+        {
+          "nodeId": "ARTXVZOSU_CH15.04ZOSURE_SERIES_600GEST_ART15.04.604LIIL_15.04.604.010PU",
+          "where": "Richmond, California - Code of Ordinances › Article XV - ZONING AND SUBDIVISION › Chapter 15.04 - ZONING AND SUBDIVISION REGULATIONS › SERIES 600 - GENERAL STANDARDS › ARTICLE 15.04.604 - LIGHTING AND ILLUMINATION › 15.04.604.010 - Purpose."
+        },
+        {
+          "nodeId": "ARTXVZOSU_CH15.04ZOSURE_SERIES_600GEST_ART15.04.604LIIL_15.04.604.030EX",
+          "where": "Richmond, California - Code of Ordinances › Article XV - ZONING AND SUBDIVISION › Chapter 15.04 - ZONING AND SUBDIVISION REGULATIONS › SERIES 600 - GENERAL STANDARDS › ARTICLE 15.04.604 - LIGHTING AND ILLUMINATION › 15.04.604.030 - Exemptions."
+        },
+        {
+          "nodeId": "ARTXVZOSU_CH15.04ZOSURE_SERIES_600GEST_ART15.04.604LIIL_15.04.604.040PR",
+          "where": "Richmond, California - Code of Ordinances › Article XV - ZONING AND SUBDIVISION › Chapter 15.04 - ZONING AND SUBDIVISION REGULATIONS › SERIES 600 - GENERAL STANDARDS › ARTICLE 15.04.604 - LIGHTING AND ILLUMINATION › 15.04.604.040 - Prohibitions."
+        },
+        {
+          "nodeId": "ARTXVZOSU_CH15.04ZOSURE_SERIES_600GEST_ART15.04.604LIIL_15.04.604.060SURE",
+          "where": "Richmond, California - Code of Ordinances › Article XV - ZONING AND SUBDIVISION › Chapter 15.04 - ZONING AND SUBDIVISION REGULATIONS › SERIES 600 - GENERAL STANDARDS › ARTICLE 15.04.604 - LIGHTING AND ILLUMINATION › 15.04.604.060 - Supplemental Requirements."
+        }
+      ],
+      "weak": 8,
+      "error": null
+    },
+    {
+      "clientId": 10165,
+      "name": "Ventura County",
+      "strong": [
+        {
+          "nodeId": "DIV8PLDE_CH1.1ZOCO_ART7STSPZO_8177-4.1.11OULI",
+          "where": "Ventura County, California - Code of Ordinances › Division 8. - Planning and Development › Chapter 1.1. - Zoning (Coastal) › Article 7. - Standards For Specific Zones › 8177-4.1.11 - <em class=\"hit hlt1\">Outdoor lighting</em>."
+        },
+        {
+          "nodeId": "DIV8PLDE_CH1.1ZOCO_ART7STSPZO_8177-4.1.11.5GEOULIST",
+          "where": "Ventura County, California - Code of Ordinances › Division 8. - Planning and Development › Chapter 1.1. - Zoning (Coastal) › Article 7. - Standards For Specific Zones › 8177-4.1.11.5 - General <em class=\"hit hlt1\">outdoor lighting</em> standards."
+        },
+        {
+          "nodeId": "DIV8PLDE_CH1.1ZOCO_ART8GEDESTCOESPR_8178-2.6.15OULISTESBUZO",
+          "where": "Ventura County, California - Code of Ordinances › Division 8. - Planning and Development › Chapter 1.1. - Zoning (Coastal) › Article 8. - General Development Standards/Conditions—Resource Protection › 8178-2.6.15 - <em class=\"hit hlt1\">Outdoor lighting</em> standards in ESHA and buffer zones."
+        },
+        {
+          "nodeId": "DIV8PLDE_CH1ZO_ART9STSPZOZOTY_8109-4.8.2OULI",
+          "where": "Ventura County, California - Code of Ordinances › Division 8. - Planning and Development › Chapter 1. - Zoning › Article 9. - Standards for Specific Zones and Zone Types › 8109-4.8.2 - <em class=\"hit hlt1\">Outdoor lighting</em>."
+        },
+        {
+          "nodeId": "DIV8PLDE_CH1ZO_ART4PUZO_8104-7.6DASKDKOVZO",
+          "where": "Ventura County, California - Code of Ordinances › Division 8. - Planning and Development › Chapter 1. - Zoning › Article 4. - Purposes of Zones › 8104-7.6 - Dark Sky (DKS) overlay zone."
+        },
+        {
+          "nodeId": "DIV8PLDE_CH1ZO_ART9STSPZOZOTY_8109-4.7DASKDKOVZO",
+          "where": "Ventura County, California - Code of Ordinances › Division 8. - Planning and Development › Chapter 1. - Zoning › Article 9. - Standards for Specific Zones and Zone Types › 8109-4.7 - <em class=\"hit hlt1\">Dark Sky</em> (DKS) overlay zone."
+        }
+      ],
+      "weak": 18,
+      "error": null
+    },
+    {
+      "clientId": 5775,
+      "name": "El Dorado County",
+      "strong": [
+        {
+          "nodeId": "TIT130ZO_ART3SIPLPRDEST_CH130.34OULI_S130.34.020OULIST",
+          "where": "El Dorado County, California - Code of Ordinances › Title 130 - ZONING* › ARTICLE 3. - SITE PLANNING AND PROJECT DESIGN STANDARDS* › CHAPTER 130.34. - OUTDOOR LIGHTING › Sec. 130.34.020 - <em class=\"hit hlt1\">Outdoor Lighting</em> Standards."
+        },
+        {
+          "nodeId": "TIT130ZO_ART3SIPLPRDEST_CH130.34OULI",
+          "where": "El Dorado County, California - Code of Ordinances › Title 130 - ZONING* › ARTICLE 3. - SITE PLANNING AND PROJECT DESIGN STANDARDS* › CHAPTER 130.34. - <em class=\"hit hlt1\">OUTDOOR LIGHTING</em>"
+        },
+        {
+          "nodeId": "TIT130ZO_ART3SIPLPRDEST_CH130.34OULI_S130.34.040EFEXOULI",
+          "where": "El Dorado County, California - Code of Ordinances › Title 130 - ZONING* › ARTICLE 3. - SITE PLANNING AND PROJECT DESIGN STANDARDS* › CHAPTER 130.34. - OUTDOOR LIGHTING › Sec. 130.34.040 - Effect on Existing <em class=\"hit hlt1\">Outdoor Lighting</em>."
+        },
+        {
+          "nodeId": "TIT130ZO_ART3SIPLPRDEST_CH130.34OULI_S130.34.010CO",
+          "where": "El Dorado County, California - Code of Ordinances › Title 130 - ZONING* › ARTICLE 3. - SITE PLANNING AND PROJECT DESIGN STANDARDS* › CHAPTER 130.34. - OUTDOOR LIGHTING › Sec. 130.34.010 - Content."
+        },
+        {
+          "nodeId": "TIT130ZO_ART3SIPLPRDEST_CH130.34OULI_S130.34.030EX",
+          "where": "El Dorado County, California - Code of Ordinances › Title 130 - ZONING* › ARTICLE 3. - SITE PLANNING AND PROJECT DESIGN STANDARDS* › CHAPTER 130.34. - OUTDOOR LIGHTING › Sec. 130.34.030 - Exemptions."
+        }
+      ],
+      "weak": 7,
+      "error": null
+    },
+    {
+      "clientId": 4091,
+      "name": "Riverside",
+      "strong": [
+        {
+          "nodeId": "PTIICOOR_TIT19ZO_ARTVIIISIPLGEDEPR_CH19.556OULI",
+          "where": "Riverside, California - Code of Ordinances › Title 19 - ZONING › ARTICLE VIII - SITE PLANNING AND GENERAL DEVELOPMENT PROVISIONS › Chapter 19.556 - <em class=\"hit hlt1\">OUTDOOR LIGHTING</em>"
+        },
+        {
+          "nodeId": "PTIICOOR_TIT19ZO_ARTVIIISIPLGEDEPR_CH19.556OULI_19.556.070DEREPE",
+          "where": "Riverside, California - Code of Ordinances › Title 19 - ZONING › ARTICLE VIII - SITE PLANNING AND GENERAL DEVELOPMENT PROVISIONS › Chapter 19.556 - OUTDOOR LIGHTING › 19.556.070 - Design review and permitting."
+        },
+        {
+          "nodeId": "PTIICOOR_TIT19ZO_ARTVIIISIPLGEDEPR_CH19.556OULI_19.556.010PU",
+          "where": "Riverside, California - Code of Ordinances › Title 19 - ZONING › ARTICLE VIII - SITE PLANNING AND GENERAL DEVELOPMENT PROVISIONS › Chapter 19.556 - OUTDOOR LIGHTING › 19.556.010 - Purpose."
+        },
+        {
+          "nodeId": "PTIICOOR_TIT19ZO_ARTVIIISIPLGEDEPR_CH19.556OULI_19.556.030AP",
+          "where": "Riverside, California - Code of Ordinances › Title 19 - ZONING › ARTICLE VIII - SITE PLANNING AND GENERAL DEVELOPMENT PROVISIONS › Chapter 19.556 - OUTDOOR LIGHTING › 19.556.030 - Applicability."
+        },
+        {
+          "nodeId": "PTIICOOR_TIT19ZO_ARTVIIISIPLGEDEPR_CH19.556OULI_19.556.080DEDEST",
+          "where": "Riverside, California - Code of Ordinances › Title 19 - ZONING › ARTICLE VIII - SITE PLANNING AND GENERAL DEVELOPMENT PROVISIONS › Chapter 19.556 - OUTDOOR LIGHTING › 19.556.080 - Design and development standards."
+        }
+      ],
+      "weak": 8,
+      "error": null
+    },
+    {
+      "clientId": 7501,
+      "name": "Riverside County",
+      "strong": [
+        {
+          "nodeId": "TIT8HESA_CH8.80OULI",
+          "where": "Riverside County, California - Code of Ordinances › Title 8 - HEALTH AND SAFETY › Chapter 8.80 - <em class=\"hit hlt1\">OUTDOOR LIGHTING</em>*"
+        },
+        {
+          "nodeId": "TIT8HESA_CH8.80OULI_8.80.020PU",
+          "where": "Riverside County, California - Code of Ordinances › Title 8 - HEALTH AND SAFETY › Chapter 8.80 - OUTDOOR LIGHTING* › 8.80.020 - Purpose."
+        },
+        {
+          "nodeId": "TIT8HESA_CH8.80OULI_8.80.010FI",
+          "where": "Riverside County, California - Code of Ordinances › Title 8 - HEALTH AND SAFETY › Chapter 8.80 - OUTDOOR LIGHTING* › 8.80.010 - Findings."
+        },
+        {
+          "nodeId": "TIT8HESA_CH8.80OULI_8.80.040DE",
+          "where": "Riverside County, California - Code of Ordinances › Title 8 - HEALTH AND SAFETY › Chapter 8.80 - OUTDOOR LIGHTING* › 8.80.040 - Definitions."
+        },
+        {
+          "nodeId": "TIT8HESA_CH8.80OULI_8.80.060EX",
+          "where": "Riverside County, California - Code of Ordinances › Title 8 - HEALTH AND SAFETY › Chapter 8.80 - OUTDOOR LIGHTING* › 8.80.060 - Exemptions."
+        }
+      ],
+      "weak": 9,
+      "error": null
+    },
+    {
+      "clientId": 4686,
+      "name": "Twentynine Palms",
+      "strong": [
+        {
+          "nodeId": "CD_ORD_ART4SIDERE_CH19.78LIST_19.78.020AP",
+          "where": "Twentynine Palms, California - Code of Ordinances › Article 4: - Site Development Regulations › Chapter 19.78 - Lighting Standards › 19.78.020 - Applicability"
+        },
+        {
+          "nodeId": "CD_ORD_ART4SIDERE_CH19.78LIST_19.78.030DE",
+          "where": "Twentynine Palms, California - Code of Ordinances › Article 4: - Site Development Regulations › Chapter 19.78 - Lighting Standards › 19.78.030 - Definitions"
+        },
+        {
+          "nodeId": "CD_ORD_ART4SIDERE_CH19.78LIST_19.78.040PEREEX",
+          "where": "Twentynine Palms, California - Code of Ordinances › Article 4: - Site Development Regulations › Chapter 19.78 - Lighting Standards › 19.78.040 - Permit Requirements and Exemptions"
+        },
+        {
+          "nodeId": "CD_ORD_ART4SIDERE_CH19.78LIST_19.78.050DESTEN",
+          "where": "Twentynine Palms, California - Code of Ordinances › Article 4: - Site Development Regulations › Chapter 19.78 - Lighting Standards › 19.78.050 - Development Standards - General"
+        },
+        {
+          "nodeId": "CD_ORD_ART4SIDERE_CH19.78LIST_19.78.010PU",
+          "where": "Twentynine Palms, California - Code of Ordinances › Article 4: - Site Development Regulations › Chapter 19.78 - Lighting Standards › 19.78.010 - Purpose"
+        }
+      ],
+      "weak": 9,
+      "error": null
+    },
+    {
+      "clientId": 4724,
+      "name": "Vallejo",
+      "strong": [
+        {
+          "nodeId": "TIT16ZO_PTVSIDEST_CH16.506LIGL_16.506.01PUAP",
+          "where": "Vallejo, California - Municipal Code › Title 16 - ZONING › PART V - SITE DEVELOPMENT STANDARDS › Chapter 16.506 - LIGHTING AND GLARE › 16.506.01 - Purpose and applicability."
+        },
+        {
+          "nodeId": "TIT16ZO_PTVSIDEST_CH16.506LIGL_16.506.04GERE",
+          "where": "Vallejo, California - Municipal Code › Title 16 - ZONING › PART V - SITE DEVELOPMENT STANDARDS › Chapter 16.506 - LIGHTING AND GLARE › 16.506.04 - General requirements."
+        },
+        {
+          "nodeId": "TIT16ZO_PTVSIDEST_CH16.506LIGL_16.506.02EX",
+          "where": "Vallejo, California - Municipal Code › Title 16 - ZONING › PART V - SITE DEVELOPMENT STANDARDS › Chapter 16.506 - LIGHTING AND GLARE › 16.506.02 - Exemptions."
+        },
+        {
+          "nodeId": "TIT16ZO_PTVSIDEST_CH16.506LIGL_16.506.03PR",
+          "where": "Vallejo, California - Municipal Code › Title 16 - ZONING › PART V - SITE DEVELOPMENT STANDARDS › Chapter 16.506 - LIGHTING AND GLARE › 16.506.03 - Prohibitions."
+        },
+        {
+          "nodeId": "TIT16ZO_PTVSIDEST_CH16.506LIGL_16.506.05SURE",
+          "where": "Vallejo, California - Municipal Code › Title 16 - ZONING › PART V - SITE DEVELOPMENT STANDARDS › Chapter 16.506 - LIGHTING AND GLARE › 16.506.05 - Supplemental requirements."
+        }
+      ],
+      "weak": 7,
+      "error": null
+    },
+    {
+      "clientId": 1005,
+      "name": "Alturas",
+      "strong": [
+        {
+          "nodeId": "CH28ZO_ARTIVSIPLDEST_DIV5OULIST_28.44.020OULIST",
+          "where": "Alturas, California - Code of Ordinances › CHAPTER 28. - ZONING. › ARTICLE IV. - SITE PLANNING AND DEVELOPMENT STANDARDS › DIVISION 5. - OUTDOOR LIGHTING STANDARDS › 28.44.020 - <em class=\"hit hlt1\">Outdoor lighting</em> standards."
+        },
+        {
+          "nodeId": "CH28ZO_ARTIVSIPLDEST_DIV5OULIST",
+          "where": "Alturas, California - Code of Ordinances › CHAPTER 28. - ZONING. › ARTICLE IV. - SITE PLANNING AND DEVELOPMENT STANDARDS › DIVISION 5. - <em class=\"hit hlt1\">OUTDOOR LIGHTING</em> STANDARDS"
+        },
+        {
+          "nodeId": "CH28ZO_ARTIVSIPLDEST_DIV5OULIST_28.44.040EFEXOULI",
+          "where": "Alturas, California - Code of Ordinances › CHAPTER 28. - ZONING. › ARTICLE IV. - SITE PLANNING AND DEVELOPMENT STANDARDS › DIVISION 5. - OUTDOOR LIGHTING STANDARDS › 28.44.040 - Effect on existing <em class=\"hit hlt1\">outdoor lighting</em>."
+        },
+        {
+          "nodeId": "CH28ZO_ARTIVSIPLDEST_DIV5OULIST_28.44.030EX",
+          "where": "Alturas, California - Code of Ordinances › CHAPTER 28. - ZONING. › ARTICLE IV. - SITE PLANNING AND DEVELOPMENT STANDARDS › DIVISION 5. - OUTDOOR LIGHTING STANDARDS › 28.44.030 - Exemptions."
+        }
+      ],
+      "weak": 6,
+      "error": null
+    },
+    {
+      "clientId": 1500,
+      "name": "Camarillo",
+      "strong": [
+        {
+          "nodeId": "TIT19ZO_IIIGEPR_CH19.47LIRE_19.47.050PRLI",
+          "where": "Camarillo, California - Code of Ordinances › Title 19 - ZONING › III. - GENERAL PROVISIONS › Chapter 19.47 - Lighting Regulations › 19.47.050 - Prohibited <em class=\"hit hlt4\">lighting</em>."
+        },
+        {
+          "nodeId": "TIT19ZO_IIIGEPR_CH19.47LIRE_19.47.060PLRE",
+          "where": "Camarillo, California - Code of Ordinances › Title 19 - ZONING › III. - GENERAL PROVISIONS › Chapter 19.47 - Lighting Regulations › 19.47.060 - Plans required."
+        },
+        {
+          "nodeId": "TIT19ZO_IIIGEPR_CH19.47LIRE_19.47.065DEST",
+          "where": "Camarillo, California - Code of Ordinances › Title 19 - ZONING › III. - GENERAL PROVISIONS › Chapter 19.47 - Lighting Regulations › 19.47.065 - Design standards."
+        },
+        {
+          "nodeId": "TIT19ZO_IIIGEPR_CH19.47LIRE_19.47.090EX",
+          "where": "Camarillo, California - Code of Ordinances › Title 19 - ZONING › III. - GENERAL PROVISIONS › Chapter 19.47 - Lighting Regulations › 19.47.090 - Exemptions."
+        }
+      ],
+      "weak": 8,
+      "error": null
+    },
+    {
+      "clientId": 17410,
+      "name": "Clayton",
+      "strong": [
+        {
+          "nodeId": "TIT8HESA_CH8.09OUIL_8.09.050CORE",
+          "where": "Clayton, California - Municipal Code › Title 8 - HEALTH AND SAFETY › Chapter 8.09 - OUTDOOR ILLUMINATION › 8.09.050 - Conformance to Regulations."
+        },
+        {
+          "nodeId": "TIT8HESA_CH8.09OUIL_8.09.040EX",
+          "where": "Clayton, California - Municipal Code › Title 8 - HEALTH AND SAFETY › Chapter 8.09 - OUTDOOR ILLUMINATION › 8.09.040 - Exemptions."
+        },
+        {
+          "nodeId": "TIT8HESA_CH8.09OUIL_8.09.060EN",
+          "where": "Clayton, California - Municipal Code › Title 8 - HEALTH AND SAFETY › Chapter 8.09 - OUTDOOR ILLUMINATION › 8.09.060 - Enforcement."
+        },
+        {
+          "nodeId": "TIT8HESA_CH8.09OUIL_8.09.030CO",
+          "where": "Clayton, California - Municipal Code › Title 8 - HEALTH AND SAFETY › Chapter 8.09 - OUTDOOR ILLUMINATION › 8.09.030 - Conditions."
+        }
+      ],
+      "weak": 6,
+      "error": null
+    },
+    {
+      "clientId": 7601,
+      "name": "San Joaquin County",
+      "strong": [
+        {
+          "nodeId": "SERIES_400ADUSDERE_CH9-403LIIL_9-403.010PU",
+          "where": "San Joaquin County, California - Development Title › Series 400: - Additional Use and Development Regulations › Chapter 9-403 - Lighting and Illumination › 9-403.010 - PURPOSE"
+        },
+        {
+          "nodeId": "SERIES_400ADUSDERE_CH9-403LIIL_9-403.050GERE",
+          "where": "San Joaquin County, California - Development Title › Series 400: - Additional Use and Development Regulations › Chapter 9-403 - Lighting and Illumination › 9-403.050 - GENERAL REQUIREMENTS"
+        },
+        {
+          "nodeId": "SERIES_400ADUSDERE_CH9-403LIIL_9-403.040PR",
+          "where": "San Joaquin County, California - Development Title › Series 400: - Additional Use and Development Regulations › Chapter 9-403 - Lighting and Illumination › 9-403.040 - PROHIBITIONS"
+        },
+        {
+          "nodeId": "SERIES_400ADUSDERE_CH9-403LIIL_9-403.060SURE",
+          "where": "San Joaquin County, California - Development Title › Series 400: - Additional Use and Development Regulations › Chapter 9-403 - Lighting and Illumination › 9-403.060 - SUPPLEMENTAL REQUIREMENTS"
+        }
+      ],
+      "weak": 12,
+      "error": null
+    },
+    {
+      "clientId": 3794,
+      "name": "Pasadena",
+      "strong": [
+        {
+          "nodeId": "TIT17ZOCO_ART4SIPLGEDEST_CH17.40GEPRDEUSST_17.40.080OULI",
+          "where": "Pasadena, California - Code of Ordinances › Title 17 - Zoning Code › Article 4 - Site Planning and General Development Standards › Chapter 17.40 - General Property Development and Use Standards › 17.40.080 - <em class=\"hit hlt1\">Outdoor Lighting</em>"
+        },
+        {
+          "nodeId": "TIT13UTSE_CH13.08ENUSCO_13.08.040FUOULIURDA",
+          "where": "Pasadena, California - Code of Ordinances › Title 13 - UTILITIES AND SEWERS › Chapter 13.08 - ENERGY USE CONSERVATION › 13.08.040 - Functional <em class=\"hit hlt1\">outdoor lighting</em>—During day."
+        },
+        {
+          "nodeId": "TIT13UTSE_CH13.08ENUSCO_13.08.050FUOULIAFPU",
+          "where": "Pasadena, California - Code of Ordinances › Title 13 - UTILITIES AND SEWERS › Chapter 13.08 - ENERGY USE CONSERVATION › 13.08.050 - Functional <em class=\"hit hlt1\">outdoor lighting</em>—Safety purposes."
+        }
+      ],
+      "weak": 9,
+      "error": null
+    },
+    {
+      "clientId": 4183,
+      "name": "Salinas",
+      "strong": [
+        {
+          "nodeId": "PTIITHCO_CH37ZO_ARTVSUREAPALDI_DIV2PALOOULI_S37-50.480OULI",
+          "where": "Salinas, California - Code of Ordinances › CHAPTER 37. - ZONING* › Article V. - Supplemental Regulations Applying to All Districts. › Division 2. - Parking, Loading, and Outdoor Lighting. › Sec. 37-50.480. - <em class=\"hit hlt1\">Outdoor lighting</em>."
+        },
+        {
+          "nodeId": "PTIITHCO_CH37ZO_ARTVSUREAPALDI_DIV2PALOOULI",
+          "where": "Salinas, California - Code of Ordinances › CHAPTER 37. - ZONING* › Article V. - Supplemental Regulations Applying to All Districts. › Division 2. - Parking, Loading, and <em class=\"hit hlt1\">Outdoor Lighting</em>."
+        },
+        {
+          "nodeId": "PTIITHCO_CH37ZO_ARTVSUREAPALDI_DIV2PALOOULI_S37-50.340PU",
+          "where": "Salinas, California - Code of Ordinances › CHAPTER 37. - ZONING* › Article V. - Supplemental Regulations Applying to All Districts. › Division 2. - Parking, Loading, and Outdoor Lighting. › Sec. 37-50.340. - Purpose."
+        }
+      ],
+      "weak": 12,
+      "error": null
+    },
+    {
+      "clientId": 2020,
+      "name": "East Palo Alto",
+      "strong": [
+        {
+          "nodeId": "EAPAALDECO2018EDCUORADFE62024_TIT18DECO_ART3REAPALZO_CH18.22SIPLGEDEST_18.22.050OULI",
+          "where": "East Palo Alto, California - Code of Ordinances › EAST PALO ALTO DEVELOPMENT CODE 2018 EDITION Current as of: an ordinance adopted February 6, 2024 › Title 18 - DEVELOPMENT CODE › ARTICLE 3 - REGULATIONS APPLICABLE TO ALL ZONES › Chapter 18.22 - Site Planning and General Development Standards › 18.22.050 - <em class=\"hit hlt1\">Outdoor Lighting</em>"
+        },
+        {
+          "nodeId": "EAPAALDECO2018EDCUORADFE62024_TIT18DECO_ART3REAPALZO_CH18.34PEST_18.34.110OULIGL",
+          "where": "East Palo Alto, California - Code of Ordinances › EAST PALO ALTO DEVELOPMENT CODE 2018 EDITION Current as of: an ordinance adopted February 6, 2024 › Title 18 - DEVELOPMENT CODE › ARTICLE 3 - REGULATIONS APPLICABLE TO ALL ZONES › Chapter 18.34 - Performance Standards › 18.34.110 - <em class=\"hit hlt1\">Outdoor Light</em> and Glare"
+        }
+      ],
+      "weak": 13,
+      "error": null
+    },
+    {
+      "clientId": 16969,
+      "name": "El Paso de Robles",
+      "strong": [
+        {
+          "nodeId": "TIT21ZO_ART8ENST_CH21.82LIIL_21.82.020LIST",
+          "where": "El Paso de Robles, California - Code of Ordinances › Title 21 - ZONING › ARTICLE 8. - ENVIRONMENTAL STANDARDS › Chapter 21.82 - LIGHTING AND ILLUMINATION › 21.82.020 - <em class=\"hit hlt4\">Lighting</em> standards."
+        },
+        {
+          "nodeId": "TIT21ZO_ART8ENST_CH21.82LIIL_21.82.010PUAP",
+          "where": "El Paso de Robles, California - Code of Ordinances › Title 21 - ZONING › ARTICLE 8. - ENVIRONMENTAL STANDARDS › Chapter 21.82 - LIGHTING AND ILLUMINATION › 21.82.010 - Purpose and applicability."
+        }
+      ],
+      "weak": 12,
+      "error": null
+    },
+    {
+      "clientId": 2893,
+      "name": "La Quinta",
+      "strong": [
+        {
+          "nodeId": "TIT9ZO_CH9.100SUNORE_9.100.150OULI",
+          "where": "La Quinta, California - Municipal Code › Title 9 - ZONING › Chapter 9.100 - SUPPLEMENTAL NONRESIDENTIAL REGULATIONS › 9.100.150 - <em class=\"hit hlt1\">Outdoor lighting</em>."
+        },
+        {
+          "nodeId": "TIT9ZO_CH9.60SURERE_9.60.160OULI",
+          "where": "La Quinta, California - Municipal Code › Title 9 - ZONING › Chapter 9.60 - SUPPLEMENTAL RESIDENTIAL REGULATIONS › 9.60.160 - <em class=\"hit hlt1\">Outdoor lighting</em>."
+        }
+      ],
+      "weak": 11,
+      "error": null
+    },
+    {
+      "clientId": 2908,
+      "name": "Laguna Niguel",
+      "strong": [
+        {
+          "nodeId": "TIT9PLZO_DIV1PL_ART2COZOCO_SUBARTICLE_3REDI_S9-1-35.15OULI",
+          "where": "Laguna Niguel, California - Code of Ordinances › TITLE 9 - PLANNING AND ZONING › Division 1 - PLANNING › ARTICLE 2. - COMPREHENSIVE ZONING CODE › SUBARTICLE 3. - RESIDENTIAL DISTRICTS › Sec. 9-1-35.15. - <em class=\"hit hlt1\">Outdoor lighting</em>."
+        },
+        {
+          "nodeId": "TIT9PLZO_DIV1PL_ART2COZOCO_SUBARTICLE_4NODI_S9-1-45.14OULI",
+          "where": "Laguna Niguel, California - Code of Ordinances › TITLE 9 - PLANNING AND ZONING › Division 1 - PLANNING › ARTICLE 2. - COMPREHENSIVE ZONING CODE › SUBARTICLE 4. - NONRESIDENTIAL DISTRICTS › Sec. 9-1-45.14. - <em class=\"hit hlt1\">Outdoor lighting</em>."
+        }
+      ],
+      "weak": 10,
+      "error": null
+    },
+    {
+      "clientId": 2948,
+      "name": "Lancaster",
+      "strong": [
+        {
+          "nodeId": "TIT17ZO_CH17.08REZO_ARTIIIGESIPLPRDEST_17.08.140OULI",
+          "where": "Lancaster, California - Code of Ordinances › Title 17 - ZONING › Chapter 17.08 - RESIDENTIAL ZONES › Article III. - General Site Planning and Project Design Standards › 17.08.140 - <em class=\"hit hlt1\">Outdoor Lighting</em>."
+        },
+        {
+          "nodeId": "TIT17ZO_CH17.41ADREUSRE_ARTIVOBDESTOD_17.41.086EXLIESMUITBU5MOUNMIUSPR",
+          "where": "Lancaster, California - Code of Ordinances › Title 17 - ZONING › Chapter 17.41 - ADDITIONAL RESIDENTIAL USE REGULATIONS › Article IV. - Objective Design Standards (ODS) › 17.41.086 - Exterior lighting—Residential multi-unit buildings (5 or more units) and mixed use projects."
+        }
+      ],
+      "weak": 12,
+      "error": null
+    },
+    {
+      "clientId": 3318,
+      "name": "Milpitas",
+      "strong": [
+        {
+          "nodeId": "TITXIIIZO_PTB_CHB.22HHICODI_B.22.150OULI",
+          "where": "Milpitas, California - Code of Ordinances › Title XIII - ZONING › PART B › Chapter B.22 - \"H\" HILLSIDE COMBINING DISTRICT › B.22.150 - <em class=\"hit hlt1\">Outdoor Lighting</em>"
+        },
+        {
+          "nodeId": "TITXIIIZO_PTC_CHC.2GEDEST_C.2.070LIIL",
+          "where": "Milpitas, California - Code of Ordinances › Title XIII - ZONING › PART C › Chapter C.2 - GENERAL DEVELOPMENT STANDARDS › C.2.070 - <em class=\"hit hlt4\">Lighting</em> and Illumination"
+        }
+      ],
+      "weak": 11,
+      "error": null
+    },
+    {
+      "clientId": 4008,
+      "name": "Rancho Palos Verdes",
+      "strong": [
+        {
+          "nodeId": "TIT17ZO_ARTVIUSDEST_CH17.56ENPR_17.56.030OULIREUS",
+          "where": "Rancho Palos Verdes, California - Code of Ordinances › Title 17 - ZONING › ARTICLE VI. - USE AND DEVELOPMENT STANDARDS › CHAPTER 17.56. - ENVIRONMENTAL PROTECTION › 17.56.030. - <em class=\"hit hlt1\">Outdoor lighting</em> for residential uses."
+        },
+        {
+          "nodeId": "TIT17ZO_ARTVIUSDEST_CH17.56ENPR_17.56.040OULINOUS",
+          "where": "Rancho Palos Verdes, California - Code of Ordinances › Title 17 - ZONING › ARTICLE VI. - USE AND DEVELOPMENT STANDARDS › CHAPTER 17.56. - ENVIRONMENTAL PROTECTION › 17.56.040. - <em class=\"hit hlt1\">Outdoor lighting</em> for nonresidential uses."
+        }
+      ],
+      "weak": 10,
+      "error": null
+    },
+    {
+      "clientId": 7622,
+      "name": "Santa Barbara County",
+      "strong": [
+        {
+          "nodeId": "SABACOLAUSDECO_ART35.3SIPLOTPRST_CH35.30STALDELAUS_35.30.120OULI",
+          "where": "Santa Barbara County, California - Code of Ordinances › SANTA BARBARA COUNTY LAND USE & DEVELOPMENT CODE › ARTICLE 35.3 - SITE PLANNING AND OTHER PROJECT STANDARDS › CHAPTER 35.30 - STANDARDS FOR ALL DEVELOPMENT AND LAND USES › 35.30.120 - <em class=\"hit hlt1\">Outdoor Lighting</em>"
+        },
+        {
+          "nodeId": "SABACOMOLAUSDECO_DIV35.3MOSIPLOTPRST_CH35.430STALDELAUS_35.430.120OULI",
+          "where": "Santa Barbara County, California - Code of Ordinances › SANTA BARBARA COUNTY MONTECITO LAND USE & DEVELOPMENT CODE › DIVISION 35.3 - Montecito Site Planning and Other Project Standards › CHAPTER 35.430 - STANDARDS FOR ALL DEVELOPMENT AND LAND USES › 35.430.120 - <em class=\"hit hlt1\">Outdoor Lighting</em>"
+        }
+      ],
+      "weak": 24,
+      "error": null
+    },
+    {
+      "clientId": 10040,
+      "name": "Woodside",
+      "strong": [
+        {
+          "nodeId": "CD_ORD_TITXVLAUS_CH153ZO_153.213OULI",
+          "where": "Woodside, California - Municipal Code › TITLE XV - LAND USAGE › CHAPTER 153 - ZONING › 153.213 - <em class=\"hit hlt1\">OUTDOOR LIGHTING</em>"
+        },
+        {
+          "nodeId": "CD_ORD_TITXVLAUS_CH153ZO_153.213OULI_S153.214RE",
+          "where": "Woodside, California - Municipal Code › TITLE XV - LAND USAGE › CHAPTER 153 - ZONING › 153.213 - OUTDOOR LIGHTING › Sec. 153.214 - [Regulations.]"
+        }
+      ],
+      "weak": 7,
+      "error": null
+    },
+    {
+      "clientId": 5056,
+      "name": "Yreka",
+      "strong": [
+        {
+          "nodeId": "TIT16ZO_CH16.46SPPR_16.46.060OULI",
+          "where": "Yreka, California - Code of Ordinances › Title 16 - ZONING › Chapter 16.46 - SPECIAL PROVISIONS › 16.46.060 - <em class=\"hit hlt1\">Outdoor lighting</em>."
+        },
+        {
+          "nodeId": "TIT13SIOR_CH13.10GEST_13.10.070ILSI",
+          "where": "Yreka, California - Code of Ordinances › Title 13 - SIGN ORDINANCE › CHAPTER 13.10 - GENERAL STANDARDS › 13.10.070 - Illumination of signs."
+        }
+      ],
+      "weak": 8,
+      "error": null
+    },
+    {
+      "clientId": 1029,
+      "name": "Anderson",
+      "strong": [
+        {
+          "nodeId": "TIT17ZO_CH17.33VIANPLDEPD_17.33.110EXLI",
+          "where": "Anderson, California - Code of Ordinances › Title 17 - ZONING › Chapter 17.33 - VINEYARDS AT ANDERSON PLANNED DEVELOPMENT (PD) › 17.33.110 - Exterior lighting."
+        }
+      ],
+      "weak": 12,
+      "error": null
+    },
+    {
+      "clientId": 1126,
+      "name": "Azusa",
+      "strong": [
+        {
+          "nodeId": "CH88DECO_ART3SIDEOPST_CH88.31OPST_88.31.030OULI",
+          "where": "Azusa, California - Code of Ordinances › Chapter 88 - DEVELOPMENT CODE › ARTICLE 3. - SITE, DEVELOPMENT AND OPERATIONAL STANDARDS › CHAPTER 88.31. - OPERATIONAL STANDARDS › 88.31.030. - <em class=\"hit hlt1\">Outdoor Lighting</em>."
+        }
+      ],
+      "weak": 12,
+      "error": null
+    },
+    {
+      "clientId": 1163,
+      "name": "Barstow",
+      "strong": [
+        {
+          "nodeId": "COOR_TIT19ZO_CH19.06DEST_S19.06.010OULI",
+          "where": "Barstow, California - Code of Ordinances › Title 19 - ZONING › CHAPTER 19.06. - DEVELOPMENT STANDARDS › Sec. 19.06.010. - <em class=\"hit hlt1\">Outdoor lighting</em>."
+        }
+      ],
+      "weak": 14,
+      "error": null
+    },
+    {
+      "clientId": 1328,
+      "name": "Blythe",
+      "strong": [
+        {
+          "nodeId": "CD_ORD_TIT17ZO_DIVIIIDEPEST_CH17.28HAOIIGGLIRPO",
+          "where": "Blythe, California - Code of Ordinances › Title 17 - ZONING › DIVISION III. - DEVELOPMENT AND PERFORMANCE STANDARDS › Chapter 17.28 - HAZARDS—NOISE—<em class=\"hit hlt3\">LIGHT</em> AND GLARE—AIR <em class=\"hit hlt4\">POLLUTION</em>"
+        }
+      ],
+      "weak": 9,
+      "error": null
+    },
+    {
+      "clientId": 773,
+      "name": "Calaveras County",
+      "strong": [
+        {
+          "nodeId": "COOR_TIT17ZO_SUBTITLE_IVCORE_CH17.16GESIRE_17.16.100LIIL",
+          "where": "Calaveras County, California - Code of Ordinances › Title 17 - ZONING › Subtitle IV: - countywide Regulations › Chapter 17.16 - General Site Regulations › 17.16.100 - <em class=\"hit hlt4\">Lighting</em> and illumination."
+        }
+      ],
+      "weak": 9,
+      "error": null
+    },
+    {
+      "clientId": 1508,
+      "name": "Campbell",
+      "strong": [
+        {
+          "nodeId": "TIT21ZO_CH21.16GEPEST_21.16.060OULIGL",
+          "where": "Campbell, California - Code of Ordinances › Title 21 - ZONING › Chapter 21.16 - GENERAL PERFORMANCE STANDARDS › 21.16.060 - <em class=\"hit hlt1\">Outdoor light</em> and glare."
+        }
+      ],
+      "weak": 14,
+      "error": null
+    },
+    {
+      "clientId": 1539,
+      "name": "Carpinteria",
+      "strong": [
+        {
+          "nodeId": "TIT14ZO_CH14.59PEUSCOCARE_14.59.210OULI",
+          "where": "Carpinteria, California - Code of Ordinances › Title 14 - ZONING › Chapter 14.59 - PERSONAL USE AND COMMERCIAL CANNABIS REGULATIONS › 14.59.210 - <em class=\"hit hlt1\">Outdoor lighting</em>."
+        }
+      ],
+      "weak": 8,
+      "error": null
+    },
+    {
+      "clientId": 1638,
+      "name": "Chino",
+      "strong": [
+        {
+          "nodeId": "TIT20ZO_CH20.10STALDELAUS_20.10.090OULI",
+          "where": "Chino, California - Code of Ordinances › Title 20 - ZONING › Chapter 20.10 - STANDARDS FOR ALL DEVELOPMENT AND LAND USES › 20.10.090 - <em class=\"hit hlt1\">Outdoor lighting</em>."
+        }
+      ],
+      "weak": 13,
+      "error": null
+    },
+    {
+      "clientId": 1644,
+      "name": "Chowchilla City",
+      "strong": [
+        {
+          "nodeId": "COOR_TIT18ZO_CH18.50DEST_18.50.150OULIST",
+          "where": "Chowchilla City, California - Code of Ordinances › Title 18 - ZONING › Chapter 18.50 - DEVELOPMENT STANDARDS › 18.50.150 - <em class=\"hit hlt1\">Outdoor lighting</em> standards."
+        }
+      ],
+      "weak": 10,
+      "error": null
+    },
+    {
+      "clientId": 1483,
+      "name": "City of Calabasas",
+      "strong": [
+        {
+          "nodeId": "TIT17LAUSDE_ARTIIISIPLPRDEST_CH17.27LI_17.27.120NOOULI",
+          "where": "City of Calabasas, California - Code of Ordinances › Title 17 - LAND USE AND DEVELOPMENT › Article III. - Site Planning and Project Design Standards › Chapter 17.27 - Lighting › 17.27.120 - Nonconforming <em class=\"hit hlt1\">outdoor lighting</em>."
+        }
+      ],
+      "weak": 19,
+      "error": null
+    },
+    {
+      "clientId": 17632,
+      "name": "City of Mountain House",
+      "strong": [
+        {
+          "nodeId": "TIT9DETI_DIV10DERE_CH7PEST_9-10-706LIGL",
+          "where": "City of Mountain House, California - Code of Ordinances › TITLE 9 - DEVELOPMENT TITLE › DIVISION 10. - DEVELOPMENT REGULATIONS › CHAPTER 7. - PERFORMANCE STANDARDS › 9-10-706 - <em class=\"hit hlt4\">Light</em> and Glare."
+        }
+      ],
+      "weak": 13,
+      "error": null
+    },
+    {
+      "clientId": 1695,
+      "name": "Coalinga",
+      "strong": [
+        {
+          "nodeId": "CD_ORD_TIT9PLZO_CH4ADUSDERE_ART2STALDELAUS_S9-4.206LIIL",
+          "where": "Coalinga, California - Code of Ordinances › TITLE 9. - PLANNING AND ZONING › CHAPTER 4. - ADDITIONAL USE AND DEVELOPMENT REGULATIONS › Article 2. - Standards for All Development and Land Uses › Sec. 9-4.206. - <em class=\"hit hlt4\">Lighting</em> and illumination."
+        }
+      ],
+      "weak": 12,
+      "error": null
+    },
+    {
+      "clientId": 5184,
+      "name": "Contra Costa County",
+      "strong": [
+        {
+          "nodeId": "TIT8ZO_DIV84LAUSDI_CH84-78BOSTCODI_ART84-78.6DEST_84-78.608OULI",
+          "where": "Contra Costa County, California - Ordinance Code › Title 8 - ZONING › Division 84 - LAND USE DISTRICTS › Chapter 84-78 - BOAT STORAGE (-BS) COMBINING DISTRICT › Article 84-78.6. - Development Standards › 84-78.608 - <em class=\"hit hlt1\">Outdoor lighting</em>."
+        }
+      ],
+      "weak": 11,
+      "error": null
+    },
+    {
+      "clientId": 1971,
+      "name": "Duarte",
+      "strong": [
+        {
+          "nodeId": "ART3REAPALZO_CH19.50PEST_19.50.070OULI",
+          "where": "Duarte, California - Development Code › ARTICLE 3 - REGULATIONS APPLICABLE TO ALL ZONES › Chapter 19.50 - PERFORMANCE STANDARDS › 19.50.070 - <em class=\"hit hlt1\">Outdoor lighting</em>."
+        }
+      ],
+      "weak": 15,
+      "error": null
+    },
+    {
+      "clientId": 16875,
+      "name": "Dunsmuir",
+      "strong": [
+        {
+          "nodeId": "TIT17ZO_CH17.92SPPR_17.92.130OULI",
+          "where": "Dunsmuir, California - Code of Ordinances › Title 17 - ZONING › Chapter 17.92 - SPECIAL PROVISIONS › 17.92.130 - <em class=\"hit hlt1\">Outdoor lighting</em>."
+        }
+      ],
+      "weak": 5,
+      "error": null
+    },
+    {
+      "clientId": 18017,
+      "name": "Eastvale",
+      "strong": [
+        {
+          "nodeId": "PTBLADECO_TIT120PLZO_CH120.05DEST_S120.05.050OULI",
+          "where": "Eastvale, California - Code of Ordinances › PART B - LAND DEVELOPMENT CODE › Title 120 - PLANNING AND ZONING › CHAPTER 120.05. - DEVELOPMENT STANDARDS › Sec. 120.05.050. - <em class=\"hit hlt1\">Outdoor lighting</em>."
+        }
+      ],
+      "weak": 11,
+      "error": null
+    },
+    {
+      "clientId": 2059,
+      "name": "El Centro",
+      "strong": [
+        {
+          "nodeId": "CH29ZO_ARTIIIPRDEST_DIV7LIRE_S29-149LIST",
+          "where": "El Centro, California - Code of Ordinances › Chapter 29 - ZONING › ARTICLE III. - PROPERTY DEVELOPMENT STANDARDS › DIVISION 7. - LIGHTING REGULATIONS › Sec. 29-149. - <em class=\"hit hlt4\">Lighting</em> standards."
+        }
+      ],
+      "weak": 9,
+      "error": null
+    },
+    {
+      "clientId": 2065,
+      "name": "El Monte",
+      "strong": [
+        {
+          "nodeId": "TIT17ZO_DIV6GEDEST_CH17.60GEDEST_17.60.050OULI",
+          "where": "El Monte, California - Code of Ordinances › Title 17 - ZONING › Division 6. - General Development Standards › Chapter 17.60 - GENERAL DEVELOPMENT STANDARDS › 17.60.050 - <em class=\"hit hlt1\">Outdoor lighting</em>."
+        }
+      ],
+      "weak": 16,
+      "error": null
+    },
+    {
+      "clientId": 2289,
+      "name": "Fresno",
+      "strong": [
+        {
+          "nodeId": "MUCOCHFRCA_CH15CIDECOINRE_PTIIIREAPSOALDI_ART20GESIRE_S15-2015OULIIL",
+          "where": "Fresno, California - Code of Ordinances › CHAPTER 15 - CITYWIDE DEVELOPMENT CODE, INCLUDING REVISIONS › PART III: - REGULATIONS APPLYING TO SOME OR ALL DISTRICTS › ARTICLE 20 - GENERAL SITE REGULATIONS › SEC. 15-2015. - <em class=\"hit hlt1\">OUTDOOR LIGHTING</em> AND ILLUMINATION."
+        }
+      ],
+      "weak": 18,
+      "error": null
+    },
+    {
+      "clientId": 2428,
+      "name": "Grass Valley",
+      "strong": [
+        {
+          "nodeId": "TIT17DECO_ART3SIPLPRDEST_CH17.30STALDELAUS_17.30.060OULI",
+          "where": "Grass Valley, California - Code of Ordinances › Title 17 - DEVELOPMENT CODE › Article 3 - SITE PLANNING AND PROJECT DESIGN STANDARDS › Chapter 17.30 - STANDARDS FOR ALL DEVELOPMENT AND LAND USES › 17.30.060 - <em class=\"hit hlt1\">Outdoor lighting</em>."
+        }
+      ],
+      "weak": 11,
+      "error": null
+    },
+    {
+      "clientId": 2483,
+      "name": "Gustine",
+      "strong": [
+        {
+          "nodeId": "CO_ART3SIPLGEDERE_CH4-30STALDELAUS_S4-30-060OULI",
+          "where": "Gustine, California - Zoning-Subdivision › ARTICLE 3 - SITE PLANNING AND GENERAL DEVELOPMENT REGULATIONS › CHAPTER 4-30. - STANDARDS FOR ALL DEVELOPMENT AND LAND USES › Sec. 4-30-060. - <em class=\"hit hlt1\">Outdoor lighting</em>."
+        }
+      ],
+      "weak": 12,
+      "error": null
+    },
+    {
+      "clientId": 2559,
+      "name": "Hayward",
+      "strong": [
+        {
+          "nodeId": "HAYWARD_MUNICIPAL_CODE_CH10PLZOSU_ART7SIRE_S10-7.209IL",
+          "where": "Hayward, California - Municipal Code › CHAPTER 10 - PLANNING, ZONING AND SUBDIVISIONS › ARTICLE 7 - SIGN REGULATIONS › SEC. 10-7.209 - ILLUMINATION."
+        }
+      ],
+      "weak": 19,
+      "error": null
+    },
+    {
+      "clientId": 8991,
+      "name": "Los Gatos",
+      "strong": [
+        {
+          "nodeId": "CO_CH29ZORE_ARTIINGE_DIV1MI_S29.10.09015REOULI",
+          "where": "Los Gatos, California - Code of Ordinances › Chapter 29 - ZONING REGULATIONS › ARTICLE I. - IN GENERAL › DIVISION 1. - MISCELLANEOUS › Sec. 29.10.09015. - Residential <em class=\"hit hlt1\">outdoor lighting</em>."
+        }
+      ],
+      "weak": 12,
+      "error": null
+    },
+    {
+      "clientId": 3364,
+      "name": "Monte Sereno",
+      "strong": [
+        {
+          "nodeId": "MUCO_TIT10PLZO_CH10.17OUIL_10.17.040PELI",
+          "where": "Monte Sereno, California - Code of Ordinances › Title 10 - PLANNING AND ZONING › Chapter 10.17 - OUTDOOR ILLUMINATION › 10.17.040 - Permitted <em class=\"hit hlt4\">lighting</em>."
+        }
+      ],
+      "weak": 6,
+      "error": null
+    },
+    {
+      "clientId": 3497,
+      "name": "Nevada City",
+      "strong": [
+        {
+          "nodeId": "TIT17ZO_CH17.80DEPEST_17.80.215OULIST",
+          "where": "Nevada City, California - Code of Ordinances › Title 17 - ZONING › Chapter 17.80 - DEVELOPMENT PERFORMANCE STANDARDS › 17.80.215 - <em class=\"hit hlt1\">Outdoor lighting</em> standards."
+        }
+      ],
+      "weak": 8,
+      "error": null
+    },
+    {
+      "clientId": 3534,
+      "name": "Newark",
+      "strong": [
+        {
+          "nodeId": "CD_ORD_TIT17ZO_DIVIIICIRE_CH17.17GESIRE_17.17.060LIIL",
+          "where": "Newark, California - Code of Ordinances › TITLE 17 - ZONING › DIVISION III. - CITYWIDE REGULATIONS › Chapter 17.17 - GENERAL SITE REGULATIONS › 17.17.060 - <em class=\"hit hlt4\">Lighting</em> and Illumination."
+        }
+      ],
+      "weak": 10,
+      "error": null
+    },
+    {
+      "clientId": 9428,
+      "name": "Portola Valley",
+      "strong": [
+        {
+          "nodeId": "TIT18ZO_CH18.42ACST_18.42.018OULI",
+          "where": "Portola Valley, California - Code of Ordinances › TITLE 18 - ZONING › CHAPTER 18.42 - ACCESSORY STRUCTURES › 18.42.018 - <em class=\"hit hlt1\">Outdoor lighting</em>."
+        }
+      ],
+      "weak": 15,
+      "error": null
+    },
+    {
+      "clientId": 4131,
+      "name": "Rolling Hills Estates",
+      "strong": [
+        {
+          "nodeId": "TIT17ZO_CH17.06REDIGE_17.06.365PIOULIFISIFEFRYASIYAABST",
+          "where": "Rolling Hills Estates, California - Code of Ordinances › Title 17 - ZONING › Chapter 17.06 - RESIDENTIAL DISTRICTS GENERALLY › 17.06.365 - Pilasters, <em class=\"hit hlt1\">outdoor lighting</em> fixtures and similar features in front yards and side yards abutting a street."
+        }
+      ],
+      "weak": 10,
+      "error": null
+    },
+    {
+      "clientId": 4200,
+      "name": "San Fernando",
+      "strong": [
+        {
+          "nodeId": "CO_CH106ZO_ARTIIIGERE_DIV5LI_S106-353OULI",
+          "where": "San Fernando, California - Code of Ordinances › Chapter 106 - ZONING › ARTICLE III. - GENERAL REGULATIONS › DIVISION 5. - LIGHTING › Sec. 106-353. - <em class=\"hit hlt1\">Outdoor lighting</em>."
+        }
+      ],
+      "weak": 11,
+      "error": null
+    },
+    {
+      "clientId": 7603,
+      "name": "San Luis Obispo County",
+      "strong": [
+        {
+          "nodeId": "TIT23COZOLAUS_CH23.04SIDEST_23.04.320OULI",
+          "where": "San Luis Obispo County, California - County Code › Title 23 - COASTAL ZONE LAND USE › Chapter 23.04 - SITE DESIGN STANDARDS › 23.04.320 - <em class=\"hit hlt1\">Outdoor Lights</em>."
+        }
+      ],
+      "weak": 22,
+      "error": null
+    },
+    {
+      "clientId": 4211,
+      "name": "San Marcos",
+      "strong": [
+        {
+          "nodeId": "TIT20ZO_CH20.300SIPLGEDEST_S20.300.080LIGLST",
+          "where": "San Marcos, California - Code of Ordinances › TITLE 20 - ZONING › CHAPTER 20.300 - SITE PLANNING AND GENERAL DEVELOPMENT STANDARDS › Section 20.300.080 - <em class=\"hit hlt3\">Light</em> and Glare Standards"
+        }
+      ],
+      "weak": 12,
+      "error": null
+    },
+    {
+      "clientId": 10016,
+      "name": "Windsor",
+      "strong": [
+        {
+          "nodeId": "TITXVIIZOCO_ART3REAPALZO_CH17.32PEST_17.32.050LIGL",
+          "where": "Windsor, California - Code of Ordinances › TITLE XVII - ZONING CODE › ARTICLE 3. - REGULATIONS APPLICABLE TO ALL ZONES › Chapter 17.32. - Performance Standards › 17.32.050 - <em class=\"hit hlt4\">Light</em> and Glare."
+        }
+      ],
+      "weak": 13,
+      "error": null
+    },
+    {
+      "clientId": 5018,
+      "name": "Woodlake",
+      "strong": [
+        {
+          "nodeId": "TIT17ZOOR_CH17.50DEST_17.50.130OULIST",
+          "where": "Woodlake, California - Code of Ordinances › Title 17 - ZONING ORDINANCE › Chapter 17.50 - DEVELOPMENT STANDARDS › 17.50.130 - <em class=\"hit hlt1\">Outdoor lighting</em> standards."
+        }
+      ],
+      "weak": 10,
+      "error": null
+    },
+    {
+      "clientId": 11240,
+      "name": "Yuba County",
+      "strong": [
+        {
+          "nodeId": "TITXIDECO_DIVIIIREAPSOALDI_CH11.19GESIRE_11.19.060LIIL",
+          "where": "Yuba County, California - Code of Ordinances › TITLE XI. - DEVELOPMENT CODE › DIVISION III. - REGULATIONS APPLYING TO SOME OR ALL DISTRICTS › CHAPTER 11.19 - GENERAL SITE REGULATIONS › 11.19.060. - <em class=\"hit hlt4\">Lighting</em> and illumination."
+        }
+      ],
+      "weak": 15,
+      "error": null
+    }
+  ]
+}

@@ -1,6 +1,8 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../lib/auth';
+import PasswordField, { PasswordStrength } from '../components/PasswordField';
+import { passwordStrength, MIN_LENGTH } from '../lib/password';
 
 export default function SignIn() {
   const { signIn, signUp } = useAuth();
@@ -10,13 +12,35 @@ export default function SignIn() {
   const [mode, setMode] = useState('signin');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [confirm, setConfirm] = useState('');
   const [displayName, setDisplayName] = useState('');
   const [error, setError] = useState(null);
   const [notice, setNotice] = useState(null);
   const [busy, setBusy] = useState(false);
 
+  const strength = useMemo(() => passwordStrength(password), [password]);
+
+  // Only complain once there is something to compare against — flagging a
+  // mismatch while the user is still typing the second box is just noise.
+  const mismatch = mode === 'signup' && confirm.length > 0 && confirm !== password;
+  const canSubmit =
+    mode === 'signin' ||
+    (strength.meetsMinimum && confirm === password && confirm.length > 0);
+
   const submit = async (e) => {
     e.preventDefault();
+
+    // Belt and braces: the button is disabled in this state, but a form can
+    // still be submitted with Enter from inside a field.
+    if (mode === 'signup' && !canSubmit) {
+      setError(
+        confirm !== password
+          ? 'The two passwords do not match.'
+          : `Password must be at least ${MIN_LENGTH} characters.`
+      );
+      return;
+    }
+
     setError(null);
     setNotice(null);
     setBusy(true);
@@ -88,22 +112,47 @@ export default function SignIn() {
           />
         </label>
 
-        <label>
-          <span>Password</span>
-          <input
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            autoComplete={mode === 'signin' ? 'current-password' : 'new-password'}
-            minLength={8}
-            required
-          />
-          {mode === 'signup' && (
-            <small className="muted">At least 8 characters.</small>
+        <PasswordField
+          label="Password"
+          value={password}
+          onChange={setPassword}
+          autoComplete={mode === 'signin' ? 'current-password' : 'new-password'}
+          minLength={mode === 'signup' ? MIN_LENGTH : undefined}
+          describedBy={mode === 'signup' ? 'pw-strength' : undefined}
+        >
+          {/* Meter only while choosing a password. Rating the one someone
+              already has is pointless, and on a sign-in form it reads as an
+              accusation. */}
+          {mode === 'signup' && password.length > 0 && (
+            <PasswordStrength result={strength} id="pw-strength" />
           )}
-        </label>
+        </PasswordField>
 
-        <button className="btn btn-primary" type="submit" disabled={busy}>
+        {mode === 'signup' && (
+          <PasswordField
+            label="Confirm password"
+            value={confirm}
+            onChange={setConfirm}
+            autoComplete="new-password"
+            invalid={mismatch}
+            describedBy={mismatch ? 'pw-mismatch' : undefined}
+          >
+            {mismatch && (
+              <small className="pw-error" id="pw-mismatch">
+                The two passwords do not match.
+              </small>
+            )}
+            {!mismatch && confirm.length > 0 && confirm === password && (
+              <small className="pw-match">Passwords match.</small>
+            )}
+          </PasswordField>
+        )}
+
+        <button
+          className="btn btn-primary"
+          type="submit"
+          disabled={busy || !canSubmit}
+        >
           {busy ? 'Working…' : mode === 'signin' ? 'Sign in' : 'Create account'}
         </button>
       </form>
@@ -112,14 +161,14 @@ export default function SignIn() {
         {mode === 'signin' ? (
           <>
             No account yet?{' '}
-            <button className="linklike" onClick={() => { setMode('signup'); setError(null); }}>
+            <button className="linklike" onClick={() => { setMode('signup'); setError(null); setConfirm(''); }}>
               Create one
             </button>
           </>
         ) : (
           <>
             Already have an account?{' '}
-            <button className="linklike" onClick={() => { setMode('signin'); setError(null); }}>
+            <button className="linklike" onClick={() => { setMode('signin'); setError(null); setConfirm(''); }}>
               Sign in
             </button>
           </>

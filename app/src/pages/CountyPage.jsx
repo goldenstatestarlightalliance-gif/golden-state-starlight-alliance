@@ -328,7 +328,7 @@ export default function CountyPage() {
                     // backdrop showed through them as white slivers along city
                     // edges. Matching the fill makes those gaps invisible
                     // instead of chasing sub-pixel geometry.
-                    fillColor: '#fdf3d3',
+                    fillColor: '#f0ede6',
                     fillOpacity: 1,
                     color: '#475569',
                     weight: 1.8,
@@ -344,7 +344,7 @@ export default function CountyPage() {
                     key={`uninc-${county.fips}`}
                     data={unincorporated}
                     style={{
-                      fillColor: '#fdf3d3',
+                      fillColor: '#f0ede6',
                       fillOpacity: 1,
                       color: '#a8a29e',
                       weight: 0.9,
@@ -375,9 +375,9 @@ export default function CountyPage() {
                       );
                       layer.on({
                         mouseover: (e) =>
-                          e.target.setStyle({ fillColor: '#f7e6a8', weight: 1.6, color: '#78716c' }),
+                          e.target.setStyle({ fillColor: '#e4dfd2', weight: 1.6, color: '#78716c' }),
                         mouseout: (e) =>
-                          e.target.setStyle({ fillColor: '#fdf3d3', weight: 0.9, color: '#a8a29e' }),
+                          e.target.setStyle({ fillColor: '#f0ede6', weight: 0.9, color: '#a8a29e' }),
                       });
                     }}
                   />
@@ -416,7 +416,12 @@ export default function CountyPage() {
                       key={`ds-${county.fips}`}
                       data={darkSkyGeo}
                       style={{
-                        fillColor: '#7c3aed',
+                        // Dark sky places sit on a different axis from the
+                        // pipeline — a designation, not a stage — so they keep
+                        // their own hue rather than joining the gold ramp. Just
+                        // desaturated, so they read as a separate category
+                        // instead of competing with a finished county.
+                        fillColor: '#6b5b95',
                         fillOpacity: 0.55,
                         color: '#4c1d95',
                         weight: 1.5,

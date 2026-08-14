@@ -242,9 +242,13 @@ export default function StateMap() {
                   key="darksky"
                   data={darkSkyGeo}
                   style={{
-                    fillColor: '#7c3aed',
-                    fillOpacity: 0.55,
-                    color: '#4c1d95',
+                    // Desaturated violet: dark sky places are a designation
+                    // rather than a pipeline stage, so they keep a hue of their
+                    // own — but toned down, so a certified place no longer
+                    // outshouts a county that is 90% covered.
+                    fillColor: '#6b5b95',
+                    fillOpacity: 0.5,
+                    color: '#4a3f6b',
                     weight: 1.5,
                   }}
                   onEachFeature={(feature, layer) => {

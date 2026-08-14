@@ -1617,8 +1617,13 @@ a.org-card:hover { border-color: var(--night); background: #f8fafc; }
 
 .hero-band h1 {
   color: #fff;
-  max-width: 18ch;
   font-size: clamp(2.1rem, 5vw, 3.4rem);
+  /* In em, not ch. The headline carries its own <br>, so the only job here is
+     to stop the line running the full page width — and `ch` is measured on the
+     "0" glyph, which in Poppins is far narrower than the caps and spaces this
+     line is actually made of. 18ch measured 638px against a first line needing
+     roughly 800px, which orphaned "sky —" and "time." onto lines of their own. */
+  max-width: 15em;
 }
 
 .hero-band .hero-lede {

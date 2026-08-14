@@ -37,17 +37,17 @@ export default function App() {
             </NavLink>
           ))}
 
-          {/* Members-only, so it is not advertised to signed-out visitors —
-              every channel is behind auth and the page would only bounce them
-              to the sign-in screen. */}
-          {!loading && session && (
-            <NavLink
-              to="/chat"
-              className={({ isActive }) => (isActive ? 'tab tab-active' : 'tab')}
-            >
-              Chat
-            </NavLink>
-          )}
+          {/* Chat is built and working, but deliberately NOT advertised.
+              The founder's judgement after actually running outreach: the
+              people worth reaching — city planners, council staff, chapter
+              leads — will not create an account on a coalition site to read a
+              message, and email already reaches them. A discoverable room
+              nobody answers in is worse than no room at all.
+
+              The route still resolves at /chat, so it can be shown to a
+              partner or switched back on by restoring this NavLink. Nothing
+              was deleted: schema, RLS, moderation and the 127 channels are all
+              intact and cost nothing while idle. */}
 
           {/* Held back until the session is known, so the nav does not flash
               "Sign in" at someone who is already signed in. */}

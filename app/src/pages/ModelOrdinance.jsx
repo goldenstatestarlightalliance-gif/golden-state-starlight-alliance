@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import Glossary from '../components/Glossary';
 
 // The joint model ordinance, as adopted numbers rather than prose.
 //
@@ -180,6 +181,8 @@ export default function ModelOrdinance() {
           across all five zones.
         </div>
       </section>
+
+      <Glossary />
 
       <section className="guide-section">
         <h2>Status</h2>

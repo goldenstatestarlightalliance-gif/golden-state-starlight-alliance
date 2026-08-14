@@ -955,3 +955,43 @@ a.org-card:hover { border-color: var(--night); background: #f8fafc; }
 @media (max-width: 900px) {
   .city-grid { grid-template-columns: minmax(0, 1fr); }
 }
+
+/* ---------- glossary ---------- */
+
+.glossary-tabs { display: flex; gap: .5rem; margin: 1.2rem 0 .5rem; flex-wrap: wrap; }
+.gtab {
+  padding: .5rem 1rem;
+  border: 1px solid var(--line);
+  background: #fff;
+  border-radius: 999px;
+  font: inherit;
+  font-size: .875rem;
+  font-weight: 600;
+  cursor: pointer;
+  color: var(--ink-soft);
+  margin-top: 0;
+}
+.gtab:hover { border-color: var(--night); background: #fff; }
+.gtab-on { background: var(--night); color: #fff; border-color: var(--night); }
+.gtab-on:hover { background: var(--night); color: #fff; }
+
+.glossary-intro { font-size: .88rem; max-width: 62ch; }
+
+.glossary { margin: 1rem 0 0; }
+.glossary-term {
+  padding: .9rem 0;
+  border-bottom: 1px solid var(--line);
+}
+.glossary dt {
+  font-weight: 700;
+  font-size: .95rem;
+  margin-bottom: .3rem;
+}
+.glossary dd { margin: 0; }
+.glossary dd p { margin: 0; font-size: .89rem; color: var(--ink-soft); }
+.glossary-why {
+  margin-top: .4rem !important;
+  padding-left: .7rem;
+  border-left: 2px solid var(--star);
+  font-size: .85rem !important;
+}

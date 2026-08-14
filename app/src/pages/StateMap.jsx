@@ -9,6 +9,8 @@ import { stageIndex, stageLabel } from '../lib/pipeline';
 import CoverageLegend from '../components/CoverageLegend';
 import AutoFit from '../components/AutoFit';
 import HatchDefs, { COUNTY_HATCH_ID } from '../components/HatchDefs';
+import MapSearch from '../components/MapSearch';
+import SearchHighlight from '../components/SearchHighlight';
 
 // A county government has "acted" once its own ordinance is on the books.
 const countyHasOrdinance = (c) => stageIndex(c?.status) >= stageIndex('passed');
@@ -31,6 +33,10 @@ export default function StateMap() {
   // Matches the county pages: the hatch is heavy enough to compete with the
   // coverage colors underneath, so it is opt-in rather than always on.
   const [showOrdinance, setShowOrdinance] = useState(false);
+  // FIPS of the county picked in the search box, or null. Kept separate from
+  // `hovered` so moving the mouse across the map cannot wipe out a deliberate
+  // search — the two mark different intents and both stay on screen.
+  const [searchFips, setSearchFips] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -79,6 +85,24 @@ export default function StateMap() {
     }
     return out;
   }, [counties]);
+
+  // Search list is built from the boundary features rather than the database
+  // rows, so every shape on the map is reachable even if its row failed to
+  // load. Falls back to the Census name when there is no matching row.
+  const searchItems = useMemo(() => {
+    if (!geo) return [];
+    return geo.features
+      .map((f) => ({
+        key: f.properties.COUNTY,
+        label: byFips.get(f.properties.COUNTY)?.name ?? f.properties.BASENAME,
+      }))
+      .sort((a, b) => a.label.localeCompare(b.label));
+  }, [geo, byFips]);
+
+  const searchFeature = useMemo(
+    () => geo?.features.find((f) => f.properties.COUNTY === searchFips) ?? null,
+    [geo, searchFips]
+  );
 
   const styleFor = (feature) => {
     const county = byFips.get(feature.properties.COUNTY);
@@ -149,6 +173,29 @@ export default function StateMap() {
 
       <div className="map-layout">
         <div className="map-wrap">
+          {geo && (
+            <MapSearch
+              items={searchItems}
+              label="Search counties"
+              placeholder="Search a county — try “Mono” or “San”"
+              selectedKey={searchFips}
+              onSelect={(item) => {
+                setSearchFips(item?.key ?? null);
+                // Drive the side panel too. Finding a county on the map is
+                // only half of what someone searching for it wants; the other
+                // half is its coverage figures and the link into its page.
+                if (item) {
+                  const county = byFips.get(item.key);
+                  setHovered({
+                    fips: item.key,
+                    name: county?.name ?? item.label,
+                    slug: county?.slug ?? slugify(item.label),
+                  });
+                }
+              }}
+            />
+          )}
+
           {!geo && !geoError && <p className="muted">Loading map…</p>}
           {geo && (
             <MapContainer
@@ -209,6 +256,11 @@ export default function StateMap() {
                   }}
                 />
               )}
+
+              {/* Last, and in the highest pane, so a searched county reads
+                  over the coverage fill, the ordinance hatch and the dark sky
+                  layer alike. */}
+              <SearchHighlight feature={searchFeature} id={searchFips} />
             </MapContainer>
           )}
 

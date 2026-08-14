@@ -11,6 +11,8 @@ import AutoFit from '../components/AutoFit';
 import DocumentLinks from '../components/DocumentLinks';
 import CountyEditor from '../components/CountyEditor';
 import HatchDefs, { COUNTY_HATCH_ID } from '../components/HatchDefs';
+import MapSearch from '../components/MapSearch';
+import SearchHighlight from '../components/SearchHighlight';
 import { useCanEditCounty } from '../lib/auth';
 
 export default function CountyPage() {
@@ -29,6 +31,8 @@ export default function CountyPage() {
   // enough to bury the city outlines that are the point of the map.
   const [showOrdinance, setShowOrdinance] = useState(false);
   const [showDarkSky, setShowDarkSky] = useState(true);
+  // BASENAME of the city picked in the search box, or null.
+  const [searchCity, setSearchCity] = useState(null);
 
   // Only this county's cities are fetched — the boundary build splits places
   // into one file per county so a page never downloads all 483.
@@ -108,6 +112,32 @@ export default function CountyPage() {
     for (const c of county?.cities ?? []) m.set(c.name.toLowerCase(), c);
     return m;
   }, [county]);
+
+  // Search over the drawn boundaries rather than the city rows, so anything
+  // visible on the map is findable — including Census places we hold no row
+  // for, which would otherwise be unsearchable despite being right there.
+  const searchItems = useMemo(() => {
+    if (!places?.features?.length) return [];
+    return places.features
+      .map((f) => {
+        const name = f.properties.BASENAME;
+        const city = cityByName.get(name?.toLowerCase());
+        return {
+          key: name,
+          label: name,
+          // Showing the stage in the dropdown answers the obvious next
+          // question without a second click.
+          note: stageLabel(city?.status ?? 'not_started'),
+        };
+      })
+      .sort((a, b) => a.label.localeCompare(b.label));
+  }, [places, cityByName]);
+
+  const searchFeature = useMemo(() => {
+    if (!places || !searchCity) return null;
+    const f = places.features.find((x) => x.properties.BASENAME === searchCity);
+    return f ? { type: 'FeatureCollection', features: [f] } : null;
+  }, [places, searchCity]);
 
   // Cities too small to see at county zoom also get a dot.
   //
@@ -248,6 +278,18 @@ export default function CountyPage() {
                 margin: '0 auto',
               }}
             >
+              {/* Only worth showing when there is something to search. A
+                  single-city county does not need a type-ahead. */}
+              {searchItems.length > 1 && (
+                <MapSearch
+                  items={searchItems}
+                  label={`Search cities in ${county.name} County`}
+                  placeholder={`Search a city in ${county.name} County`}
+                  selectedKey={searchCity}
+                  onSelect={(item) => setSearchCity(item?.key ?? null)}
+                />
+              )}
+
               <MapContainer
                 style={{
                   // Fills the box, which is already the right shape and size.
@@ -425,6 +467,11 @@ export default function CountyPage() {
                     </CircleMarker>
                   );
                 })}
+
+                {/* Pane z-index 500 — above the cities pane at 430, so a
+                    searched city is outlined rather than buried under the
+                    layer it belongs to. */}
+                <SearchHighlight feature={searchFeature} id={searchCity} />
               </MapContainer>
 
               {!places ? (
